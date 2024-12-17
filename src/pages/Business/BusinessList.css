@@ -1,0 +1,105 @@
+.business-list {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.business-list h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.business-list-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.business-list-cards .card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.business-list-cards .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.business-list-cards .card .card-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.business-list-cards .card .card-details {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.business-list-cards .card .card-footer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.business-list-cards .card .card-footer .delivery-type {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.business-list-cards .card .card-footer .rating {
+  font-weight: bold;
+  color: #f39c12;
+}
+
+.business-list-container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.business-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.no-results {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #777;
+}
+
+.business-list-container {
+  display: flex; /* Habilitar flexbox */
+  gap: 20px; /* Espacio entre filtros y tarjetas */
+  align-items: flex-start; /* Alinear verticalmente al inicio */
+  margin: 20px;
+}
+
+.business-list-container .filter {
+  flex: 0 0 200px; /* Ancho fijo para los filtros */
+}
+
+.business-cards-grid {
+  flex: 1; /* Las tarjetas ocupan el resto del espacio */
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  ); /* Diseño responsivo */
+  gap: 5px;
+  margin-top: 0; /* Alinear visualmente con los filtros */
+}
