@@ -1,0 +1,45 @@
+.navbar {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background-color: var(--lighter-green);
+  padding: 10% 5%;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.logo {
+  width: 15%;
+}
+
+.user-role {
+  background-color: var(--primary-green);
+  color: white;
+  padding: 0.5rem 2rem;
+  border-radius: 1em;
+}
+
+.menu-btn {
+  border-style: none;
+  background: none;
+  width: 55px;
+}
+
+.menu {
+  list-style: none;
+  padding-top: 0.5rem;
+}
+
+.menu li {
+  text-align: center;
+  padding: 0.8rem;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: black;
+}
