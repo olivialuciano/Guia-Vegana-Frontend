@@ -12,8 +12,8 @@ function Navbar() {
         {/* Dsp armamos un logo mejor jasja */}
         <img src="./images/vegan.png" alt="Vegan Logo" className="logo" />
         {/* Rol de usuario si está logueado */}
-        <span className="user-role">ADMIN</span>
-        {/* Ahora esta hardcodeado xq no me puse con la logica, pero la idea es q traiga la variable user y si esta logueado que el span deje de ser hidden */}
+        <span className="user-role hidden">ADMIN</span>
+        {/* Ahora esta hardcodeado y oculto xq no me puse con la logica, pero la idea es q traiga la variable user y si esta logueado que el span deje de ser hidden */}
         <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
           <FontAwesomeIcon
             icon={faBars}
@@ -26,10 +26,13 @@ function Navbar() {
       {menuOpen && (
         <ul className="menu">
           <li>
-            <a href="#">Inicio</a>
+            <a href="#">Iniciar sesión</a>
           </li>
           <li>
-            <a href="#">Iniciar sesión</a>
+            <a href="#">Explorar</a>
+          </li>
+          <li>
+            <a href="#">Mi usuario</a>
           </li>
         </ul>
       )}

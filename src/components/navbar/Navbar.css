@@ -23,6 +23,10 @@
   border-radius: 1em;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 .menu-btn {
   border-style: none;
   background: none;
