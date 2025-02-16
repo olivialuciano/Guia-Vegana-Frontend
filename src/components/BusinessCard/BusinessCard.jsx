@@ -18,7 +18,9 @@ const BusinessCard = ({ business }) => {
           className="business-card-image"
         />
       ) : (
-        <img src="../../assets/img/image.png" className="business-card-image" />
+        <div className="business-card-image placeholder-image">
+          Imagen no disponible
+        </div>
       )}
       <div className="business-card-info">
         <h3 className="business-card-name">{business.name}</h3>

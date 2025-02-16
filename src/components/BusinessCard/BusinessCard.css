@@ -1,47 +1,53 @@
+/* Estilos generales para la tarjeta de negocio */
 .business-card {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
   overflow: hidden;
-  width: 200px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
+  padding: 10px;
 }
 
+/* Efecto hover para la tarjeta */
 .business-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 }
 
+/* Imagen de la tarjeta (con ajuste para dispositivos móviles) */
 .business-card-image {
   width: 100%;
-  height: 150px;
+  height: 180px;
   object-fit: cover;
+  border-radius: 10px;
 }
 
+/* Placeholder para imágenes no disponibles */
 .placeholder-image {
-  width: 100%;
-  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #f0f0f0;
   color: #888;
   font-size: 14px;
+  height: 180px;
+  border-radius: 10px;
 }
 
+/* Información de la tarjeta */
 .business-card-info {
-  padding: 15px;
+  padding: 10px;
   text-align: center;
 }
 
 .business-card-name {
   font-size: 1.2rem;
   color: #333;
-  margin: 5px 0;
+  margin: 8px 0;
 }
 
 .business-card-address {
@@ -55,3 +61,22 @@
   color: #ff9900;
   font-weight: bold;
 }
+
+/* Estilos para dispositivos móviles (pantallas pequeñas) */
+@media (max-width: 768px) {
+  .business-card {
+    width: 100%; /* Las tarjetas ocupan todo el ancho disponible */
+    margin-bottom: 20px; /* Espacio entre tarjetas */
+  }
+}
+
+/* Estilos para pantallas grandes (más de 768px) */
+@media (min-width: 769px) {
+  .business-card {
+    width: calc(33.33% - 20px); /* 3 tarjetas por fila */
+    margin-bottom: 20px;
+  }
+}
+
+/* Estilos para pantallas extra grandes (más de 1200px) */
+@media ;

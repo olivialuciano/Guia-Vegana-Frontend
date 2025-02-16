@@ -9,11 +9,9 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="nav-content">
-        {/* Dsp armamos un logo mejor jasja */}
+        {/* Logo */}
         <img src="./images/vegan.png" alt="Vegan Logo" className="logo" />
-        {/* Rol de usuario si está logueado */}
-        <span className="user-role hidden">ADMIN</span>
-        {/* Ahora esta hardcodeado y oculto xq no me puse con la logica, pero la idea es q traiga la variable user y si esta logueado que el span deje de ser hidden */}
+        {/* Menú hamburguesa alineado a la derecha */}
         <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
           <FontAwesomeIcon
             icon={faBars}
@@ -22,7 +20,7 @@ function Navbar() {
         </button>
       </div>
 
-      {/* A este le deje esos li porque todavia no se cuales va a tener */}
+      {/* Menú desplegable */}
       {menuOpen && (
         <ul className="menu">
           <li>

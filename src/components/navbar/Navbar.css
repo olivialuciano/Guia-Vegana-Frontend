@@ -1,49 +1,40 @@
+/* General Navbar styles */
 .navbar {
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  background-color: var(--lighter-green);
-  padding: 10% 5%;
-}
-
-.nav-content {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: space-around;
+  background-color: #2c3e50;
+  padding: 10px 20px;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-.logo {
-  width: 15%;
-}
-
-.user-role {
-  background-color: var(--primary-green);
-  color: white;
-  padding: 0.5rem 2rem;
-  border-radius: 1em;
-}
-
-.hidden {
-  visibility: hidden;
-}
-
-.menu-btn {
-  border-style: none;
-  background: none;
-  width: 55px;
-}
-
-.menu {
-  list-style: none;
-  padding-top: 0.5rem;
-}
-
-.menu li {
-  text-align: center;
-  padding: 0.8rem;
-}
-
-.menu li a {
+.navbar-logo a {
   text-decoration: none;
-  color: black;
+  color: #e74c3c;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.navbar-menu li {
+  position: relative;
+}
+
+.navbar-menu li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.navbar-menu li a:hover {
+  color: #e74c3c;
 }

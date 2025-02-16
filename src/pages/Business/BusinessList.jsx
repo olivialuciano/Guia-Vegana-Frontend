@@ -17,6 +17,8 @@ const BusinessList = () => {
     openNow: false,
   });
   const [loading, setLoading] = useState(true);
+  const [showFilter, setShowFilter] = useState(false); // Estado para mostrar/ocultar los filtros
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
 
   // Fetch de los negocios desde la API al montar el componente
   useEffect(() => {
@@ -103,11 +105,43 @@ const BusinessList = () => {
     setFilters(newFilters);
   };
 
+  // Función para manejar el cambio en el término de búsqueda
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <div className="business-list-container">
-      <div className="filter">
-        <Filter onFilterChange={handleFilterChange} />
+      <div className="header">
+        <h1 className="header-title">Negocios</h1>
+        <div className="header-controls">
+          <input
+            type="text"
+            className="search-bar"
+            placeholder="Buscar negocios..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <button className="search-button">Buscar</button>
+          <button
+            className="filters-button"
+            onClick={() => {
+              console.log("Toggle Filters"); // Agregamos un log para verificar el cambio de estado
+              setShowFilter((prev) => !prev); // Alternar el estado de los filtros
+            }}
+          >
+            {showFilter ? "Ocultar Filtros" : "Mostrar Filtros"}
+          </button>
+        </div>
       </div>
+
+      {/* Aquí se agrega el filtro solo si el estado showFilter es true */}
+      {showFilter && (
+        <div className="filter-container">
+          <Filter onFilterChange={handleFilterChange} />
+        </div>
+      )}
+
       <div className="business-cards-grid">
         {filteredBusinesses.length > 0 ? (
           filteredBusinesses.map((business) => (
