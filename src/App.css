@@ -1,3 +1,8 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
 #root {
   margin: 0 auto;
   max-width: 1200px; /* Para evitar que el contenido se desborde en pantallas grandes */

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Filter from "../../components/Filter/Filter";
 import BusinessCard from "../../components/BusinessCard/BusinessCard";
 import "./BusinessList.css";
-import Loading from "../../components/Loading/Loading";
+// import Loading from "../../components/Loading/Loading";
 
 const BusinessList = () => {
   const [businesses, setBusinesses] = useState([]);

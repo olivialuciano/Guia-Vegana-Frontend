@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import "./Navbar.css";
+import veganLogo from "../../assets/img/vegan.png";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -10,7 +11,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="nav-content">
         {/* Logo */}
-        <img src="./images/vegan.png" alt="Vegan Logo" className="logo" />
+        <img src={veganLogo} alt="Vegan Logo" className="logo" />
         {/* Menú hamburguesa alineado a la derecha */}
         <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
           <FontAwesomeIcon

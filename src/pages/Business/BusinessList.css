@@ -1,19 +1,17 @@
 /* Estilo para el contenedor principal */
-.business-list-container {
-  /* padding: 20px; */
-}
 
 .header {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 20px;
-  background-color: #86cd82;
+  background-color: #4caf50;
 }
 
 .header-title {
   font-size: 2rem;
   margin-bottom: 10px;
+  color: black;
 }
 
 .header-controls {
@@ -22,6 +20,7 @@
   margin-top: 10px;
   width: 100%;
   justify-content: space-between;
+  color: black;
 }
 
 .search-bar {
