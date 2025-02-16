@@ -1,0 +1,61 @@
+/* Container styles */
+.vegan-option-container {
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 500px; /* Reduce el ancho */
+  text-align: center;
+  overflow-y: auto; /* Habilita el scroll */
+  max-height: 250px; /* Limita la altura */
+}
+
+/* Title styles */
+.vegan-option-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #34495e;
+}
+
+/* List styles */
+.vegan-option-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.vegan-option-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 1rem;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.vegan-option-item:last-child {
+  border-bottom: none;
+}
+
+/* Name styles */
+.vegan-option-name {
+  font-weight: bold;
+  color: #2c3e50;
+  margin-right: 10px;
+}
+
+/* Price styles */
+.vegan-option-price {
+  color: #7f8c8d;
+  font-style: italic;
+  text-align: left;
+}
+
+/* Message for unavailable options */
+.vegan-option-message {
+  font-size: 1rem;
+  color: #e74c3c;
+  margin: 15px 0;
+}

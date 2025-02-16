@@ -1,0 +1,96 @@
+.business-detail {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.business-detail .header {
+  text-align: center;
+}
+
+.business-detail .header h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.business-detail .header p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.business-detail .business-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.business-detail .section {
+  margin-bottom: 20px;
+}
+
+.business-detail .section h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* .business-detail .opening-hours,
+.business-detail .vegan-options {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.business-detail .opening-hours li,
+.business-detail .vegan-options li {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #555;
+} */
+
+.business-detail .footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.business-detail .footer .social-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.business-detail .footer .social-link:hover {
+  background-color: #0056b3;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+  margin-top: 20px;
+}
+
+.business-detail .section-container {
+  display: flex;
+  gap: 20px; /* Espacio entre los dos componentes */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: flex-start; /* Alinea los elementos al inicio vertical */
+}
+
+.business-detail .section-container > div {
+  flex: 1; /* Los elementos toman la misma cantidad de espacio */
+  max-width: 400px; /* Ancho máximo para cada componente */
+}
