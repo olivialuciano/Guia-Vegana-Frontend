@@ -21,6 +21,7 @@
   flex-direction: column; /* En móviles, las tarjetas están en columna */
   align-items: center;
   gap: 15px;
+  margin-bottom: 100px;
 }
 
 /* Estilos de las tarjetas */

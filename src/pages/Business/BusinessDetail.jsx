@@ -4,6 +4,8 @@ import "./BusinessDetail.css";
 import Loading from "../../components/Loading/Loading";
 import OpeningHour from "../../components/OpeningHour/OpeningHour";
 import VeganOption from "../../components/VeganOption/VeganOption";
+import defaultImage from "../../assets/img/image.png";
+import Image from "../../assets/img/image.png";
 
 const BusinessDetail = () => {
   const [business, setBusiness] = useState(null);
@@ -23,6 +25,7 @@ const BusinessDetail = () => {
           `https://guiavegana.somee.com/api/Business/${id}`
         );
         const businessData = await businessResponse.json();
+
         setBusiness(businessData);
 
         // Fetch para obtener los horarios de apertura
@@ -56,38 +59,90 @@ const BusinessDetail = () => {
     return <div>No se encontraron detalles del negocio.</div>;
   }
 
+  const zoneMap = {
+    0: "Zona Norte",
+    1: "Zona Sur",
+    2: "Zona Oeste",
+    3: "Barrio Pichincha",
+    4: "Zona Centro",
+    5: "Barrio Martin",
+    6: "Avenida Pellegrini",
+    7: "Bulevar Oroño",
+    8: "Barrio Abasto",
+    9: "Barrio La Sexta",
+    10: "Barrio Echesortu",
+    11: "Barrio Lourdes",
+  };
+
+  const deliveryMap = {
+    0: "Pedidos Ya",
+    1: "Rappi",
+    2: "Envío propio",
+    3: "Otro servicio",
+    4: "No tiene delivery",
+  };
+
+  const ratingMap = {
+    1: "⭐",
+    2: "⭐⭐",
+    3: "⭐⭐⭐",
+    4: "⭐⭐⭐⭐",
+    5: "⭐⭐⭐⭐⭐",
+  };
+
+  const businessTypeMap = {
+    0: "Bar / Restaurante",
+    1: "Panadería",
+    2: "Heladería",
+    3: "Mercado / Dietética",
+    4: "Emprendimiento",
+  };
+
   return (
     <div className="business-detail">
       <div className="header">
-        {business.image && (
+        {business.image ? (
           <img
             src={business.image}
             alt={business.name}
-            className="business-image"
+            className="business-card-image"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = Image;
+            }}
+          />
+        ) : (
+          <img
+            src={Image}
+            alt={business.name}
+            className="business-card-image"
           />
         )}
-        <h1>{business.name}</h1>
-        <p>{business.address}</p>
+        <h1 className="Nombre">{business.name}</h1>
+        <p className="rating">
+          {businessTypeMap[business.businessType] || business.businessType}
+        </p>
+        <p className="rating">
+          {" "}
+          {ratingMap[business.rating] || business.rating}
+        </p>
+        <p className="direccion">📌{business.address}</p>
+        <p className="info-text">{zoneMap[business.zone] || business.zone}</p>
+        {business.glutenFree && (
+          <p className="info-text">Tiene opciones sin TACC</p>
+        )}
+        {business.allPlantBased && (
+          <p className="info-text">Negocio 100% basado en plantas</p>
+        )}
+        <p className="info-text">
+          {deliveryMap[business.delivery] || business.delivery}
+        </p>
       </div>
 
-      <div className="section-container">
-        <div>
-          <OpeningHour hours={openingHours} />
-        </div>
-        <div>
-          <VeganOption options={veganOptions} />
-        </div>
-      </div>
-
-      <div className="footer">
-        <a
-          href={business.socialMediaLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="social-link"
-        >
-          Visitar en Redes Sociales
-        </a>
+      {/* Nuevo div que envuelve OpeningHour y VeganOption */}
+      <div className="business-info">
+        <OpeningHour hours={openingHours} />
+        <VeganOption options={veganOptions} />
       </div>
     </div>
   );

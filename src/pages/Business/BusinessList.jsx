@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Filter from "../../components/Filter/Filter";
 import BusinessCard from "../../components/BusinessCard/BusinessCard";
+import Loading from "../../components/Loading/Loading";
 import "./BusinessList.css";
-// import Loading from "../../components/Loading/Loading";
 
 const BusinessList = () => {
   const [businesses, setBusinesses] = useState([]);
@@ -22,6 +22,8 @@ const BusinessList = () => {
 
   // Fetch de los negocios desde la API al montar el componente
   useEffect(() => {
+    setLoading(true); // Activar el estado de carga antes de la petición
+
     fetch("https://guiavegana.somee.com/api/Business")
       .then((response) => response.json())
       .then((data) => {
@@ -29,42 +31,31 @@ const BusinessList = () => {
         setFilteredBusinesses(data);
       })
       .catch((error) => console.error("Error fetching businesses:", error))
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false)); // Desactivar el estado de carga al finalizar
   }, []);
 
   // Aplicar filtros cuando los filtros cambien
   useEffect(() => {
     const filtered = businesses.filter((business) => {
-      // 100% Plant-Based
       if (filters.plantBased && !business.allPlantBased) return false;
-
-      // Opciones Gluten-Free
       if (filters.glutenFree && !business.glutenFree) return false;
-
-      // Rating
       if (filters.rating && parseInt(filters.rating) !== business.rating)
         return false;
-
-      // Tipo de Delivery
       if (filters.delivery && parseInt(filters.delivery) !== business.delivery)
         return false;
-
-      // Tipo de Negocio
       if (
         filters.businessType &&
         parseInt(filters.businessType) !== business.businessType
       )
         return false;
-
-      // Zona
       if (filters.zone && parseInt(filters.zone) !== business.zone)
         return false;
 
       // Abierto ahora
       if (filters.openNow) {
         const now = new Date();
-        const currentDay = now.getDay(); // Día actual (0 = Domingo, 6 = Sábado)
-        const currentTime = now.getHours() * 60 + now.getMinutes(); // Minutos desde las 00:00
+        const currentDay = now.getDay();
+        const currentTime = now.getHours() * 60 + now.getMinutes();
 
         const isOpen = business.openingHours.some((oh) => {
           if (oh.day !== currentDay) return false;
@@ -125,17 +116,13 @@ const BusinessList = () => {
           <button className="search-button">Buscar</button>
           <button
             className="filters-button"
-            onClick={() => {
-              console.log("Toggle Filters"); // Agregamos un log para verificar el cambio de estado
-              setShowFilter((prev) => !prev); // Alternar el estado de los filtros
-            }}
+            onClick={() => setShowFilter((prev) => !prev)}
           >
             {showFilter ? "Ocultar Filtros" : "Mostrar Filtros"}
           </button>
         </div>
       </div>
 
-      {/* Aquí se agrega el filtro solo si el estado showFilter es true */}
       {showFilter && (
         <div className="filter-container">
           <Filter onFilterChange={handleFilterChange} />
@@ -143,9 +130,13 @@ const BusinessList = () => {
       )}
 
       <div className="business-cards-grid">
-        {filteredBusinesses.length > 0 ? (
+        {loading ? (
+          <Loading />
+        ) : filteredBusinesses.length > 0 ? (
           filteredBusinesses.map((business) => (
-            <BusinessCard key={business.id} business={business} />
+            <div key={business.id} className="business-card-wrapper">
+              <BusinessCard business={business} />
+            </div>
           ))
         ) : (
           <p className="no-results">

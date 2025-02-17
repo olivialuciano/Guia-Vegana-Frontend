@@ -91,3 +91,25 @@
 .filter-container.show {
   right: 0; /* Cuando el filtro se muestra */
 }
+
+.filter-container {
+  position: fixed;
+  top: 0;
+  left: -100%; /* Oculto por defecto */
+  width: 300px; /* Ajusta el ancho según lo necesites */
+  height: 100vh;
+  background: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  transition: left 0.3s ease-in-out;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* Cuando `showFilter` es true, lo mostramos */
+.show-filters {
+  left: 0;
+}
+
+.business-card-wrapper {
+  margin: 10px;
+}
