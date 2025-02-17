@@ -3,6 +3,8 @@ import Filter from "../../components/Filter/Filter";
 import BusinessCard from "../../components/BusinessCard/BusinessCard";
 import Loading from "../../components/Loading/Loading";
 import "./BusinessList.css";
+import Search from "../../assets/img/search.png";
+import FilterImage from "../../assets/img/filter.png";
 
 const BusinessList = () => {
   const [businesses, setBusinesses] = useState([]);
@@ -17,7 +19,7 @@ const BusinessList = () => {
     openNow: false,
   });
   const [loading, setLoading] = useState(true);
-  const [showFilter, setShowFilter] = useState(false); // Estado para mostrar/ocultar los filtros
+  // const [showFilter, setShowFilter] = useState(false); // Estado para mostrar/ocultar los filtros
   const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
 
   // Fetch de los negocios desde la API al montar el componente
@@ -34,62 +36,70 @@ const BusinessList = () => {
       .finally(() => setLoading(false)); // Desactivar el estado de carga al finalizar
   }, []);
 
-  // Aplicar filtros cuando los filtros cambien
-  useEffect(() => {
-    const filtered = businesses.filter((business) => {
-      if (filters.plantBased && !business.allPlantBased) return false;
-      if (filters.glutenFree && !business.glutenFree) return false;
-      if (filters.rating && parseInt(filters.rating) !== business.rating)
-        return false;
-      if (filters.delivery && parseInt(filters.delivery) !== business.delivery)
-        return false;
-      if (
-        filters.businessType &&
-        parseInt(filters.businessType) !== business.businessType
-      )
-        return false;
-      if (filters.zone && parseInt(filters.zone) !== business.zone)
-        return false;
+  // // Aplicar filtros cuando los filtros cambien
+  // useEffect(() => {
+  //   const filtered = businesses.filter((business) => {
+  //     // Búsqueda por nombre (ignorando mayúsculas/minúsculas)
+  //     if (
+  //       searchTerm &&
+  //       !business.name.toLowerCase().includes(searchTerm.toLowerCase())
+  //     ) {
+  //       return false;
+  //     }
 
-      // Abierto ahora
-      if (filters.openNow) {
-        const now = new Date();
-        const currentDay = now.getDay();
-        const currentTime = now.getHours() * 60 + now.getMinutes();
+  //     if (filters.plantBased && !business.allPlantBased) return false;
+  //     if (filters.glutenFree && !business.glutenFree) return false;
+  //     if (filters.rating && parseInt(filters.rating) !== business.rating)
+  //       return false;
+  //     if (filters.delivery && parseInt(filters.delivery) !== business.delivery)
+  //       return false;
+  //     if (
+  //       filters.businessType &&
+  //       parseInt(filters.businessType) !== business.businessType
+  //     )
+  //       return false;
+  //     if (filters.zone && parseInt(filters.zone) !== business.zone)
+  //       return false;
 
-        const isOpen = business.openingHours.some((oh) => {
-          if (oh.day !== currentDay) return false;
-          const open1 = oh.openTime1.split(":").map(Number);
-          const close1 = oh.closeTime1.split(":").map(Number);
-          const open2 = oh.openTime2
-            ? oh.openTime2.split(":").map(Number)
-            : null;
-          const close2 = oh.closeTime2
-            ? oh.closeTime2.split(":").map(Number)
-            : null;
+  //     // Abierto ahora
+  //     if (filters.openNow) {
+  //       const now = new Date();
+  //       const currentDay = now.getDay();
+  //       const currentTime = now.getHours() * 60 + now.getMinutes();
 
-          const openTime1 = open1[0] * 60 + open1[1];
-          const closeTime1 = close1[0] * 60 + close1[1];
-          const openTime2 = open2 ? open2[0] * 60 + open2[1] : null;
-          const closeTime2 = close2 ? close2[0] * 60 + close2[1] : null;
+  //       const isOpen = business.openingHours.some((oh) => {
+  //         if (oh.day !== currentDay) return false;
+  //         const open1 = oh.openTime1.split(":").map(Number);
+  //         const close1 = oh.closeTime1.split(":").map(Number);
+  //         const open2 = oh.openTime2
+  //           ? oh.openTime2.split(":").map(Number)
+  //           : null;
+  //         const close2 = oh.closeTime2
+  //           ? oh.closeTime2.split(":").map(Number)
+  //           : null;
 
-          return (
-            (currentTime >= openTime1 && currentTime <= closeTime1) ||
-            (openTime2 &&
-              closeTime2 &&
-              currentTime >= openTime2 &&
-              currentTime <= closeTime2)
-          );
-        });
+  //         const openTime1 = open1[0] * 60 + open1[1];
+  //         const closeTime1 = close1[0] * 60 + close1[1];
+  //         const openTime2 = open2 ? open2[0] * 60 + open2[1] : null;
+  //         const closeTime2 = close2 ? close2[0] * 60 + close2[1] : null;
 
-        if (!isOpen) return false;
-      }
+  //         return (
+  //           (currentTime >= openTime1 && currentTime <= closeTime1) ||
+  //           (openTime2 &&
+  //             closeTime2 &&
+  //             currentTime >= openTime2 &&
+  //             currentTime <= closeTime2)
+  //         );
+  //       });
 
-      return true;
-    });
+  //       if (!isOpen) return false;
+  //     }
 
-    setFilteredBusinesses(filtered);
-  }, [filters, businesses]);
+  //     return true;
+  //   });
+
+  //   setFilteredBusinesses(filtered);
+  // }, [filters, businesses, searchTerm]); // Se ejecuta también cuando cambia `searchTerm`
 
   // Función para manejar cambios en los filtros
   const handleFilterChange = (newFilters) => {
@@ -113,21 +123,17 @@ const BusinessList = () => {
             value={searchTerm}
             onChange={handleSearchChange}
           />
-          <button className="search-button">Buscar</button>
-          <button
-            className="filters-button"
-            onClick={() => setShowFilter((prev) => !prev)}
-          >
-            {showFilter ? "Ocultar Filtros" : "Mostrar Filtros"}
+          <button className="search-button">
+            <img src={Search} alt="buscar" />
+          </button>
+          <button className="filters-button">
+            <img src={FilterImage} alt="filtros" />
           </button>
         </div>
       </div>
-
-      {showFilter && (
-        <div className="filter-container">
-          <Filter onFilterChange={handleFilterChange} />
-        </div>
-      )}
+      <div className="filter-container">
+        <Filter onFilterChange={handleFilterChange} />
+      </div>
 
       <div className="business-cards-grid">
         {loading ? (
