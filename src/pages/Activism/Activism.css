@@ -1,0 +1,56 @@
+.activism-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  margin-top: 6rem;
+}
+
+.activism {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 16px;
+  margin-top: 2rem;
+  margin-bottom: 7rem;
+}
+
+.activism-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  background: white;
+}
+
+.activism-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 1.2em;
+}
+
+.activism-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.event-description {
+  color: #555;
+  margin-top: 4px;
+}
+
+.activism-contact {
+  font-size: 0.9rem;
+  color: #777;
+  margin-top: 8px;
+}
+
+.activism-link {
+  color: #007bff;
+  text-decoration: none;
+  display: block;
+  margin-top: 8px;
+}

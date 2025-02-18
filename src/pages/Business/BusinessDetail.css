@@ -25,7 +25,7 @@
 
 /* Aplica margen solo a OpeningHour y VeganOption */
 .business-info {
-  margin-bottom: 100px;
+  margin-bottom: 7rem;
 }
 
 .business-info > * {

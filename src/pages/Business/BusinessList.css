@@ -1,5 +1,3 @@
-/* Estilo para el contenedor principal */
-
 .header {
   display: flex;
   flex-direction: column;
@@ -41,7 +39,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
-  margin-bottom: 100px;
+  margin-top: 2rem;
+  margin-bottom: 7rem;
+  width: 120%;
 }
 
 .no-results {
