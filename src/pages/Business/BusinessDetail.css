@@ -1,8 +1,8 @@
 .business-detail {
   max-width: 800px;
-  /* margin: 0 auto; */
-  /* padding: 20px; */
-  /* border-radius: 10px; */
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
   font-family: Arial, sans-serif;
   text-align: center;
 }
@@ -60,4 +60,15 @@
   text-align: center;
   color: black;
   width: 100%;
+}
+
+.header {
+  background-color: #d8e1d3;
+  padding-bottom: 20px;
+  position: relative; /* Cambia esto si tenía 'sticky' */
+  width: 100%;
+  top: 0;
+  z-index: 10;
+  margin-right: 0;
+  margin-left: 0;
 }

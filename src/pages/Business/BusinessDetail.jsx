@@ -113,7 +113,7 @@ const BusinessDetail = () => {
           />
         ) : (
           <img
-            src={Image}
+            src={defaultImage}
             alt={business.name}
             className="business-card-image"
           />
