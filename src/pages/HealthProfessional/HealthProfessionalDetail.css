@@ -1,0 +1,39 @@
+.health-detail-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.health-detail-image {
+  width: 80px; /* Puedes ajustar el tamaño */
+  height: 80px; /* Asegúrate de que ancho y alto sean iguales para hacerla redonda */
+  border-radius: 50%; /* Esto hace la imagen redonda */
+  object-fit: cover; /* Ajusta la imagen para cubrir el círculo sin distorsionarla */
+  margin: 20px 0;
+}
+
+.health-title {
+  font-size: 2rem;
+}
+
+.health-specialty,
+.health-license,
+.health-contact,
+.health-email {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.health-social {
+  display: block;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.health-social:hover {
+  text-decoration: underline;
+}

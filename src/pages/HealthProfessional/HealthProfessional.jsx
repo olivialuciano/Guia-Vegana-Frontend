@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./HealthProfessional.css";
+import defaultImage from "../../assets/img/defaultprofileimage.jpg"; // Imagen por defecto
 
 const HealthProfessional = () => {
   const [healthProfessionals, setHealthProfessionals] = useState([]);
@@ -13,6 +15,10 @@ const HealthProfessional = () => {
       );
   }, []);
 
+  const handleImageError = (e) => {
+    e.target.src = defaultImage; // Reemplaza la imagen con la predeterminada
+  };
+
   return (
     <div className="health-container">
       <div className="header">
@@ -20,17 +26,20 @@ const HealthProfessional = () => {
       </div>
       <div className="health-list">
         {healthProfessionals.map((professional) => (
-          <div key={professional.id} className="health-card">
+          <Link
+            key={professional.id}
+            to={`/healthprofessional/${professional.id}`}
+            className="health-card"
+          >
             <img
-              src={professional.image}
+              src={professional.image || defaultImage} // Si la imagen no existe, usa la predeterminada
               alt={professional.name}
               className="health-image"
+              onError={handleImageError} // Si la URL es inválida, se reemplaza
             />
             <h2 className="health-name">{professional.name}</h2>
-            <p className="health-specialty">
-              Especialidad: {professional.specialty}
-            </p>
-          </div>
+            <p className="health-specialty">{professional.specialty}</p>
+          </Link>
         ))}
       </div>
     </div>
