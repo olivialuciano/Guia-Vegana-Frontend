@@ -1,0 +1,55 @@
+.activism-detail {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.activism-detail .header {
+  text-align: center;
+  background-color: #d8e1d3;
+  padding-bottom: 20px;
+}
+
+.activism-detail .header img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  margin: 0;
+}
+
+.activism-detail .header h1 {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.activism-info {
+  margin-bottom: 7rem;
+}
+
+.activism-info > * {
+  margin-bottom: 20px;
+}
+
+.contact,
+.social-media,
+.description {
+  color: black;
+}
+
+.social-media a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.social-media a:hover {
+  text-decoration: underline;
+}
+
+.nombre {
+  text-align: center;
+  color: black;
+  width: 100%;
+}

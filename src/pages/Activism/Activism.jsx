@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importar navegación
 import "./Activism.css";
+import Image from "../../assets/img/image.png";
 
 const Activism = () => {
   const [events, setEvents] = useState([]);
+  const navigate = useNavigate(); // Hook para redireccionar
 
   useEffect(() => {
     fetch("https://guiavegana.somee.com/api/Activism")
@@ -18,23 +21,23 @@ const Activism = () => {
       </div>
       <div className="activism">
         {events.map((event) => (
-          <div key={event.id} className="activism-card">
+          <div
+            key={event.id}
+            className="activism-card"
+            onClick={() => navigate(`/activism/${event.id}`)} // Redirige al hacer clic
+            style={{ cursor: "pointer" }} // Indica que se puede hacer clic
+          >
             <img
-              src={event.image}
+              src={event.image || Image}
               alt={event.name}
               className="activism-image"
+              onError={(e) => {
+                if (e.target.src !== Image) {
+                  e.target.src = Image;
+                }
+              }}
             />
             <h2 className="activism-title">{event.name}</h2>
-            <p className="activism-description">{event.description}</p>
-            <p className="activism-contact">Contacto: {event.contact}</p>
-            <a
-              href={event.socialMediaLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="activism-link"
-            >
-              @{event.socialMediaUsername}
-            </a>
           </div>
         ))}
       </div>
