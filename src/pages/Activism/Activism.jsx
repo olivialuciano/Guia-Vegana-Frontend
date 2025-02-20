@@ -1,18 +1,29 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Importar navegación
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Activism.css";
 import Image from "../../assets/img/image.png";
+import Loading from "../../components/Loading/Loading"; // Importar el componente Loading
 
 const Activism = () => {
   const [events, setEvents] = useState([]);
-  const navigate = useNavigate(); // Hook para redireccionar
+  const [loading, setLoading] = useState(true); // Estado de carga
+  const navigate = useNavigate();
 
   useEffect(() => {
+    setLoading(true);
     fetch("https://guiavegana.somee.com/api/Activism")
       .then((response) => response.json())
-      .then((data) => setEvents(data))
-      .catch((error) => console.error("Error fetching events:", error));
+      .then((data) => {
+        setEvents(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching events:", error);
+        setLoading(false);
+      });
   }, []);
+
+  if (loading) return <Loading />; // Mostrar el componente Loading mientras carga
 
   return (
     <div className="activism-container">
@@ -24,8 +35,8 @@ const Activism = () => {
           <div
             key={event.id}
             className="activism-card"
-            onClick={() => navigate(`/activism/${event.id}`)} // Redirige al hacer clic
-            style={{ cursor: "pointer" }} // Indica que se puede hacer clic
+            onClick={() => navigate(`/activism/${event.id}`)}
+            style={{ cursor: "pointer" }}
           >
             <img
               src={event.image || Image}
