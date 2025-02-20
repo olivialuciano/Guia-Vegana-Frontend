@@ -5,13 +5,9 @@
   padding: 16px;
   margin: 2rem auto 5rem auto; /* Centrar */
   margin-top: 120px; /* Espaciado entre el header y las tarjetas */
-
   max-width: 1200px; /* Limitar el ancho máximo */
-  width: 90%; /* Mantener margen en los lados */
-}
-
-.header {
-  background-color: #86cd82;
+  width: 95%; /* Mantener margen en los lados */
+  justify-content: center; /* Asegurar que las tarjetas estén centradas */
 }
 
 /* En pantallas más grandes (tablets y desktop), mostrar varias columnas */
@@ -21,6 +17,7 @@
       2,
       minmax(250px, 1fr)
     ); /* Máximo 2 columnas */
+    justify-content: center; /* Asegurar que queden centradas */
   }
 }
 
@@ -30,9 +27,11 @@
       3,
       minmax(250px, 1fr)
     ); /* Máximo 3 columnas */
+    justify-content: center; /* Centrar columnas */
   }
 }
 
+/* Ajustar las tarjetas */
 .health-card {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -40,9 +39,9 @@
   padding: 16px;
   background: white;
   text-align: center; /* Alinear contenido */
-  margin: 0 auto; /* Centrarlas horizontalmente */
   max-width: 300px; /* Evitar que sean demasiado anchas */
   width: 100%;
+  margin: 0 auto; /* Asegurar margen uniforme */
 }
 
 .health-image {
