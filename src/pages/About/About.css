@@ -1,0 +1,79 @@
+.about-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 120px 20px 60px; /* Aumenta el padding-top para evitar que el texto quede oculto */
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.sobrenosotras {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #86cd82;
+  padding: 15px 0;
+  text-align: center;
+  z-index: 1000;
+}
+
+.about-container h1 {
+  font-size: 2rem;
+  color: #064420;
+  margin-bottom: 15px;
+}
+
+.about-container p {
+  font-size: 1.2rem;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.about-container h2 {
+  font-size: 1.5rem;
+  color: #064420;
+  margin-top: 20px;
+}
+
+.about-container a {
+  color: #28a745;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.about-container a:hover {
+  text-decoration: underline;
+}
+
+.about-photos {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.photo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-photo {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #28a745;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.photo-container p {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
