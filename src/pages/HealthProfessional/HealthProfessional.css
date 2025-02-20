@@ -4,6 +4,8 @@
   gap: 16px;
   padding: 16px;
   margin: 2rem auto 5rem auto; /* Centrar */
+  margin-top: 120px; /* Espaciado entre el header y las tarjetas */
+
   max-width: 1200px; /* Limitar el ancho máximo */
   width: 90%; /* Mantener margen en los lados */
 }
