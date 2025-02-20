@@ -13,6 +13,7 @@ body {
   margin: 0 auto;
   padding: 20px;
   box-sizing: border-box;
+  margin-bottom: 25%;
 }
 
 .divtitle {
@@ -37,7 +38,7 @@ body {
   margin: 0 auto;
   margin-top: 80px; /* Espacio para que no se solape con el título fijo */
   margin-bottom: 50px;
-  margin-top: 140px;
+  margin-top: 180px;
 }
 
 .resource-detail-text,
