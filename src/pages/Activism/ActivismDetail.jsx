@@ -27,7 +27,9 @@ const ActivismDetail = () => {
 
   return (
     <div className="activism-detail-container">
-      <h1 className="activism-title">{event.name}</h1>
+      <div className="divtitle">
+        <h1 className="activism-title">{event.name}</h1>
+      </div>
       <img
         src={event.image || Image}
         alt={event.name}
@@ -39,12 +41,7 @@ const ActivismDetail = () => {
         }}
       />
       <p className="activism-description">{event.description}</p>
-      <p className="activism-contact">
-        <strong>Contacto:</strong> {event.contact}
-      </p>
-      <p className="activism-user">
-        <strong>Usuario ID:</strong> {event.userId}
-      </p>
+      <p className="activism-contact">Contacto: {event.contact}</p>
       {event.socialMediaLink && (
         <a
           href={event.socialMediaLink}
