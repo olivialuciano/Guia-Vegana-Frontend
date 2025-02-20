@@ -1,0 +1,56 @@
+html,
+body {
+  width: 100%;
+  overflow-x: hidden; /* Evita el scroll horizontal */
+  margin: 0;
+  padding: 0;
+  color: black; /* Color de texto por defecto en negro */
+}
+
+.resource-detail-container {
+  width: 100%;
+  max-width: 100vw; /* Evita que el contenido se extienda más de lo necesario */
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.divtitle {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #86cd82;
+  padding: 15px 0;
+  text-align: center;
+  z-index: 1000;
+  color: black; /* Aseguramos que el texto en el título sea negro */
+}
+
+.resource-detail-image {
+  width: 320px;
+  border-radius: 20px;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+  margin-top: 80px; /* Espacio para que no se solape con el título fijo */
+  margin-bottom: 50px;
+  margin-top: 140px;
+}
+
+.resource-detail-text,
+.resource-detail-text-description {
+  font-size: 1.2rem;
+  color: black; /* Color negro para el texto */
+  margin: 10px 0;
+  width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.resource-detail-text-description {
+  margin-bottom: 30px;
+}
