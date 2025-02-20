@@ -1,0 +1,90 @@
+/* Fondo con gradiente animado */
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+/* Animación del fondo */
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Número "404" grande y con animación */
+.error-code {
+  font-size: 8rem;
+  font-weight: bold;
+  color: #378f54;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: float404 3s infinite ease-in-out;
+}
+
+/* Animación de "flotación" */
+@keyframes float404 {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Texto descriptivo */
+.error-text {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #444;
+  margin-top: -10px;
+}
+
+.error-message {
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* Botón animado */
+.home-button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #68a573;
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.home-button:hover {
+  background-color: #456343;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .error-code {
+    font-size: 6rem;
+  }
+
+  .error-text {
+    font-size: 1.5rem;
+  }
+
+  .error-message {
+    font-size: 1rem;
+  }
+}
