@@ -1,22 +1,46 @@
+html,
+body {
+  width: 100%;
+  overflow-x: hidden; /* Evita el scroll horizontal */
+  margin: 0;
+  padding: 0;
+}
+
 .health-detail-container {
-  max-width: 800px;
+  width: 100%;
+  max-width: 100vw; /* Evita que el contenido se extienda más de lo necesario */
   margin: 0 auto;
   padding: 20px;
-  border-radius: 10px;
-  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.divtitle {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #86cd82;
+  padding: 15px 0;
   text-align: center;
+  z-index: 1000;
 }
 
 .health-detail-image {
-  width: 80px; /* Puedes ajustar el tamaño */
-  height: 80px; /* Asegúrate de que ancho y alto sean iguales para hacerla redonda */
-  border-radius: 50%; /* Esto hace la imagen redonda */
-  object-fit: cover; /* Ajusta la imagen para cubrir el círculo sin distorsionarla */
-  margin: 20px 0;
+  width: 200px;
+  border-radius: 100px;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 50px;
 }
 
 .health-title {
   font-size: 2rem;
+  text-align: center;
+  color: black;
+  margin-bottom: 40px;
 }
 
 .health-specialty,
@@ -24,13 +48,16 @@
 .health-contact,
 .health-email {
   font-size: 1.2rem;
+  color: black;
   margin: 10px 0;
+  width: 350px;
 }
 
 .health-social {
   display: block;
   color: #007bff;
   text-decoration: none;
+  text-align: center;
   font-size: 1.2rem;
 }
 

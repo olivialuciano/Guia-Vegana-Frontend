@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./HealthProfessionalDetail.css";
+import defaultImage from "../../assets/img/defaultprofileimage.jpg";
+import Loading from "../../components/Loading/Loading";
 
 const HealthProfessionalDetail = () => {
   const { id } = useParams();
   const [professional, setProfessional] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Eliminé la duplicación
 
   useEffect(() => {
+    setLoading(true);
     fetch(`https://guiavegana.somee.com/api/HealthProfessional/${id}`)
       .then((response) => response.json())
       .then((data) => {
@@ -20,29 +23,28 @@ const HealthProfessionalDetail = () => {
       });
   }, [id]);
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading) return <Loading />; // Se usa el componente en lugar de texto plano
   if (!professional) return <p>No se encontró el profesional.</p>;
+
+  const handleImageError = (e) => {
+    e.target.src = defaultImage; // Reemplaza la imagen con la predeterminada
+  };
 
   return (
     <div className="health-detail-container">
-      <h1 className="health-title">{professional.name}</h1>
+      <div className="divtitle">
+        <h1 className="health-title">{professional.name}</h1>
+      </div>
       <img
-        src={professional.image}
+        src={professional.image || defaultImage} // Si la imagen no existe, usa la predeterminada
         alt={professional.name}
         className="health-detail-image"
+        onError={handleImageError} // Si la URL es inválida, se reemplaza
       />
-      <p className="health-specialty">
-        <strong>Especialidad:</strong> {professional.specialty}
-      </p>
-      <p className="health-license">
-        <strong>Matrícula:</strong> {professional.license}
-      </p>
-      <p className="health-contact">
-        <strong>WhatsApp:</strong> {professional.whatsappNumber}
-      </p>
-      <p className="health-email">
-        <strong>Email:</strong> {professional.email}
-      </p>
+      <p className="health-specialty">Especialidad: {professional.specialty}</p>
+      <p className="health-license">Matrícula: {professional.license}</p>
+      <p className="health-contact">WhatsApp: {professional.whatsappNumber}</p>
+      <p className="health-email">Email: {professional.email}</p>
       {professional.socialMediaLink && (
         <a
           href={professional.socialMediaLink}
