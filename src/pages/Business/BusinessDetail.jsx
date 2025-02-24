@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./BusinessDetail.css";
 import Loading from "../../components/Loading/Loading";
@@ -100,7 +100,12 @@ const BusinessDetail = () => {
 
   return (
     <div className="business-detail">
-      <div className="header">
+      <div className="header-business">
+        <h1 className="Nombre">{business.name}</h1>
+        <p className="rating">
+          {" "}
+          {ratingMap[business.rating] || business.rating}
+        </p>
         {business.image ? (
           <img
             src={business.image}
@@ -118,15 +123,11 @@ const BusinessDetail = () => {
             className="business-card-image"
           />
         )}
-        <h1 className="Nombre">{business.name}</h1>
         <p className="rating">
           {businessTypeMap[business.businessType] || business.businessType}
         </p>
-        <p className="rating">
-          {" "}
-          {ratingMap[business.rating] || business.rating}
-        </p>
-        <p className="direccion">📌{business.address}</p>
+
+        <p className="direccion">📌 {business.address}</p>
         <p className="info-text">{zoneMap[business.zone] || business.zone}</p>
         {business.glutenFree && (
           <p className="info-text">Tiene opciones sin TACC</p>
@@ -138,7 +139,6 @@ const BusinessDetail = () => {
           {deliveryMap[business.delivery] || business.delivery}
         </p>
       </div>
-
       {/* Nuevo div que envuelve OpeningHour y VeganOption */}
       <div className="business-info">
         <OpeningHour hours={openingHours} />

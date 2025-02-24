@@ -1,26 +1,28 @@
 .business-detail {
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
   border-radius: 10px;
   font-family: Arial, sans-serif;
   text-align: center;
 }
 
-.business-detail .header {
+.business-detail .header-business {
   text-align: center;
 }
 
-.business-detail .header img {
+.business-detail .header-business img {
   width: 100%;
   height: auto;
   object-fit: cover;
+  padding-top: 0.8rem;
   margin: 0; /* Asegura que la imagen no tenga margen */
 }
 
-.business-detail .header h1 {
+.business-detail .header-business h1 {
   font-size: 2rem;
   text-align: center;
+  padding-top: 5rem;
+  padding-bottom: 0.8rem;
 }
 
 /* Aplica margen solo a OpeningHour y VeganOption */
@@ -40,11 +42,6 @@
   color: black;
 }
 
-.header {
-  background-color: #d8e1d3;
-  padding-bottom: 20px;
-}
-
 .rating {
   text-align: center;
   color: black;
@@ -62,10 +59,10 @@
   width: 100%;
 }
 
-.header {
-  background-color: #d8e1d3;
-  padding-bottom: 20px;
+.header-business {
+  background-color: #86cd82;
   position: relative; /* Cambia esto si tenía 'sticky' */
+  padding-bottom: 1rem;
   width: 100%;
   top: 0;
   z-index: 10;
