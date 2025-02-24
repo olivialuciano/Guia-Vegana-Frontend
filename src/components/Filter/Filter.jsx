@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Filter.css";
+import Filterimg from "../../assets/img/filter.png";
 
 const Filter = ({ onFilterChange }) => {
   const [filters, setFilters] = useState({
@@ -18,19 +19,25 @@ const Filter = ({ onFilterChange }) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
 
-    setFilters((prevFilters) => {
-      const updatedFilters = { ...prevFilters, [name]: newValue };
-      onFilterChange(updatedFilters); // Llama a la función para actualizar los filtros en la página principal
-      return updatedFilters;
-    });
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: newValue,
+    }));
   };
 
   return (
-    <div className={`filter-content ${isOpen ? "show" : "hide"}`}>
-      <button onClick={() => setIsOpen(false)}>Cerrar</button>
-      <h2>Filtros</h2>
+    <>
+      <button className="filter-button" onClick={() => setIsOpen(true)}>
+        <img src={Filterimg} alt="filtros" />
+      </button>
 
-      <div className="filter-container">
+      <div className={`filter-wrapper ${isOpen ? "open" : ""}`}>
+        <button className="close-btn" onClick={() => setIsOpen(false)}>
+          ✖
+        </button>
+
+        <h2>Filtros</h2>
+
         <div className="filter-group">
           <label>
             <input
@@ -139,8 +146,16 @@ const Filter = ({ onFilterChange }) => {
             Abierto ahora
           </label>
         </div>
+
+        {/* Botón de Aplicar Filtros */}
+        <button
+          className="apply-filters-btn"
+          onClick={() => onFilterChange(filters)}
+        >
+          Aplicar filtros
+        </button>
       </div>
-    </div>
+    </>
   );
 };
 

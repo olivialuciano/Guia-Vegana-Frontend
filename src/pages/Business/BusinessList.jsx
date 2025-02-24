@@ -12,6 +12,15 @@ const BusinessList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({
+    plantBased: false,
+    glutenFree: false,
+    rating: "",
+    delivery: "",
+    businessType: "",
+    zone: "",
+    openNow: false,
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -31,6 +40,21 @@ const BusinessList = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
+    // Filtrar negocios en base a los nuevos filtros
+    const filtered = businesses.filter((business) => {
+      return (
+        (!newFilters.plantBased || business.plantBased) &&
+        (!newFilters.glutenFree || business.glutenFree) &&
+        (!newFilters.rating || business.rating >= newFilters.rating) &&
+        (!newFilters.delivery || business.delivery === newFilters.delivery) &&
+        (!newFilters.businessType ||
+          business.businessType === newFilters.businessType) &&
+        (!newFilters.zone || business.zone === newFilters.zone) &&
+        (!newFilters.openNow || business.openNow)
+      );
+    });
+
+    setFilteredBusinesses(filtered);
   };
 
   return (
@@ -45,15 +69,6 @@ const BusinessList = () => {
             value={searchTerm}
             onChange={handleSearchChange}
           />
-          <button className="search-button">
-            <img src={Search} alt="buscar" />
-          </button>
-          <button
-            className="filters-button"
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-          >
-            <img src={FilterImage} alt="filtros" />
-          </button>
         </div>
       </div>
       <div className={`filter-container ${isFilterOpen ? "open" : ""}`}>

@@ -8,7 +8,6 @@
 
 .header-title {
   font-size: 2rem;
-  margin-bottom: 10px;
   color: black;
 }
 
@@ -23,7 +22,8 @@
 
 .search-bar {
   width: 70%;
-  padding: 5px;
+  margin-top: 10px;
+  margin-left: 15px;
 }
 
 .filter-container.show {
