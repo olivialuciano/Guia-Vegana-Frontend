@@ -1,71 +1,73 @@
-.business-detail {
-  max-width: 800px;
-  margin: 0 auto;
-  border-radius: 10px;
-  font-family: Arial, sans-serif;
-  text-align: center;
-}
-
-.business-detail .header-business {
-  text-align: center;
-}
-
-.business-detail .header-business img {
+html,
+body {
   width: 100%;
+  overflow-x: hidden; /* Evita el scroll horizontal */
+  margin: 0;
+  padding: 0;
+}
+
+.business-detail-container {
+  width: 100%;
+  max-width: 100vw; /* Evita que el contenido se extienda más de lo necesario */
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.divtitle {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #86cd82; /* Color de cabecera */
+  padding: 15px 0;
+  text-align: center;
+  z-index: 1000;
+}
+
+.business-title {
+  font-size: 2rem;
+  color: black;
+  margin: 0;
+}
+
+.business-detail-image {
+  width: 100%; /* Se ajusta sin desbordar */
+  max-width: 100vw; /* Evita que la imagen sobrepase el ancho de la pantalla */
   height: auto;
   object-fit: cover;
-  padding-top: 0.8rem;
-  margin: 0; /* Asegura que la imagen no tenga margen */
+  display: block;
+  margin: 20px auto;
+  border-radius: 20px;
+  margin-top: 150px;
 }
 
-.business-detail .header-business h1 {
-  font-size: 2rem;
-  text-align: center;
-  padding-top: 5rem;
-  padding-bottom: 0.8rem;
+.business-rating,
+.business-type,
+.business-address,
+.business-zone,
+.business-info,
+.business-delivery {
+  font-size: 1.2rem;
+  color: black;
+  margin: 10px 0;
 }
 
-/* Aplica margen solo a OpeningHour y VeganOption */
+.business-address {
+  font-weight: bold;
+}
+
 .business-info {
-  margin-bottom: 7rem;
+  font-style: italic;
 }
 
-.business-info > * {
-  margin-bottom: 20px; /* Espaciado entre los elementos internos */
+.business-delivery {
+  font-weight: bold;
 }
 
-.direccion {
-  color: black;
-}
-
-.info-text {
-  color: black;
-}
-
-.rating {
-  text-align: center;
-  color: black;
-}
-
-.rating,
-.direccion {
-  text-align: center;
-  width: 100%;
-}
-
-.Nombre {
-  text-align: center;
-  color: black;
-  width: 100%;
-}
-
-.header-business {
-  background-color: #86cd82;
-  position: relative; /* Cambia esto si tenía 'sticky' */
-  padding-bottom: 1rem;
-  width: 100%;
-  top: 0;
-  z-index: 10;
-  margin-right: 0;
-  margin-left: 0;
+.businesscomponents {
+  margin-top: 50px;
+  margin-bottom: 150px;
 }

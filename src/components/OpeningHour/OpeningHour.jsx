@@ -27,7 +27,7 @@ const OpeningHour = ({ hours }) => {
 
   return (
     <div className="opening-hour-container">
-      <h3 className="opening-hour-title">Horarios de Atención</h3>
+      <h3 className="opening-hour-title">Horarios</h3>
       <ul className="opening-hour-list">
         {sortedHours.map((hour) => (
           <li key={hour.id} className="opening-hour-item">

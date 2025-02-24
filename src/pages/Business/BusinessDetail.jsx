@@ -99,48 +99,37 @@ const BusinessDetail = () => {
   };
 
   return (
-    <div className="business-detail">
-      <div className="header-business">
-        <h1 className="Nombre">{business.name}</h1>
-        <p className="rating">
-          {" "}
-          {ratingMap[business.rating] || business.rating}
-        </p>
-        {business.image ? (
-          <img
-            src={business.image}
-            alt={business.name}
-            className="business-card-image"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = Image;
-            }}
-          />
-        ) : (
-          <img
-            src={defaultImage}
-            alt={business.name}
-            className="business-card-image"
-          />
-        )}
-        <p className="rating">
-          {businessTypeMap[business.businessType] || business.businessType}
-        </p>
-
-        <p className="direccion">📌 {business.address}</p>
-        <p className="info-text">{zoneMap[business.zone] || business.zone}</p>
-        {business.glutenFree && (
-          <p className="info-text">Tiene opciones sin TACC</p>
-        )}
-        {business.allPlantBased && (
-          <p className="info-text">Negocio 100% basado en plantas</p>
-        )}
-        <p className="info-text">
-          {deliveryMap[business.delivery] || business.delivery}
-        </p>
+    <div className="business-detail-container">
+      <div className="divtitle">
+        <h1 className="business-title">{business.name}</h1>
       </div>
-      {/* Nuevo div que envuelve OpeningHour y VeganOption */}
-      <div className="business-info">
+      <img
+        src={business.image || defaultImage}
+        alt={business.name}
+        className="business-detail-image"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = defaultImage;
+        }}
+      />
+      <p className="business-rating">
+        {ratingMap[business.rating] || business.rating}
+      </p>
+      <p className="business-type">
+        {businessTypeMap[business.businessType] || business.businessType}
+      </p>
+      <p className="business-address">📌 {business.address}</p>
+      <p className="business-zone">{zoneMap[business.zone] || business.zone}</p>
+      {business.glutenFree && (
+        <p className="business-info">Tiene opciones sin TACC</p>
+      )}
+      {business.allPlantBased && (
+        <p className="business-info">Negocio 100% basado en plantas</p>
+      )}
+      <p className="business-delivery">
+        {deliveryMap[business.delivery] || business.delivery}
+      </p>
+      <div className="businesscomponents">
         <OpeningHour hours={openingHours} />
         <VeganOption options={veganOptions} />
       </div>

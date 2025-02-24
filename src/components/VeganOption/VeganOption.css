@@ -18,7 +18,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #34495e;
+  color: #1f3723;
 }
 
 /* List styles */
@@ -42,21 +42,19 @@
 
 /* Name styles */
 .vegan-option-name {
-  font-weight: bold;
-  color: #2c3e50;
+  color: #000000;
   margin-right: 10px;
 }
 
 /* Price styles */
 .vegan-option-price {
   color: #7f8c8d;
-  font-style: italic;
   text-align: left;
 }
 
 /* Message for unavailable options */
 .vegan-option-message {
   font-size: 1rem;
-  color: #e74c3c;
+  color: #5b1008;
   margin: 15px 0;
 }
