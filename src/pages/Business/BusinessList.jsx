@@ -9,23 +9,12 @@ import FilterImage from "../../assets/img/filter.png";
 const BusinessList = () => {
   const [businesses, setBusinesses] = useState([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState([]);
-  const [filters, setFilters] = useState({
-    plantBased: false,
-    glutenFree: false,
-    rating: "",
-    delivery: "",
-    businessType: "",
-    zone: "",
-    openNow: false,
-  });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  // const [showFilter, setShowFilter] = useState(false); // Estado para mostrar/ocultar los filtros
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
 
-  // Fetch de los negocios desde la API al montar el componente
   useEffect(() => {
-    setLoading(true); // Activar el estado de carga antes de la petición
-
+    setLoading(true);
     fetch("https://guiavegana.somee.com/api/Business")
       .then((response) => response.json())
       .then((data) => {
@@ -33,82 +22,15 @@ const BusinessList = () => {
         setFilteredBusinesses(data);
       })
       .catch((error) => console.error("Error fetching businesses:", error))
-      .finally(() => setLoading(false)); // Desactivar el estado de carga al finalizar
+      .finally(() => setLoading(false));
   }, []);
 
-  // // Aplicar filtros cuando los filtros cambien
-  // useEffect(() => {
-  //   const filtered = businesses.filter((business) => {
-  //     // Búsqueda por nombre (ignorando mayúsculas/minúsculas)
-  //     if (
-  //       searchTerm &&
-  //       !business.name.toLowerCase().includes(searchTerm.toLowerCase())
-  //     ) {
-  //       return false;
-  //     }
-
-  //     if (filters.plantBased && !business.allPlantBased) return false;
-  //     if (filters.glutenFree && !business.glutenFree) return false;
-  //     if (filters.rating && parseInt(filters.rating) !== business.rating)
-  //       return false;
-  //     if (filters.delivery && parseInt(filters.delivery) !== business.delivery)
-  //       return false;
-  //     if (
-  //       filters.businessType &&
-  //       parseInt(filters.businessType) !== business.businessType
-  //     )
-  //       return false;
-  //     if (filters.zone && parseInt(filters.zone) !== business.zone)
-  //       return false;
-
-  //     // Abierto ahora
-  //     if (filters.openNow) {
-  //       const now = new Date();
-  //       const currentDay = now.getDay();
-  //       const currentTime = now.getHours() * 60 + now.getMinutes();
-
-  //       const isOpen = business.openingHours.some((oh) => {
-  //         if (oh.day !== currentDay) return false;
-  //         const open1 = oh.openTime1.split(":").map(Number);
-  //         const close1 = oh.closeTime1.split(":").map(Number);
-  //         const open2 = oh.openTime2
-  //           ? oh.openTime2.split(":").map(Number)
-  //           : null;
-  //         const close2 = oh.closeTime2
-  //           ? oh.closeTime2.split(":").map(Number)
-  //           : null;
-
-  //         const openTime1 = open1[0] * 60 + open1[1];
-  //         const closeTime1 = close1[0] * 60 + close1[1];
-  //         const openTime2 = open2 ? open2[0] * 60 + open2[1] : null;
-  //         const closeTime2 = close2 ? close2[0] * 60 + close2[1] : null;
-
-  //         return (
-  //           (currentTime >= openTime1 && currentTime <= closeTime1) ||
-  //           (openTime2 &&
-  //             closeTime2 &&
-  //             currentTime >= openTime2 &&
-  //             currentTime <= closeTime2)
-  //         );
-  //       });
-
-  //       if (!isOpen) return false;
-  //     }
-
-  //     return true;
-  //   });
-
-  //   setFilteredBusinesses(filtered);
-  // }, [filters, businesses, searchTerm]); // Se ejecuta también cuando cambia `searchTerm`
-
-  // Función para manejar cambios en los filtros
-  const handleFilterChange = (newFilters) => {
-    setFilters(newFilters);
-  };
-
-  // Función para manejar el cambio en el término de búsqueda
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
   };
 
   return (
@@ -126,13 +48,20 @@ const BusinessList = () => {
           <button className="search-button">
             <img src={Search} alt="buscar" />
           </button>
-          <button className="filters-button">
+          <button
+            className="filters-button"
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
+          >
             <img src={FilterImage} alt="filtros" />
           </button>
         </div>
       </div>
-      <div className="filter-container">
-        <Filter onFilterChange={handleFilterChange} />
+      <div className={`filter-container ${isFilterOpen ? "open" : ""}`}>
+        <Filter
+          isOpen={isFilterOpen}
+          setIsOpen={setIsFilterOpen}
+          onFilterChange={handleFilterChange}
+        />
       </div>
 
       <div className="business-cards-grid">
