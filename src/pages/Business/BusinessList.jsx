@@ -26,35 +26,54 @@ const BusinessList = () => {
       .then((response) => response.json())
       .then((data) => {
         setBusinesses(data);
-        setFilteredBusinesses(data);
+        setFilteredBusinesses(data); // Inicialmente mostramos todos los negocios
       })
       .catch((error) => console.error("Error fetching businesses:", error))
       .finally(() => setLoading(false));
   }, []);
 
+  // Función para manejar el cambio de búsqueda
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
+  // Filtrar negocios por el término de búsqueda y filtros aplicados
+  const getFilteredBusinesses = () => {
+    return businesses.filter((business) => {
+      // Asegúrate de que el nombre y la descripción existan antes de aplicar toLowerCase
+      const businessName = business.name ? business.name.toLowerCase() : "";
+      const businessDescription = business.description
+        ? business.description.toLowerCase()
+        : "";
+
+      const matchesSearchTerm =
+        businessName.includes(searchTerm.toLowerCase()) ||
+        businessDescription.includes(searchTerm.toLowerCase());
+
+      const matchesFilters =
+        (!filters.plantBased || business.plantBased) &&
+        (!filters.glutenFree || business.glutenFree) &&
+        (!filters.rating.length ||
+          filters.rating.includes(String(business.rating))) &&
+        (!filters.delivery.length ||
+          filters.delivery.includes(String(business.delivery))) &&
+        (!filters.businessType.length ||
+          filters.businessType.includes(String(business.businessType))) &&
+        (!filters.zone.length ||
+          filters.zone.includes(String(business.zone))) &&
+        (!filters.openNow || business.openNow);
+
+      return matchesSearchTerm && matchesFilters;
+    });
+  };
+
+  // Actualizar los negocios filtrados cada vez que el término de búsqueda o los filtros cambien
+  useEffect(() => {
+    setFilteredBusinesses(getFilteredBusinesses());
+  }, [searchTerm, filters]); // Depende de searchTerm y filtros
+
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-    const filtered = businesses.filter((business) => {
-      return (
-        (!newFilters.plantBased || business.plantBased) &&
-        (!newFilters.glutenFree || business.glutenFree) &&
-        (!newFilters.rating.length ||
-          newFilters.rating.includes(String(business.rating))) &&
-        (!newFilters.delivery.length ||
-          newFilters.delivery.includes(String(business.delivery))) &&
-        (!newFilters.businessType.length ||
-          newFilters.businessType.includes(String(business.businessType))) &&
-        (!newFilters.zone.length ||
-          newFilters.zone.includes(String(business.zone))) &&
-        (!newFilters.openNow || business.openNow)
-      );
-    });
-
-    setFilteredBusinesses(filtered);
   };
 
   return (
