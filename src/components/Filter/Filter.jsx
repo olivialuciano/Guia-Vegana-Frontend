@@ -1,28 +1,70 @@
 import { useState } from "react";
 import "./Filter.css";
 import Filterimg from "../../assets/img/filter.png";
+import Select from "react-select";
+
+const zoneMap = [
+  { value: 0, label: "Zona Norte" },
+  { value: 1, label: "Zona Sur" },
+  { value: 2, label: "Zona Oeste" },
+  { value: 3, label: "Barrio Pichincha" },
+  { value: 4, label: "Zona Centro" },
+  { value: 5, label: "Barrio Martin" },
+  { value: 6, label: "Avenida Pellegrini" },
+  { value: 7, label: "Bulevar Oroño" },
+  { value: 8, label: "Barrio Abasto" },
+  { value: 9, label: "Barrio La Sexta" },
+  { value: 10, label: "Barrio Echesortu" },
+  { value: 11, label: "Barrio Lourdes" },
+];
+
+const deliveryMap = [
+  { value: 0, label: "Pedidos Ya" },
+  { value: 1, label: "Rappi" },
+  { value: 2, label: "Envío propio" },
+  { value: 3, label: "Otro servicio" },
+  { value: 4, label: "No tiene delivery" },
+];
+
+const ratingMap = [
+  { value: 1, label: "⭐" },
+  { value: 2, label: "⭐⭐" },
+  { value: 3, label: "⭐⭐⭐" },
+  { value: 4, label: "⭐⭐⭐⭐" },
+  { value: 5, label: "⭐⭐⭐⭐⭐" },
+];
+
+const businessTypeMap = [
+  { value: 0, label: "Bar / Restaurante" },
+  { value: 1, label: "Panadería" },
+  { value: 2, label: "Heladería" },
+  { value: 3, label: "Mercado / Dietética" },
+  { value: 4, label: "Emprendimiento" },
+];
 
 const Filter = ({ onFilterChange }) => {
   const [filters, setFilters] = useState({
     plantBased: false,
     glutenFree: false,
-    rating: "",
-    delivery: "",
-    businessType: "",
-    zone: "",
+    rating: [],
+    delivery: [],
+    businessType: [],
+    zone: [],
     openNow: false,
   });
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const newValue = type === "checkbox" ? checked : value;
-
+  const handleChange = (name, value) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: newValue,
+      [name]: value,
     }));
+  };
+
+  const applyFilters = () => {
+    onFilterChange(filters);
+    setIsOpen(false); // Cierra el filtro después de aplicar
   };
 
   return (
@@ -44,7 +86,7 @@ const Filter = ({ onFilterChange }) => {
               type="checkbox"
               name="plantBased"
               checked={filters.plantBased}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e.target.name, e.target.checked)}
             />
             100% Plant-Based
           </label>
@@ -54,85 +96,76 @@ const Filter = ({ onFilterChange }) => {
               type="checkbox"
               name="glutenFree"
               checked={filters.glutenFree}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e.target.name, e.target.checked)}
             />
             Opciones Gluten-Free
           </label>
         </div>
 
         <div className="filter-group">
-          <label>
-            Estrellas:
-            <select
-              name="rating"
-              value={filters.rating}
-              onChange={handleChange}
-            >
-              <option value="">Todas</option>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <option key={star} value={star}>
-                  {star} ⭐
-                </option>
-              ))}
-            </select>
-          </label>
+          <label>Estrellas:</label>
+          <Select
+            isMulti
+            options={ratingMap}
+            value={ratingMap.filter((opt) =>
+              filters.rating.includes(opt.value)
+            )}
+            onChange={(selected) =>
+              handleChange(
+                "rating",
+                selected.map((item) => item.value)
+              )
+            }
+          />
         </div>
 
         <div className="filter-group">
-          <label>
-            Delivery:
-            <select
-              name="delivery"
-              value={filters.delivery}
-              onChange={handleChange}
-            >
-              <option value="">Todos</option>
-              <option value="0">Pedidos Ya</option>
-              <option value="1">Rappi</option>
-              <option value="2">Propio</option>
-              <option value="3">Otro</option>
-              <option value="4">No tiene</option>
-            </select>
-          </label>
+          <label>Delivery:</label>
+          <Select
+            isMulti
+            options={deliveryMap}
+            value={deliveryMap.filter((opt) =>
+              filters.delivery.includes(opt.value)
+            )}
+            onChange={(selected) =>
+              handleChange(
+                "delivery",
+                selected.map((item) => item.value)
+              )
+            }
+          />
         </div>
 
         <div className="filter-group">
-          <label>
-            Tipo de negocio:
-            <select
-              name="businessType"
-              value={filters.businessType}
-              onChange={handleChange}
-            >
-              <option value="">Todos</option>
-              <option value="0">Bares y Restaurantes</option>
-              <option value="1">Panaderías</option>
-              <option value="2">Heladerías</option>
-              <option value="3">Mercados y Dietéticas</option>
-              <option value="4">Emprendimientos</option>
-            </select>
-          </label>
+          <label>Tipo de negocio:</label>
+          <Select
+            isMulti
+            options={businessTypeMap}
+            value={businessTypeMap.filter((opt) =>
+              filters.businessType.includes(opt.value)
+            )}
+            onChange={(selected) =>
+              handleChange(
+                "businessType",
+                selected.map((item) => item.value)
+              )
+            }
+          />
         </div>
 
         <div className="filter-group">
-          <label>
-            Zona:
-            <select name="zone" value={filters.zone} onChange={handleChange}>
-              <option value="">Todas</option>
-              <option value="0">Norte</option>
-              <option value="1">Sur</option>
-              <option value="2">Oeste</option>
-              <option value="3">Pichincha</option>
-              <option value="4">Centro</option>
-              <option value="5">Martin</option>
-              <option value="6">Pellegrini</option>
-              <option value="7">Oroño</option>
-              <option value="8">Abasto</option>
-              <option value="9">Sexta</option>
-              <option value="10">Echesortu</option>
-              <option value="11">Lourdes</option>
-            </select>
-          </label>
+          <label>Zona:</label>
+          <Select
+            isMulti
+            options={zoneMap}
+            value={zoneMap.filter((opt) => filters.zone.includes(opt.value))}
+            onChange={(selected) =>
+              handleChange(
+                "zone",
+                selected.map((item) => item.value)
+              )
+            }
+          />
         </div>
 
         <div className="filter-group">
@@ -141,17 +174,13 @@ const Filter = ({ onFilterChange }) => {
               type="checkbox"
               name="openNow"
               checked={filters.openNow}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e.target.name, e.target.checked)}
             />
             Abierto ahora
           </label>
         </div>
 
-        {/* Botón de Aplicar Filtros */}
-        <button
-          className="apply-filters-btn"
-          onClick={() => onFilterChange(filters)}
-        >
+        <button className="apply-filters-btn" onClick={applyFilters}>
           Aplicar filtros
         </button>
       </div>

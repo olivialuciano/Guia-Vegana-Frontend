@@ -40,16 +40,18 @@ const BusinessList = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-    // Filtrar negocios en base a los nuevos filtros
     const filtered = businesses.filter((business) => {
       return (
         (!newFilters.plantBased || business.plantBased) &&
         (!newFilters.glutenFree || business.glutenFree) &&
-        (!newFilters.rating || business.rating >= newFilters.rating) &&
-        (!newFilters.delivery || business.delivery === newFilters.delivery) &&
-        (!newFilters.businessType ||
-          business.businessType === newFilters.businessType) &&
-        (!newFilters.zone || business.zone === newFilters.zone) &&
+        (!newFilters.rating.length ||
+          newFilters.rating.includes(String(business.rating))) &&
+        (!newFilters.delivery.length ||
+          newFilters.delivery.includes(String(business.delivery))) &&
+        (!newFilters.businessType.length ||
+          newFilters.businessType.includes(String(business.businessType))) &&
+        (!newFilters.zone.length ||
+          newFilters.zone.includes(String(business.zone))) &&
         (!newFilters.openNow || business.openNow)
       );
     });
