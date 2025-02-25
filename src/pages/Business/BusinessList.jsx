@@ -3,8 +3,6 @@ import Filter from "../../components/Filter/Filter";
 import BusinessCard from "../../components/BusinessCard/BusinessCard";
 import Loading from "../../components/Loading/Loading";
 import "./BusinessList.css";
-import Search from "../../assets/img/search.png";
-import FilterImage from "../../assets/img/filter.png";
 
 const BusinessList = () => {
   const [businesses, setBusinesses] = useState([]);

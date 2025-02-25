@@ -41,7 +41,8 @@
   gap: 20px;
   margin-top: 2rem;
   margin-bottom: 7rem;
-  width: 120%;
+  width: 100%;
+  padding: 0 15px; /* Añadir un padding para margen adicional en los laterales */
 }
 
 .no-results {
@@ -60,6 +61,7 @@
   align-items: center;
   min-height: 100vh;
   margin-top: 180px;
+  padding: 0 16px; /* Añadir un padding lateral para separar de los bordes */
 }
 
 .header {
