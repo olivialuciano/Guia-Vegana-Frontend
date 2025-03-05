@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import NotFound from "../pages/NotFound/NotFound";
 import About from "../pages/About/About";
+import Signin from "../pages/Signin/Signin";
 import Business from "../pages/Business/BusinessList";
 import BusinessDetail from "../pages/Business/BusinessDetail";
 import Activism from "../pages/Activism/Activism";
@@ -16,6 +17,7 @@ const AppRouter = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
+      <Route path="/signin" element={<Signin />} />
       <Route path="/business" element={<Business />} />
       <Route path="/business/:id" element={<BusinessDetail />} />
       <Route path="/activism" element={<Activism />} />

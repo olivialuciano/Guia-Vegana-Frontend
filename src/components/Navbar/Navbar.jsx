@@ -14,9 +14,9 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="nav-content">
-        {/* Logo */}
-        <img src={veganLogo} alt="Vegan Logo" className="logo" />
-
+        <Link to="/">
+          <img src={veganLogo} alt="Vegan Logo" className="logo" />
+        </Link>
         {/* Menú hamburguesa alineado a la derecha */}
         <button className="menu-btn" onClick={toggleMenu}>
           <FontAwesomeIcon
@@ -57,6 +57,11 @@ function Navbar() {
           <li>
             <Link to="/comments" onClick={closeMenu}>
               ¡Comunicate con nosotras!
+            </Link>
+          </li>
+          <li>
+            <Link to="/signin" onClick={closeMenu}>
+              Admin view
             </Link>
           </li>
         </ul>
