@@ -1,14 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext"; // Importamos el contexto
 import Filter from "../../components/Filter/Filter";
 import BusinessCard from "../../components/BusinessCard/BusinessCard";
 import Loading from "../../components/Loading/Loading";
+import NewBusinessForm from "../../components/NewBusinessForm/NewBusinessForm"; // Nuevo formulario
 import "./BusinessList.css";
 
 const BusinessList = () => {
+  const { role } = useContext(AuthContext); // Obtenemos el rol del usuario
   const [businesses, setBusinesses] = useState([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false); // Estado del formulario
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     plantBased: false,
@@ -26,21 +30,18 @@ const BusinessList = () => {
       .then((response) => response.json())
       .then((data) => {
         setBusinesses(data);
-        setFilteredBusinesses(data); // Inicialmente mostramos todos los negocios
+        setFilteredBusinesses(data);
       })
       .catch((error) => console.error("Error fetching businesses:", error))
       .finally(() => setLoading(false));
   }, []);
 
-  // Función para manejar el cambio de búsqueda
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  // Filtrar negocios por el término de búsqueda y filtros aplicados
   const getFilteredBusinesses = () => {
     return businesses.filter((business) => {
-      // Asegúrate de que el nombre y la descripción existan antes de aplicar toLowerCase
       const businessName = business.name ? business.name.toLowerCase() : "";
       const businessDescription = business.description
         ? business.description.toLowerCase()
@@ -67,10 +68,9 @@ const BusinessList = () => {
     });
   };
 
-  // Actualizar los negocios filtrados cada vez que el término de búsqueda o los filtros cambien
   useEffect(() => {
     setFilteredBusinesses(getFilteredBusinesses());
-  }, [searchTerm, filters]); // Depende de searchTerm y filtros
+  }, [searchTerm, filters]);
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -88,15 +88,29 @@ const BusinessList = () => {
             value={searchTerm}
             onChange={handleSearchChange}
           />
+          {/* Mostrar el botón "+" solo para sysadmin */}
+          {role === "Sysadmin" ||
+            (role === "Investigador" && (
+              <button
+                className="add-button"
+                onClick={() => setIsFormOpen(true)}
+              >
+                +
+              </button>
+            ))}
         </div>
       </div>
-      <div className={`filter-container ${isFilterOpen ? "open" : ""}`}>
-        <Filter
-          isOpen={isFilterOpen}
-          setIsOpen={setIsFilterOpen}
-          onFilterChange={handleFilterChange}
-        />
-      </div>
+
+      {/* Mostrar el filtro solo si el rol NO es investigador o sysadmin */}
+      {role !== "Investigador" && role !== "Sysadmin" && (
+        <div className={`filter-container ${isFilterOpen ? "open" : ""}`}>
+          <Filter
+            isOpen={isFilterOpen}
+            setIsOpen={setIsFilterOpen}
+            onFilterChange={handleFilterChange}
+          />
+        </div>
+      )}
 
       <div className="business-cards-grid">
         {loading ? (
@@ -113,6 +127,9 @@ const BusinessList = () => {
           </p>
         )}
       </div>
+
+      {/* Modal para agregar nuevo negocio */}
+      {isFormOpen && <NewBusinessForm onClose={() => setIsFormOpen(false)} />}
     </div>
   );
 };

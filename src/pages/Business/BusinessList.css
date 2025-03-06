@@ -140,3 +140,18 @@
 .filter-container.show {
   left: 0; /* Aparece en la pantalla */
 }
+
+.add-button {
+  background-color: #8ba491;
+  color: white;
+  border: none;
+  font-size: 30px; /* Tamaño de texto más pequeño */
+  padding: 10px 15px; /* Ajusta el tamaño del botón */
+  border-radius: 5px; /* Opcional: agrega bordes redondeados */
+  cursor: pointer; /* Cambio de cursor para indicar que es clickeable */
+  transition: background-color 0.3s; /* Transición suave para el color */
+}
+
+.add-button:hover {
+  background-color: #7a8a7d; /* Cambio de color al pasar el mouse */
+}
