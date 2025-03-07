@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom"; // Importa Link para la navegación
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import "./Navbar.css";
@@ -7,9 +7,15 @@ import veganLogo from "../../assets/img/vegan.png";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token); // Si hay token, el usuario está logueado
+  }, []);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
-  const closeMenu = () => setMenuOpen(false); // Cierra el menú al hacer clic en una opción
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <nav className="navbar">
@@ -17,7 +23,6 @@ function Navbar() {
         <Link to="/">
           <img src={veganLogo} alt="Vegan Logo" className="logo" />
         </Link>
-        {/* Menú hamburguesa alineado a la derecha */}
         <button className="menu-btn" onClick={toggleMenu}>
           <FontAwesomeIcon
             icon={faBars}
@@ -26,7 +31,6 @@ function Navbar() {
         </button>
       </div>
 
-      {/* Menú desplegable */}
       {menuOpen && (
         <ul className="menu">
           <li>
@@ -59,11 +63,20 @@ function Navbar() {
               ¡Comunicate con nosotras!
             </Link>
           </li>
-          <li>
-            <Link to="/signin" onClick={closeMenu}>
-              Admin view
-            </Link>
-          </li>
+
+          {isLoggedIn ? (
+            <li>
+              <Link to="/mi-usuario" onClick={closeMenu}>
+                Mi Perfil
+              </Link>
+            </li>
+          ) : (
+            <li>
+              <Link to="/signin" onClick={closeMenu}>
+                Iniciar Sesión
+              </Link>
+            </li>
+          )}
         </ul>
       )}
     </nav>

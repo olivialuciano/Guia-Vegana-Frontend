@@ -11,6 +11,7 @@ import HealthProfessional from "../pages/HealthProfessional/HealthProfessional";
 import HealthProfessionalDetail from "../pages/HealthProfessional/HealthProfessionalDetail";
 import InformativeResource from "../pages/InformativeResource/InformativeResource";
 import InformativeResourceDetail from "../pages/InformativeResource/InformativeResourceDetail";
+import UserProfile from "../pages/UserProfile/UserProfile";
 
 const AppRouter = () => {
   return (
@@ -18,6 +19,7 @@ const AppRouter = () => {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/signin" element={<Signin />} />
+      <Route path="/mi-usuario" element={<UserProfile />} />
       <Route path="/business" element={<Business />} />
       <Route path="/business/:id" element={<BusinessDetail />} />
       <Route path="/activism" element={<Activism />} />
