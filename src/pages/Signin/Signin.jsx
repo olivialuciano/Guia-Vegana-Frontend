@@ -22,7 +22,7 @@ const Signin = () => {
 
     try {
       const response = await fetch(
-        "https://guiavegana.somee.com/api/User/authorization",
+        "https://localhost:7032/api/User/authorization",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -11,7 +11,7 @@ const InformativeResources = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://guiavegana.somee.com/api/InformativeResource")
+    fetch("https://localhost:7032/api/InformativeResource")
       .then((response) => response.json())
       .then((data) => {
         setResources(data);

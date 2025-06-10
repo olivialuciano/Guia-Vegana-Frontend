@@ -1,7 +1,50 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext"; // Asegúrate de ajustar la ruta correcta
 import "./NewBusinessForm.css";
 
+const zoneMapping = {
+  Norte: 0,
+  Sur: 1,
+  Oeste: 2,
+  Pichincha: 3,
+  Centro: 4,
+  Martin: 5,
+  Pellegrini: 6,
+  Oroño: 7,
+  Abasto: 8,
+  Sexta: 9,
+  Echesortu: 10,
+  Lourdes: 11,
+};
+
+const deliveryMapping = {
+  PedidosYa: 0,
+  Rappi: 1,
+  Propio: 2,
+  Otro: 3,
+  NoTiene: 4,
+};
+
+const ratingMapping = {
+  One: 1,
+  Two: 2,
+  Three: 3,
+  Four: 4,
+  Five: 5,
+};
+
+const businessTypeMapping = {
+  BarRestaurante: 0,
+  Panaderia: 1,
+  Heladeria: 2,
+  MercadoDietetica: 3,
+  Emprendimiento: 4,
+};
+
 const NewBusinessForm = ({ onClose }) => {
+  const { user } = useContext(AuthContext);
+  const token = localStorage.getItem("token");
+
   const [formData, setFormData] = useState({
     name: "",
     image: "",
@@ -14,10 +57,10 @@ const NewBusinessForm = ({ onClose }) => {
     allPlantBased: false,
     rating: "One",
     businessType: "BarRestaurante",
-    userId: 1, // Cambia esto según el ID del usuario autenticado
+    userId: user ? user.id : 1, // Usa el ID del usuario autenticado si está disponible
   });
 
-  const [errorMessage, setErrorMessage] = useState(""); // Para mostrar errores
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -29,49 +72,47 @@ const NewBusinessForm = ({ onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); // Limpiar mensajes de error antes de enviar
+    setErrorMessage("");
+
+    const formattedData = {
+      name: formData.name,
+      image: formData.image,
+      socialMediaUsername: formData.socialMediaUsername,
+      socialMediaLink: formData.socialMediaLink,
+      address: formData.address,
+      zone: zoneMapping[formData.zone],
+      delivery: deliveryMapping[formData.delivery],
+      glutenFree: Boolean(formData.glutenFree),
+      allPlantBased: Boolean(formData.allPlantBased),
+      rating: ratingMapping[formData.rating],
+      businessType: businessTypeMapping[formData.businessType],
+      userId: Number(formData.userId),
+    };
 
     try {
-      const response = await fetch(
-        "https://guiavegana.somee.com/api/Business",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch("https://localhost:7032/api/Business", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formattedData),
+      });
 
-      console.log("Response Status:", response.status); // Verificar el código de estado de la respuesta
+      console.log("Response Status:", response.status);
 
       if (response.ok) {
         alert("Negocio creado exitosamente!");
-        onClose(); // Cerrar el formulario
+        onClose();
       } else {
-        const responseText = await response.text(); // Obtener el texto de la respuesta
-        console.log("Response Text:", responseText); // Verificar el contenido de la respuesta
-
-        if (responseText) {
-          try {
-            const errorData = JSON.parse(responseText); // Intentamos parsear el texto como JSON
-            setErrorMessage(
-              `Error: ${
-                errorData.message || "Ocurrió un problema al crear el negocio."
-              }`
-            );
-          } catch (jsonError) {
-            // Si no se puede parsear el texto, mostrarlo directamente
-            setErrorMessage(`Error desconocido: ${responseText}`);
-          }
-        } else {
-          setErrorMessage(
-            "Error desconocido: No se recibió respuesta del servidor."
-          );
-        }
+        const responseText = await response.text();
+        console.log("Response Text:", responseText);
+        setErrorMessage(
+          `Error: ${responseText || "No se pudo crear el negocio"}`
+        );
       }
     } catch (error) {
-      console.error("Error de conexión:", error); // Ver más detalles del error
+      console.error("Error de conexión:", error);
       setErrorMessage(`Error de conexión: ${error.message}`);
     }
   };
@@ -143,20 +184,7 @@ const NewBusinessForm = ({ onClose }) => {
             onChange={handleChange}
             required
           >
-            {[
-              "Norte",
-              "Sur",
-              "Oeste",
-              "Pichincha",
-              "Centro",
-              "Martin",
-              "Pellegrini",
-              "Oroño",
-              "Abasto",
-              "Sexta",
-              "Echesortu",
-              "Lourdes",
-            ].map((zone) => (
+            {Object.keys(zoneMapping).map((zone) => (
               <option key={zone} value={zone}>
                 {zone}
               </option>
@@ -172,13 +200,11 @@ const NewBusinessForm = ({ onClose }) => {
             onChange={handleChange}
             required
           >
-            {["PedidosYa", "Rappi", "Propio", "Otro", "NoTiene"].map(
-              (delivery) => (
-                <option key={delivery} value={delivery}>
-                  {delivery}
-                </option>
-              )
-            )}
+            {Object.keys(deliveryMapping).map((delivery) => (
+              <option key={delivery} value={delivery}>
+                {delivery}
+              </option>
+            ))}
           </select>
         </label>
 
@@ -202,44 +228,6 @@ const NewBusinessForm = ({ onClose }) => {
           />
         </label>
 
-        <label>
-          Calificación:
-          <select
-            name="rating"
-            value={formData.rating}
-            onChange={handleChange}
-            required
-          >
-            {["One", "Two", "Three", "Four", "Five"].map((rating) => (
-              <option key={rating} value={rating}>
-                {rating}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label>
-          Tipo de negocio:
-          <select
-            name="businessType"
-            value={formData.businessType}
-            onChange={handleChange}
-            required
-          >
-            {[
-              "BarRestaurante",
-              "Panaderia",
-              "Heladeria",
-              "MercadoDietetica",
-              "Emprendimiento",
-            ].map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-        </label>
-
         <div className="form-actions">
           <button type="submit" className="submit-btn">
             Crear Negocio
@@ -249,7 +237,6 @@ const NewBusinessForm = ({ onClose }) => {
           </button>
         </div>
 
-        {/* Mostrar el mensaje de error, si existe */}
         {errorMessage && <div className="error-message">{errorMessage}</div>}
       </form>
     </div>

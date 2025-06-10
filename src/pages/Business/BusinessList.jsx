@@ -26,7 +26,7 @@ const BusinessList = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://guiavegana.somee.com/api/Business")
+    fetch("https://localhost:7032/api/Business")
       .then((response) => response.json())
       .then((data) => {
         setBusinesses(data);

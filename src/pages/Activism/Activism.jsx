@@ -11,7 +11,7 @@ const Activism = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://guiavegana.somee.com/api/Activism")
+    fetch("https://localhost:7032/api/Activism")
       .then((response) => response.json())
       .then((data) => {
         setEvents(data);

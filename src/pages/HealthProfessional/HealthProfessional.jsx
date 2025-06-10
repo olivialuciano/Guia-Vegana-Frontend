@@ -10,7 +10,7 @@ const HealthProfessional = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://guiavegana.somee.com/api/HealthProfessional")
+    fetch("https://localhost:7032/api/HealthProfessional")
       .then((response) => response.json())
       .then((data) => {
         setHealthProfessionals(data);

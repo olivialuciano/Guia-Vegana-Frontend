@@ -22,7 +22,7 @@ const BusinessDetail = () => {
 
         // Fetch para obtener los detalles del negocio
         const businessResponse = await fetch(
-          `https://guiavegana.somee.com/api/Business/${id}`
+          `https://localhost:7032/api/Business/${id}`
         );
         const businessData = await businessResponse.json();
 
@@ -30,14 +30,14 @@ const BusinessDetail = () => {
 
         // Fetch para obtener los horarios de apertura
         const openingHoursResponse = await fetch(
-          `https://guiavegana.somee.com/api/openinghour/business/${id}`
+          `https://localhost:7032/api/openinghour/business/${id}`
         );
         const openingHoursData = await openingHoursResponse.json();
         setOpeningHours(openingHoursData);
 
         // Fetch para obtener las opciones veganas
         const veganOptionsResponse = await fetch(
-          `https://guiavegana.somee.com/api/VeganOption/business/${id}`
+          `https://localhost:7032/api/VeganOption/business/${id}`
         );
         const veganOptionsData = await veganOptionsResponse.json();
         setVeganOptions(veganOptionsData);

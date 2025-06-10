@@ -12,6 +12,7 @@ import HealthProfessionalDetail from "../pages/HealthProfessional/HealthProfessi
 import InformativeResource from "../pages/InformativeResource/InformativeResource";
 import InformativeResourceDetail from "../pages/InformativeResource/InformativeResourceDetail";
 import UserProfile from "../pages/UserProfile/UserProfile";
+import Comments from "../pages/Comments/Comments";
 
 const AppRouter = () => {
   return (
@@ -19,6 +20,7 @@ const AppRouter = () => {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/signin" element={<Signin />} />
+      <Route path="/comments" element={<Comments />} />
       <Route path="/mi-usuario" element={<UserProfile />} />
       <Route path="/business" element={<Business />} />
       <Route path="/business/:id" element={<BusinessDetail />} />
