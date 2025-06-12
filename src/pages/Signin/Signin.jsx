@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import "./Signin.css"; // Importamos el CSS externo
+import "./Signin.css";
 
 const Signin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -9,12 +9,10 @@ const Signin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Manejar cambios en los inputs
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Enviar el formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -27,8 +25,8 @@ const Signin = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            email: formData.email, // Asegúrate de usar "email" en minúsculas
-            password: formData.password, // Asegúrate de usar "password" en minúsculas
+            email: formData.email,
+            password: formData.password,
           }),
         }
       );
@@ -36,20 +34,28 @@ const Signin = () => {
       if (!response.ok) throw new Error("Credenciales incorrectas");
 
       const token = await response.text();
-      localStorage.setItem("token", token); // Guardar el JWT en localStorage
+      localStorage.setItem("token", token);
 
-      // Decodificar el token para obtener el claim 'role'
-      const decodedToken = jwtDecode(token); // Decodificar el token
-      console.log(decodedToken);
-      const userRole = decodedToken.role; // Aquí obtenemos el 'role' del claim
+      // Decodificar el token
+      const decoded = jwtDecode(token);
+      console.log("Token decodificado:", decoded);
 
-      // Hacer algo con el 'role' (por ejemplo, redirigir dependiendo del role)
+      // Extraer claims
+      const userRole = decoded.role || decoded["role"];
+      const userId = decoded.nameid || decoded["id"];
+
+      // Guardar claims útiles en localStorage
+      localStorage.setItem("userRole", userRole);
+      localStorage.setItem("userId", userId);
+
+      // Redirigir según el rol
       if (userRole === "Admin") {
-        navigate("/admin"); // Si es Admin, redirigimos a admin
+        navigate("/admin");
       } else {
-        navigate("/"); // Si no es Admin, redirigimos a la home
+        navigate("/");
       }
     } catch (err) {
+      console.error("Error en login:", err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -68,7 +74,7 @@ const Signin = () => {
             <label>Correo Electrónico</label>
             <input
               type="email"
-              name="email" // Asegúrate de usar "email" en minúsculas
+              name="email"
               value={formData.email}
               onChange={handleChange}
               required
@@ -79,7 +85,7 @@ const Signin = () => {
             <label>Contraseña</label>
             <input
               type="password"
-              name="password" // Asegúrate de usar "password" en minúsculas
+              name="password"
               value={formData.password}
               onChange={handleChange}
               required

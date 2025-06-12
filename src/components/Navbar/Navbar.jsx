@@ -1,84 +1,81 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimes, faUser, faHome, faStore, faHandsHelping, faUserMd, faBook, faInfoCircle, faComments } from "@fortawesome/free-solid-svg-icons";
+import { AuthContext } from "../../context/AuthContext";
 import "./Navbar.css";
 import veganLogo from "../../assets/img/vegan.png";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token); // Si hay token, el usuario está logueado
-  }, []);
+  const { role, user } = useContext(AuthContext);
+  const location = useLocation();
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const closeMenu = () => setMenuOpen(false);
 
+  // Close menu when route changes
+  useEffect(() => {
+    closeMenu();
+  }, [location]);
+
+  const navLinks = [
+    { to: "/", label: "Inicio", icon: faHome },
+    { to: "/business", label: "Negocios", icon: faStore },
+    { to: "/activism", label: "Activismos", icon: faHandsHelping },
+    { to: "/healthprofessional", label: "Profesionales", icon: faUserMd },
+    { to: "/informativeresource", label: "Recursos", icon: faBook },
+    { to: "/about", label: "Nosotras", icon: faInfoCircle },
+    { to: "/comments", label: "Contacto", icon: faComments },
+  ];
+
   return (
     <nav className="navbar">
-      <div className="nav-content">
-        <Link to="/">
-          <img src={veganLogo} alt="Vegan Logo" className="logo" />
+      <div className="nav-container">
+        <Link to="/" className="nav-logo" onClick={closeMenu}>
+          <img src={veganLogo} alt="Logo" className="logo" />
         </Link>
-        <button className="menu-btn" onClick={toggleMenu}>
-          <FontAwesomeIcon
-            icon={faBars}
-            style={{ fontSize: "2rem", color: "#000000" }}
-          />
+
+        <button
+          className={`menu-btn ${menuOpen ? 'open' : ''}`}
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          <FontAwesomeIcon icon={menuOpen ? faTimes : faBars} />
         </button>
+
+        <div className={`nav-menu ${menuOpen ? 'open' : ''}`}>
+          <ul className="menu-list">
+            {navLinks.map((link) => (
+              <li key={link.to}>
+                <Link
+                  to={link.to}
+                  onClick={closeMenu}
+                  className={location.pathname === link.to ? 'active' : ''}
+                >
+                  <FontAwesomeIcon icon={link.icon} />
+                  <span>{link.label}</span>
+                </Link>
+              </li>
+            ))}
+            {user && role ? (
+              <li>
+                <Link to="/mi-usuario" onClick={closeMenu} className="profile-link">
+                  <FontAwesomeIcon icon={faUser} />
+                  <span>Mi Perfil</span>
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link to="/signin" onClick={closeMenu} className="signin-link">
+                  <FontAwesomeIcon icon={faUser} />
+                  <span>Iniciar Sesión</span>
+                </Link>
+              </li>
+            )}
+          </ul>
+        </div>
       </div>
-
-      {menuOpen && (
-        <ul className="menu">
-          <li>
-            <Link to="/business" onClick={closeMenu}>
-              Negocios
-            </Link>
-          </li>
-          <li>
-            <Link to="/activism" onClick={closeMenu}>
-              Activismos
-            </Link>
-          </li>
-          <li>
-            <Link to="/healthprofessional" onClick={closeMenu}>
-              Profesionales de la salud
-            </Link>
-          </li>
-          <li>
-            <Link to="/informativeresource" onClick={closeMenu}>
-              Recursos informativos
-            </Link>
-          </li>
-          <li>
-            <Link to="/about" onClick={closeMenu}>
-              Sobre nosotras
-            </Link>
-          </li>
-          <li>
-            <Link to="/comments" onClick={closeMenu}>
-              ¡Comunicate con nosotras!
-            </Link>
-          </li>
-
-          {isLoggedIn ? (
-            <li>
-              <Link to="/mi-usuario" onClick={closeMenu}>
-                Mi Perfil
-              </Link>
-            </li>
-          ) : (
-            <li>
-              <Link to="/signin" onClick={closeMenu}>
-                Iniciar Sesión
-              </Link>
-            </li>
-          )}
-        </ul>
-      )}
     </nav>
   );
 }

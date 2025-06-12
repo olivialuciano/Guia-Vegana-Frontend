@@ -1,86 +1,142 @@
-/* Navbar fijo en la parte inferior */
+/* Navbar fijo abajo */
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #d8e1d3; /* Verde claro */
-  padding: 16px 24px; /* Tamaño aumentado */
-  color: #000;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
+  background-color: var(--background-light);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 }
 
-/* Contenedor para logo y botón del menú */
-.nav-content {
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
   display: flex;
   justify-content: space-between;
-  width: 100%;
   align-items: center;
 }
 
-/* Logo alineado a la izquierda */
-.logo {
-  width: 60px; /* Tamaño más grande */
-  height: auto;
+.nav-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
 }
 
-/* Botón del menú hamburguesa */
+.logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
 .menu-btn {
   background: none;
   border: none;
+  color: var(--text-primary);
+  font-size: 1.5rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
+  padding: 0.5rem;
+  transition: color var(--transition-speed) ease;
+  z-index: 1002;
 }
 
-/* Menú desplegable */
-.menu {
-  position: absolute;
-  bottom: 70px; /* Un poco más arriba */
-  right: 10px;
-  background: #d8e1d3; /* Verde claro */
+.menu-btn:hover {
+  color: var(--primary-color);
+}
+
+.menu-btn.open {
+  color: var(--primary-color);
+}
+
+.nav-menu {
+  position: fixed;
+  bottom: 60px;
+  right: 1rem;
+  background-color: var(--background-light);
+  border-radius: var(--border-radius);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  max-height: 0;
+  overflow: hidden;
+  transition: all var(--transition-speed) ease;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1001;
+}
+
+.nav-menu.open {
+  max-height: 80vh;
+  opacity: 1;
+  visibility: visible;
+  padding: 1rem;
+}
+
+.menu-list {
   list-style: none;
-  padding: 15px;
-  border-radius: 12px; /* Bordes más redondeados */
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-width: 180px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  gap: 0.5rem;
 }
 
-/* Estilos de las opciones del menú */
-.menu li a {
+.menu-list li a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
   text-decoration: none;
-  color: #000; /* Verde oscuro */
-  font-size: 1.2rem; /* Más grande */
-  display: block;
-  padding: 8px 12px;
-  background: #f2f5f1; /* Verde claro */
-  border-radius: 8px;
-  transition: background 0.3s, color 0.3s;
+  border-radius: var(--border-radius);
+  transition: all var(--transition-speed) ease;
 }
 
-/* Hover */
-.menu li a:hover {
-  background: #064420; /* Verde oscuro */
-  color: #fff; /* Texto en blanco */
+.menu-list li a:hover {
+  background-color: var(--background-dark);
+  color: var(--primary-color);
 }
 
-/* Responsive: Si la pantalla es grande, el menú se muestra horizontal */
-@media (min-width: 768px) {
-  .menu {
-    position: static;
-    background: none;
-    flex-direction: row;
-    gap: 24px;
+.menu-list li a.active {
+  background-color: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.menu-list li a svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.profile-link,
+.signin-link {
+  margin-top: 0.5rem;
+  background-color: var(--background-dark);
+}
+
+.profile-link:hover,
+.signin-link:hover {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .nav-container {
+    padding: 0.5rem;
   }
 
-  .menu li a {
-    padding: 10px 15px;
-    font-size: 1.3rem;
+  .logo {
+    width: 28px;
+    height: 28px;
+  }
+
+  .nav-menu {
+    right: 0.5rem;
+    left: 0.5rem;
+    width: auto;
+  }
+
+  .menu-list li a {
+    padding: 0.75rem;
   }
 }

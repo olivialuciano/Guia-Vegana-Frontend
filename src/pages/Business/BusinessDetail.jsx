@@ -5,7 +5,8 @@ import Loading from "../../components/Loading/Loading";
 import OpeningHour from "../../components/OpeningHour/OpeningHour";
 import VeganOption from "../../components/VeganOption/VeganOption";
 import defaultImage from "../../assets/img/image.png";
-import Image from "../../assets/img/image.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faMapMarkerAlt, faTruck, faLeaf, faBreadSlice } from "@fortawesome/free-solid-svg-icons";
 
 const BusinessDetail = () => {
   const [business, setBusiness] = useState(null);
@@ -100,36 +101,61 @@ const BusinessDetail = () => {
 
   return (
     <div className="business-detail-container">
-      <div className="divtitle">
+      <div className="business-header">
         <h1 className="business-title">{business.name}</h1>
+        <div className="business-rating">
+          <FontAwesomeIcon icon={faStar} />
+          <span>{ratingMap[business.rating] || business.rating}</span>
+        </div>
       </div>
-      <img
-        src={business.image || defaultImage}
-        alt={business.name}
-        className="business-detail-image"
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = defaultImage;
-        }}
-      />
-      <p className="business-rating">
-        {ratingMap[business.rating] || business.rating}
-      </p>
-      <p className="business-type">
-        {businessTypeMap[business.businessType] || business.businessType}
-      </p>
-      <p className="business-address">📌 {business.address}</p>
-      <p className="business-zone">{zoneMap[business.zone] || business.zone}</p>
-      {business.glutenFree && (
-        <p className="business-info">Tiene opciones sin TACC</p>
-      )}
-      {business.allPlantBased && (
-        <p className="business-info">Negocio 100% basado en plantas</p>
-      )}
-      <p className="business-delivery">
-        {deliveryMap[business.delivery] || business.delivery}
-      </p>
-      <div className="businesscomponents">
+
+      <div className="business-image-container">
+        <img
+          src={business.image || defaultImage}
+          alt={business.name}
+          className="business-detail-image"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = defaultImage;
+          }}
+        />
+      </div>
+
+      <div className="business-info-container">
+        <div className="business-type">
+          {businessTypeMap[business.businessType] || business.businessType}
+        </div>
+
+        <div className="business-location">
+          <FontAwesomeIcon icon={faMapMarkerAlt} />
+          <div className="location-details">
+            <p className="business-address">{business.address}</p>
+            <p className="business-zone">{zoneMap[business.zone] || business.zone}</p>
+          </div>
+        </div>
+
+        <div className="business-features">
+          {business.glutenFree && (
+            <div className="feature-tag">
+              <FontAwesomeIcon icon={faBreadSlice} />
+              <span>Opciones sin TACC</span>
+            </div>
+          )}
+          {business.allPlantBased && (
+            <div className="feature-tag">
+              <FontAwesomeIcon icon={faLeaf} />
+              <span>100% basado en plantas</span>
+            </div>
+          )}
+        </div>
+
+        <div className="business-delivery">
+          <FontAwesomeIcon icon={faTruck} />
+          <span>{deliveryMap[business.delivery] || business.delivery}</span>
+        </div>
+      </div>
+
+      <div className="business-details-grid">
         <OpeningHour hours={openingHours} />
         <VeganOption options={veganOptions} />
       </div>

@@ -1,24 +1,45 @@
 /* Container styles */
 .vegan-option-container {
-  margin: 20px auto;
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  max-width: 400px; /* Reduce el ancho */
-  text-align: center;
-  overflow-y: auto; /* Habilita el scroll */
-  max-height: 250px; /* Limita la altura */
-  margin-left: 20px;
-  margin-right: 20px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Title styles */
 .vegan-option-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #1f3723;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.vegan-option-title svg {
+  color: var(--primary-color);
+}
+
+.vegan-option-count {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  background-color: var(--background-dark);
+  color: var(--text-secondary);
+}
+
+.vegan-option-count svg {
+  color: var(--primary-color);
 }
 
 /* List styles */
@@ -26,35 +47,78 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 .vegan-option-item {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
-  font-size: 1rem;
-  border-bottom: 1px solid #eaeaea;
+  align-items: flex-start;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--background-dark);
 }
 
 .vegan-option-item:last-child {
   border-bottom: none;
 }
 
+.vegan-option-info {
+  flex: 1;
+  margin-right: 1rem;
+}
+
 /* Name styles */
 .vegan-option-name {
-  color: #000000;
-  margin-right: 10px;
+  display: block;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+/* Description styles */
+.vegan-option-description {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+  font-style: italic;
 }
 
 /* Price styles */
 .vegan-option-price {
-  color: #7f8c8d;
-  text-align: left;
+  font-weight: 600;
+  color: var(--primary-color);
+  white-space: nowrap;
 }
 
 /* Message for unavailable options */
 .vegan-option-message {
-  font-size: 1rem;
-  color: #5b1008;
-  margin: 15px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .vegan-option-container {
+    padding: 1rem;
+  }
+
+  .vegan-option-title {
+    font-size: 1.1rem;
+  }
+
+  .vegan-option-item {
+    padding: 0.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .vegan-option-description {
+    font-size: 0.8rem;
+  }
+
+  .vegan-option-price {
+    font-size: 0.9rem;
+  }
 }
