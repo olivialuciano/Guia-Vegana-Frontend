@@ -1,4 +1,5 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext"; // Asegúrate de ajustar la ruta correcta
 import "./NewBusinessForm.css";
 
@@ -42,8 +43,18 @@ const businessTypeMapping = {
 };
 
 const NewBusinessForm = ({ onClose }) => {
-  const { user } = useContext(AuthContext);
+  const { user, role } = useContext(AuthContext);
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  
+  // Verificar si el usuario está autenticado y tiene permisos
+  useEffect(() => {
+    if (!user || (role !== "Sysadmin" && role !== "Investigador")) {
+      alert("No tienes permisos para crear negocios");
+      onClose();
+      navigate("/business");
+    }
+  }, [user, role, navigate, onClose]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -57,7 +68,7 @@ const NewBusinessForm = ({ onClose }) => {
     allPlantBased: false,
     rating: "One",
     businessType: "BarRestaurante",
-    userId: user ? user.id : 1, // Usa el ID del usuario autenticado si está disponible
+    userId: user ? user.id : null, // Usa el ID del usuario autenticado
   });
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -73,6 +84,12 @@ const NewBusinessForm = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
+    
+    // Verificar nuevamente si hay token antes de enviar
+    if (!token) {
+      setErrorMessage("No estás autorizado para realizar esta acción");
+      return;
+    }
 
     const formattedData = {
       name: formData.name,
@@ -104,18 +121,32 @@ const NewBusinessForm = ({ onClose }) => {
       if (response.ok) {
         alert("Negocio creado exitosamente!");
         onClose();
+        // Recargar la página para mostrar el nuevo negocio
+        window.location.reload();
       } else {
-        const responseText = await response.text();
-        console.log("Response Text:", responseText);
-        setErrorMessage(
-          `Error: ${responseText || "No se pudo crear el negocio"}`
-        );
+        // Manejar errores de autorización
+        if (response.status === 401) {
+          setErrorMessage("No estás autorizado para realizar esta acción");
+        } else if (response.status === 403) {
+          setErrorMessage("No tienes permisos suficientes para realizar esta acción");
+        } else {
+          const responseText = await response.text();
+          console.log("Response Text:", responseText);
+          setErrorMessage(
+            `Error: ${responseText || "No se pudo crear el negocio"}`
+          );
+        }
       }
     } catch (error) {
       console.error("Error de conexión:", error);
       setErrorMessage(`Error de conexión: ${error.message}`);
     }
   };
+  
+  // Si el usuario no está autenticado o no tiene permisos, no renderizar el formulario
+  if (!user || (role !== "Sysadmin" && role !== "Investigador")) {
+    return null;
+  }
 
   return (
     <div className="form-container">
