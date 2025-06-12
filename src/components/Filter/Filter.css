@@ -1,38 +1,40 @@
 .filter-button {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 50px;
-  padding: 12px 24px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  width: 30px;
+  background-color: white;
+  border: 2px solid var(--background-dark);
+  border-radius: 25px;
   font-size: 1rem;
+  color: var(--text-primary);
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .filter-button:hover {
-  background-color: var(--primary-dark);
-  transform: translateY(-2px);
+  border-color: var(--primary-color);
+  background-color: var(--background-light);
+}
+
+.filter-button svg {
+  color: var(--primary-color);
 }
 
 .filter-badge {
-  background-color: var(--accent-color);
-  color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
-  font-weight: bold;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .filter-overlay {
@@ -56,33 +58,33 @@
 .filter-wrapper {
   position: fixed;
   top: 0;
-  left: -100%;
+  right: -100%;
   width: 100%;
   max-width: 400px;
   height: 100vh;
   background-color: white;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease;
   z-index: 1001;
-  transition: left 0.3s ease;
   display: flex;
   flex-direction: column;
 }
 
 .filter-wrapper.open {
-  left: 0;
+  right: 0;
 }
 
 .filter-header {
-  padding: 20px;
-  border-bottom: 1px solid var(--background-dark);
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid var(--background-dark);
 }
 
 .filter-header h2 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: var(--text-primary);
 }
 
@@ -90,33 +92,33 @@
   background: none;
   border: none;
   color: var(--text-secondary);
-  font-size: 1.2rem;
   cursor: pointer;
-  padding: 8px;
+  padding: 0.5rem;
+  font-size: 1.25rem;
   transition: color 0.3s ease;
 }
 
 .close-btn:hover {
-  color: var(--primary-color);
+  color: var(--text-primary);
 }
 
 .filter-content {
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: 1rem;
 }
 
 .filter-group {
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
 .filter-group h3 {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 0 0 16px 0;
+  gap: 0.5rem;
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
   color: var(--text-primary);
-  font-size: 1.1rem;
 }
 
 .filter-group h3 svg {
@@ -126,8 +128,8 @@
 .checkbox-label {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
   cursor: pointer;
   color: var(--text-primary);
 }
@@ -135,83 +137,84 @@
 .checkbox-label input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  border: 2px solid var(--primary-color);
+  border: 2px solid var(--background-dark);
   border-radius: 4px;
   cursor: pointer;
 }
 
 .checkbox-label input[type="checkbox"]:checked {
   background-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .filter-footer {
-  padding: 20px;
+  padding: 1rem;
   border-top: 1px solid var(--background-dark);
   display: flex;
-  gap: 12px;
+  gap: 1rem;
 }
 
-.reset-filters-btn,
-.apply-filters-btn {
+.reset-btn,
+.apply-btn {
   flex: 1;
-  padding: 12px;
-  border: none;
+  padding: 0.75rem;
   border-radius: 8px;
   font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
 }
 
-.reset-filters-btn {
+.reset-btn {
   background-color: var(--background-dark);
   color: var(--text-primary);
+  border: none;
 }
 
-.reset-filters-btn:hover {
-  background-color: var(--text-secondary);
-  color: white;
+.reset-btn:hover {
+  background-color: var(--background-light);
 }
 
-.apply-filters-btn {
+.apply-btn {
   background-color: var(--primary-color);
   color: white;
+  border: none;
 }
 
-.apply-filters-btn:hover {
+.apply-btn:hover {
   background-color: var(--primary-dark);
 }
 
-/* Estilos para los selectores */
-.filter-group .select-container {
-  margin-bottom: 12px;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
   .filter-wrapper {
     max-width: 100%;
   }
 
   .filter-button {
-    bottom: 100px;
-    right: 16px;
-    padding: 10px 20px;
+    padding: 0.6rem 1rem;
     font-size: 0.9rem;
   }
 
-  .filter-header {
-    padding: 16px;
+  .filter-badge {
+    min-width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
   }
 
-  .filter-content {
-    padding: 16px;
+  .filter-button span {
+    display: none;
   }
 
-  .filter-footer {
-    padding: 16px;
+  .filter-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
   }
 }

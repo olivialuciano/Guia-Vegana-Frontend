@@ -10,8 +10,8 @@
 
 html,
 body {
-  margin: 0;
   padding: 0;
+  margin-top: 0px;
   background: var(--background-light);
   color: var(--text-dark);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -19,111 +19,98 @@ body {
 }
 
 .business-list-container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 2rem;
   position: relative;
   min-height: 100vh;
+  margin-bottom: 100px;
 }
 
 .business-header {
   text-align: center;
-  margin-bottom: 40px;
-  padding: 20px;
-  background-color: var(--primary-color);
-  border-radius: 12px;
-  color: white;
+  margin-bottom: 2rem;
 }
 
 .business-title {
   font-size: 2.5rem;
-  margin: 0 0 10px 0;
-  color: white;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
 }
 
 .business-description {
-  font-size: 1.2rem;
-  margin: 0;
-  opacity: 0.9;
-  max-width: 800px;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
   margin: 0 auto;
 }
 
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-color: var(--primary-green);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-  padding: 1rem 1.5rem;
+.search-filter-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  z-index: 1001;
-}
-
-.header-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--text-dark);
-  margin: 0;
-  user-select: none;
-  letter-spacing: 1.2px;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.header-controls {
-  margin-top: 1rem;
-  width: 100%;
-  max-width: 700px;
-  display: flex;
   gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.search-bar {
-  flex-grow: 1;
-  min-width: 220px;
-  max-width: 500px;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 25px;
+.search-container {
+  position: relative;
+  flex: 1;
+  max-width: 600px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 2px solid var(--background-dark);
+  border-radius: 8px;
   font-size: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+  background-color: white;
 }
 
-.search-bar:focus {
+.search-input:focus {
   outline: none;
-  box-shadow: 0 0 6px 2px var(--primary-green-dark);
-  background: white;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+.search-input::placeholder {
+  color: var(--text-secondary);
 }
 
 .add-button {
   position: fixed;
-  bottom: 100px;
-  right: 20px;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
   background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  font-size: 24px;
+  font-size: 2rem;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  z-index: 100;
 }
 
 .add-button:hover {
-  background-color: var(--primary-dark);
   transform: scale(1.1);
+  background-color: var(--primary-dark);
 }
 
 .filter-toggle-btn {
@@ -187,12 +174,7 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
   .business-list-container {
-    padding: 16px;
-  }
-
-  .business-header {
-    margin-bottom: 30px;
-    padding: 16px;
+    padding: 1rem;
   }
 
   .business-title {
@@ -200,30 +182,45 @@ body {
   }
 
   .business-description {
-    font-size: 1.1rem;
+    font-size: 1rem;
+  }
+
+  .search-filter-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .search-container {
+    width: 100%;
+    max-width: none;
   }
 
   .add-button {
-    bottom: 80px;
-    right: 16px;
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.75rem;
+    bottom: 1.5rem;
+    right: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .business-header {
-    margin-bottom: 20px;
-    padding: 12px;
-  }
-
   .business-title {
-    font-size: 1.8rem;
+    font-size: 1.75rem;
   }
 
   .business-description {
+    font-size: 0.9rem;
+  }
+
+  .search-input {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem 0.6rem 2.2rem;
+  }
+
+  .search-icon {
     font-size: 1rem;
+    left: 0.8rem;
   }
 }
 
@@ -239,8 +236,7 @@ body {
 .no-results {
   grid-column: 1 / -1;
   text-align: center;
-  font-size: 1.3rem;
-  color: #5a6a4f;
-  font-weight: 600;
-  margin-top: 2rem;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
 }

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter, faTimes, faCheck, faMapMarkerAlt, faStar, faTruck, faStore, faClock } from "@fortawesome/free-solid-svg-icons";
 import "./Filter.css";
-import Filterimg from "../../assets/img/filter.png";
 import Select from "react-select";
 
 const zoneMap = [
@@ -233,18 +232,17 @@ const Filter = ({ onFilterChange, initialFilters = {} }) => {
               value={zoneMap.filter((opt) => filters.zone.includes(opt.value))}
               onChange={(selected) => handleChange('zone', selected.map((item) => item.value))}
               styles={customSelectStyles}
-              placeholder="Seleccionar zona..."
+              placeholder="Seleccionar zonas..."
             />
           </div>
         </div>
 
         <div className="filter-footer">
-          <button className="reset-filters-btn" onClick={resetFilters}>
+          <button className="reset-btn" onClick={resetFilters}>
             Limpiar filtros
           </button>
-          <button className="apply-filters-btn" onClick={() => setIsOpen(false)}>
-            <FontAwesomeIcon icon={faCheck} />
-            <span>Aplicar filtros</span>
+          <button className="apply-btn" onClick={() => setIsOpen(false)}>
+            Aplicar
           </button>
         </div>
       </div>

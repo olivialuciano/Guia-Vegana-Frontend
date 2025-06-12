@@ -76,7 +76,6 @@ const CardGrid = ({ businesses }) => {
 
   return (
     <div className="card-grid-container">
-      <Filter onFilterChange={handleFilterChange} initialFilters={activeFilters} />
       <div className="card-grid">
         {filteredBusinesses.length > 0 ? (
           filteredBusinesses.map((business) => (
@@ -88,6 +87,7 @@ const CardGrid = ({ businesses }) => {
           </div>
         )}
       </div>
+      <Filter onFilterChange={handleFilterChange} initialFilters={activeFilters} />
     </div>
   );
 };
