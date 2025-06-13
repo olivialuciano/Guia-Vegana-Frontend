@@ -4,19 +4,59 @@ import { AuthContext } from "../../context/AuthContext";
 import CardGrid from "../../components/CardGrid/CardGrid";
 import Loading from "../../components/Loading/Loading";
 import NewBusinessForm from "../../components/NewBusinessForm/NewBusinessForm";
-import Filter from "../../components/Filter/Filter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faPlus, faFilter, faTimes, faMapMarkerAlt, faStore, faTruck, faBreadSlice, faLeaf, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import "./BusinessList.css";
+import { Link } from "react-router-dom";
+import defaultImage from "../../assets/img/image.png";
+
+const zoneMap = {
+  0: "Zona Norte",
+  1: "Zona Sur",
+  2: "Zona Oeste",
+  3: "Barrio Pichincha",
+  4: "Zona Centro",
+  5: "Barrio Martin",
+  6: "Avenida Pellegrini",
+  7: "Bulevar Oroño",
+  8: "Barrio Abasto",
+  9: "Barrio La Sexta",
+  10: "Barrio Echesortu",
+  11: "Barrio Lourdes",
+};
+
+const businessTypeMap = {
+  0: "Bar / Restaurante",
+  1: "Panadería",
+  2: "Heladería",
+  3: "Mercado / Dietética",
+  4: "Emprendimiento",
+};
+
+const deliveryMap = {
+  0: "Pedidos Ya",
+  1: "Rappi",
+  2: "Envío propio",
+  3: "Otro servicio",
+  4: "No tiene delivery",
+};
 
 const BusinessList = () => {
-  const { role } = useContext(AuthContext);
+  const { role, user } = useContext(AuthContext);
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    name: "",
+    zone: [],
+    businessType: [],
+    glutenFree: false,
+    allPlantBased: false,
+    delivery: [],
+  });
   const [filteredBusinesses, setFilteredBusinesses] = useState([]);
-  const [activeFilters, setActiveFilters] = useState({});
+  const [openSelect, setOpenSelect] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -31,74 +71,160 @@ const BusinessList = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = businesses.filter((business) =>
-      business.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredBusinesses(filtered);
-  }, [searchQuery, businesses]);
+    applyFilters();
+  }, [filters, businesses]);
 
-  const handleFilterChange = (filters) => {
-    setActiveFilters(filters);
+  const handleFilterChange = (e) => {
+    const { name, value, type, checked } = e.target;
     
-    const filtered = businesses.filter((business) => {
-      // Filtro de Plant-Based
-      if (filters.plantBased && !business.plantBased) {
-        return false;
-      }
+    if (type === 'checkbox') {
+      setFilters(prev => ({
+        ...prev,
+        [name]: checked
+      }));
+    } else if (type === 'select-multiple') {
+      const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+      setFilters(prev => ({
+        ...prev,
+        [name]: selectedOptions
+      }));
+    } else {
+      setFilters(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+  };
 
-      // Filtro de Gluten-Free
-      if (filters.glutenFree && !business.glutenFree) {
-        return false;
-      }
+  const applyFilters = () => {
+    let filtered = [...businesses];
 
-      // Filtro de Calificación
-      if (filters.rating.length > 0 && !filters.rating.includes(business.rating)) {
-        return false;
-      }
+    if (filters.name) {
+      filtered = filtered.filter(business =>
+        business.name.toLowerCase().includes(filters.name.toLowerCase())
+      );
+    }
 
-      // Filtro de Delivery
-      if (filters.delivery.length > 0) {
-        const hasDelivery = business.delivery.some((delivery) =>
-          filters.delivery.includes(delivery)
-        );
-        if (!hasDelivery) {
-          return false;
-        }
-      }
+    if (filters.zone.length > 0) {
+      filtered = filtered.filter(business =>
+        filters.zone.includes(business.zone.toString())
+      );
+    }
 
-      // Filtro de Tipo de Negocio
-      if (filters.businessType.length > 0 && !filters.businessType.includes(business.businessType)) {
-        return false;
-      }
+    if (filters.businessType.length > 0) {
+      filtered = filtered.filter(business =>
+        filters.businessType.includes(business.businessType.toString())
+      );
+    }
 
-      // Filtro de Zona
-      if (filters.zone.length > 0 && !filters.zone.includes(business.zone)) {
-        return false;
-      }
+    if (filters.glutenFree) {
+      filtered = filtered.filter(business => business.glutenFree);
+    }
 
-      // Filtro de Abierto Ahora
-      if (filters.openNow) {
-        const now = new Date();
-        const currentHour = now.getHours();
-        const currentMinutes = now.getMinutes();
-        const currentTime = currentHour * 60 + currentMinutes;
+    if (filters.allPlantBased) {
+      filtered = filtered.filter(business => business.allPlantBased);
+    }
 
-        const isOpen = business.openingHours.some((schedule) => {
-          const openTime = schedule.open.split(':').reduce((acc, time) => acc * 60 + parseInt(time), 0);
-          const closeTime = schedule.close.split(':').reduce((acc, time) => acc * 60 + parseInt(time), 0);
-          return currentTime >= openTime && currentTime <= closeTime;
-        });
-
-        if (!isOpen) {
-          return false;
-        }
-      }
-
-      return true;
-    });
+    if (filters.delivery.length > 0) {
+      filtered = filtered.filter(business =>
+        filters.delivery.includes(business.delivery.toString())
+      );
+    }
 
     setFilteredBusinesses(filtered);
   };
+
+  const clearFilters = () => {
+    setFilters({
+      name: "",
+      zone: [],
+      businessType: [],
+      glutenFree: false,
+      allPlantBased: false,
+      delivery: [],
+    });
+  };
+
+  const handleCloseFilters = () => {
+    setShowFilters(false);
+  };
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      handleCloseFilters();
+    }
+  };
+
+  const handleSelectToggle = (selectName) => {
+    setOpenSelect(openSelect === selectName ? null : selectName);
+  };
+
+  const handleOptionSelect = (selectName, value) => {
+    setFilters(prev => {
+      const currentValues = prev[selectName];
+      const newValues = currentValues.includes(value)
+        ? currentValues.filter(v => v !== value)
+        : [...currentValues, value];
+      return { ...prev, [selectName]: newValues };
+    });
+  };
+
+  const handleChipRemove = (selectName, value) => {
+    setFilters(prev => ({
+      ...prev,
+      [selectName]: prev[selectName].filter(v => v !== value)
+    }));
+  };
+
+  const renderMultiSelect = (name, title, icon, options) => (
+    <div className="filter-group">
+      <h4>
+        <FontAwesomeIcon icon={icon} /> {title}
+      </h4>
+      <div className="multi-select">
+        <div 
+          className={`multi-select-header ${openSelect === name ? 'active' : ''}`}
+          onClick={() => handleSelectToggle(name)}
+        >
+          <span>
+            {filters[name].length > 0 
+              ? `${filters[name].length} seleccionados`
+              : 'Seleccionar opciones'}
+          </span>
+          <FontAwesomeIcon 
+            icon={faChevronDown} 
+            style={{ 
+              transform: openSelect === name ? 'rotate(180deg)' : 'none',
+              transition: 'transform 0.3s ease'
+            }} 
+          />
+        </div>
+        <div className={`multi-select-options ${openSelect === name ? 'show' : ''}`}>
+          {Object.entries(options).map(([key, value]) => (
+            <div
+              key={key}
+              className={`multi-select-option ${filters[name].includes(key) ? 'selected' : ''}`}
+              onClick={() => handleOptionSelect(name, key)}
+            >
+              {value}
+            </div>
+          ))}
+        </div>
+        {filters[name].length > 0 && (
+          <div className="selected-chips">
+            {filters[name].map(value => (
+              <div key={value} className="chip">
+                {options[value]}
+                <button onClick={() => handleChipRemove(name, value)}>
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 
   if (loading) {
     return <Loading />;
@@ -106,34 +232,138 @@ const BusinessList = () => {
 
   return (
     <div className="business-list-container">
-      <div className="business-header">
-        <h1 className="business-title">Negocios</h1>
-        <p className="business-description">
-          Bares, restaurantes, heladerías, dietéticas, panaderías y mercados.
-        </p>
-      </div>
-
-      <div className="search-filter-container">
-        <div className="search-container">
-          <FontAwesomeIcon icon={faSearch} className="search-icon" />
-          <input
-            type="text"
-            placeholder="Buscar negocios..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
+      <div className="business-list-header">
+        <h1>Negocios</h1>
+        
+        <div className="search-filter-container">
+          <div className="search-box">
+            <FontAwesomeIcon icon={faSearch} className="search-icon" />
+            <input
+              type="text"
+              placeholder="Buscar negocios..."
+              value={filters.name}
+              onChange={handleFilterChange}
+              name="name"
+            />
+          </div>
         </div>
-        <Filter onFilterChange={handleFilterChange} initialFilters={activeFilters} />
       </div>
 
-      {role === "admin" && (
-        <button className="add-button" onClick={() => setIsFormOpen(true)}>
-          +
+      <div className="actions-bar">
+        <button 
+          className="filters-button"
+          onClick={() => setShowFilters(true)}
+        >
+          <FontAwesomeIcon icon={faFilter} />
         </button>
-      )}
-      <CardGrid businesses={filteredBusinesses} />
-      {isFormOpen && <NewBusinessForm onClose={() => setIsFormOpen(false)} />}
+
+        {user && (role === "Sysadmin" || role === "Investigador") && (
+          <button className="add-business-button" onClick={() => setShowForm(true)}>
+            <FontAwesomeIcon icon={faPlus} />
+          </button>
+        )}
+      </div>
+
+      <div 
+        className={`filters-overlay ${showFilters ? 'visible' : ''}`}
+        onClick={handleOverlayClick}
+      >
+        <div className={`filters-panel ${showFilters ? 'open' : ''}`}>
+          <div className="filters-header">
+            <h3>
+              <FontAwesomeIcon icon={faFilter} /> Filtros
+            </h3>
+            <button className="close-filters" onClick={handleCloseFilters}>
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+          </div>
+
+          <div className="filter-group">
+            <h4>
+              <FontAwesomeIcon icon={faSearch} /> Buscar
+            </h4>
+            <input
+              type="text"
+              name="name"
+              value={filters.name}
+              onChange={handleFilterChange}
+              placeholder="Buscar por nombre..."
+            />
+          </div>
+
+          {renderMultiSelect('zone', 'Zona', faMapMarkerAlt, zoneMap)}
+          {renderMultiSelect('businessType', 'Tipo de Negocio', faStore, businessTypeMap)}
+          {renderMultiSelect('delivery', 'Delivery', faTruck, deliveryMap)}
+
+          <div className="filter-group">
+            <h4>Características</h4>
+            <label>
+              <input
+                type="checkbox"
+                name="glutenFree"
+                checked={filters.glutenFree}
+                onChange={handleFilterChange}
+              />
+              <FontAwesomeIcon icon={faBreadSlice} /> Sin gluten
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="allPlantBased"
+                checked={filters.allPlantBased}
+                onChange={handleFilterChange}
+              />
+              <FontAwesomeIcon icon={faLeaf} /> 100% basado en plantas
+            </label>
+          </div>
+
+          <div className="filter-actions">
+            <button className="clear-filters" onClick={clearFilters}>
+              <FontAwesomeIcon icon={faTimes} /> Limpiar
+            </button>
+            <button className="apply-filters" onClick={handleCloseFilters}>
+              <FontAwesomeIcon icon={faFilter} /> Aplicar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {showForm && <NewBusinessForm onClose={() => setShowForm(false)} />}
+
+      <div className="business-grid">
+        {filteredBusinesses.map((business) => (
+          <Link
+            to={`/business/${business.id}`}
+            key={business.id}
+            className="business-card"
+          >
+            <div className="business-image-container">
+              <img
+                src={business.image || defaultImage}
+                alt={business.name}
+                className="business-image"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = defaultImage;
+                }}
+              />
+            </div>
+            <div className="business-info">
+              <h3>{business.name}</h3>
+              <p className="business-zone">
+                {zoneMap[business.zone] || business.zone}
+              </p>
+              <p className="business-type">
+                {businessTypeMap[business.businessType] || business.businessType}
+              </p>
+              <div className="business-features">
+                {business.glutenFree && <span className="feature-tag">Sin TACC</span>}
+                {business.allPlantBased && <span className="feature-tag">100% Plantas</span>}
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };

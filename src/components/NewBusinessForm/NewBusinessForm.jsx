@@ -1,6 +1,20 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext"; // Asegúrate de ajustar la ruta correcta
+import { AuthContext } from "../../context/AuthContext";
+import { jwtDecode } from "jwt-decode";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { 
+  faStore, 
+  faImage, 
+  faUser, 
+  faLink, 
+  faMapMarkerAlt, 
+  faTruck, 
+  faBreadSlice, 
+  faLeaf,
+  faTimes,
+  faCheck
+} from "@fortawesome/free-solid-svg-icons";
 import "./NewBusinessForm.css";
 
 const zoneMapping = {
@@ -47,7 +61,6 @@ const NewBusinessForm = ({ onClose }) => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   
-  // Verificar si el usuario está autenticado y tiene permisos
   useEffect(() => {
     if (!user || (role !== "Sysadmin" && role !== "Investigador")) {
       alert("No tienes permisos para crear negocios");
@@ -68,10 +81,11 @@ const NewBusinessForm = ({ onClose }) => {
     allPlantBased: false,
     rating: "One",
     businessType: "BarRestaurante",
-    userId: user ? user.id : null, // Usa el ID del usuario autenticado
+    userId: token ? jwtDecode(token).userId : null,
   });
 
   const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -84,29 +98,31 @@ const NewBusinessForm = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
+    setIsSubmitting(true);
     
-    // Verificar nuevamente si hay token antes de enviar
     if (!token) {
       setErrorMessage("No estás autorizado para realizar esta acción");
+      setIsSubmitting(false);
       return;
     }
 
-    const formattedData = {
-      name: formData.name,
-      image: formData.image,
-      socialMediaUsername: formData.socialMediaUsername,
-      socialMediaLink: formData.socialMediaLink,
-      address: formData.address,
-      zone: zoneMapping[formData.zone],
-      delivery: deliveryMapping[formData.delivery],
-      glutenFree: Boolean(formData.glutenFree),
-      allPlantBased: Boolean(formData.allPlantBased),
-      rating: ratingMapping[formData.rating],
-      businessType: businessTypeMapping[formData.businessType],
-      userId: Number(formData.userId),
-    };
-
     try {
+      const decodedToken = jwtDecode(token);
+      const formattedData = {
+        name: formData.name,
+        image: formData.image || "",
+        socialMediaUsername: formData.socialMediaUsername,
+        socialMediaLink: formData.socialMediaLink,
+        address: formData.address,
+        zone: zoneMapping[formData.zone],
+        delivery: deliveryMapping[formData.delivery],
+        glutenFree: formData.glutenFree,
+        allPlantBased: formData.allPlantBased,
+        rating: ratingMapping[formData.rating],
+        businessType: businessTypeMapping[formData.businessType],
+        userId: parseInt(decodedToken.userId)
+      };
+
       const response = await fetch("https://localhost:7032/api/Business", {
         method: "POST",
         headers: {
@@ -116,100 +132,108 @@ const NewBusinessForm = ({ onClose }) => {
         body: JSON.stringify(formattedData),
       });
 
-      console.log("Response Status:", response.status);
-
-      if (response.ok) {
-        alert("Negocio creado exitosamente!");
-        onClose();
-        // Recargar la página para mostrar el nuevo negocio
-        window.location.reload();
-      } else {
-        // Manejar errores de autorización
-        if (response.status === 401) {
-          setErrorMessage("No estás autorizado para realizar esta acción");
-        } else if (response.status === 403) {
-          setErrorMessage("No tienes permisos suficientes para realizar esta acción");
-        } else {
-          const responseText = await response.text();
-          console.log("Response Text:", responseText);
-          setErrorMessage(
-            `Error: ${responseText || "No se pudo crear el negocio"}`
-          );
-        }
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(errorData || "Error al crear el negocio");
       }
+
+      onClose();
+      window.location.reload();
     } catch (error) {
-      console.error("Error de conexión:", error);
-      setErrorMessage(`Error de conexión: ${error.message}`);
+      console.error("Error:", error);
+      setErrorMessage(error.message || "Error al crear el negocio");
+    } finally {
+      setIsSubmitting(false);
     }
   };
-  
-  // Si el usuario no está autenticado o no tiene permisos, no renderizar el formulario
-  if (!user || (role !== "Sysadmin" && role !== "Investigador")) {
-    return null;
-  }
 
   return (
-    <div className="form-container">
+    <div className="form-container" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <form onSubmit={handleSubmit} className="business-form">
-        <h2>Agregar Nuevo Negocio</h2>
+        <h2>
+          <FontAwesomeIcon icon={faStore} /> Nuevo Negocio
+        </h2>
 
-        <label>
-          Nombre:
+        <div className="form-group">
+          <label htmlFor="name">
+            <FontAwesomeIcon icon={faStore} /> Nombre del Negocio
+          </label>
           <input
+            id="name"
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
             required
+            placeholder="Ingrese el nombre del negocio"
           />
-        </label>
+        </div>
 
-        <label>
-          Imagen:
+        <div className="form-group">
+          <label htmlFor="image">
+            <FontAwesomeIcon icon={faImage} /> URL de la Imagen
+          </label>
           <input
-            type="text"
+            id="image"
+            type="url"
             name="image"
             value={formData.image}
             onChange={handleChange}
+            placeholder="https://ejemplo.com/imagen.jpg"
           />
-        </label>
+        </div>
 
-        <label>
-          Usuario en redes sociales:
+        <div className="form-group">
+          <label htmlFor="socialMediaUsername">
+            <FontAwesomeIcon icon={faUser} /> Usuario en Redes Sociales
+          </label>
           <input
+            id="socialMediaUsername"
             type="text"
             name="socialMediaUsername"
             value={formData.socialMediaUsername}
             onChange={handleChange}
             required
+            placeholder="@usuario"
           />
-        </label>
+        </div>
 
-        <label>
-          Enlace de redes sociales:
+        <div className="form-group">
+          <label htmlFor="socialMediaLink">
+            <FontAwesomeIcon icon={faLink} /> Enlace de Redes Sociales
+          </label>
           <input
+            id="socialMediaLink"
             type="url"
             name="socialMediaLink"
             value={formData.socialMediaLink}
             onChange={handleChange}
             required
+            placeholder="https://instagram.com/usuario"
           />
-        </label>
+        </div>
 
-        <label>
-          Dirección:
+        <div className="form-group">
+          <label htmlFor="address">
+            <FontAwesomeIcon icon={faMapMarkerAlt} /> Dirección
+          </label>
           <input
+            id="address"
             type="text"
             name="address"
             value={formData.address}
             onChange={handleChange}
             required
+            placeholder="Ingrese la dirección completa"
           />
-        </label>
+        </div>
 
-        <label>
-          Zona:
+        <div className="form-group">
+          <label htmlFor="zone">
+            <FontAwesomeIcon icon={faMapMarkerAlt} /> Zona
+          </label>
           <select
+            id="zone"
             name="zone"
             value={formData.zone}
             onChange={handleChange}
@@ -221,11 +245,14 @@ const NewBusinessForm = ({ onClose }) => {
               </option>
             ))}
           </select>
-        </label>
+        </div>
 
-        <label>
-          Tipo de entrega:
+        <div className="form-group">
+          <label htmlFor="delivery">
+            <FontAwesomeIcon icon={faTruck} /> Tipo de Entrega
+          </label>
           <select
+            id="delivery"
             name="delivery"
             value={formData.delivery}
             onChange={handleChange}
@@ -237,38 +264,70 @@ const NewBusinessForm = ({ onClose }) => {
               </option>
             ))}
           </select>
-        </label>
+        </div>
 
-        <label>
-          Sin gluten:
-          <input
-            type="checkbox"
-            name="glutenFree"
-            checked={formData.glutenFree}
-            onChange={handleChange}
-          />
-        </label>
+        <div className="form-group">
+          <div className="checkbox-group">
+            <input
+              type="checkbox"
+              id="glutenFree"
+              name="glutenFree"
+              checked={formData.glutenFree}
+              onChange={handleChange}
+            />
+            <label htmlFor="glutenFree">
+              <FontAwesomeIcon icon={faBreadSlice} /> Sin gluten
+            </label>
+          </div>
 
-        <label>
-          100% a base de plantas:
-          <input
-            type="checkbox"
-            name="allPlantBased"
-            checked={formData.allPlantBased}
-            onChange={handleChange}
-          />
-        </label>
+          <div className="checkbox-group">
+            <input
+              type="checkbox"
+              id="allPlantBased"
+              name="allPlantBased"
+              checked={formData.allPlantBased}
+              onChange={handleChange}
+            />
+            <label htmlFor="allPlantBased">
+              <FontAwesomeIcon icon={faLeaf} /> 100% basado en plantas
+            </label>
+          </div>
+        </div>
 
         <div className="form-actions">
-          <button type="submit" className="submit-btn">
-            Crear Negocio
+          <button 
+            type="submit" 
+            className="submit-btn"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <span className="loading-spinner"></span>
+                Creando...
+              </>
+            ) : (
+              <>
+                <FontAwesomeIcon icon={faCheck} />
+                Crear Negocio
+              </>
+            )}
           </button>
-          <button type="button" className="close-btn" onClick={onClose}>
+          <button 
+            type="button" 
+            className="close-btn"
+            onClick={onClose}
+          >
+            <FontAwesomeIcon icon={faTimes} />
             Cancelar
           </button>
         </div>
 
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        {errorMessage && (
+          <div className="error-message">
+            <FontAwesomeIcon icon={faTimes} />
+            {errorMessage}
+          </div>
+        )}
       </form>
     </div>
   );

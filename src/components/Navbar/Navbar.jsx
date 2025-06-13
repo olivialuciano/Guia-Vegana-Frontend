@@ -1,15 +1,21 @@
-import { useState, useEffect, useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes, faUser, faHome, faStore, faHandsHelping, faUserMd, faBook, faInfoCircle, faComments } from "@fortawesome/free-solid-svg-icons";
-import { AuthContext } from "../../context/AuthContext";
-import "./Navbar.css";
-import veganLogo from "../../assets/img/vegan.png";
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faTimes, faUser, faHome, faStore, faHandsHelping, faUserMd, faBook, faInfoCircle, faComments, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { AuthContext } from '../../context/AuthContext';
+import { useContext } from 'react';
+import { authService } from '../../services/authService';
+import LogoutConfirmation from '../LogoutConfirmation/LogoutConfirmation';
+import './Navbar.css';
+import veganLogo from '../../assets/img/vegan.png';
 
-function Navbar() {
+const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { role, user } = useContext(AuthContext);
   const location = useLocation();
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const closeMenu = () => setMenuOpen(false);
@@ -18,6 +24,29 @@ function Navbar() {
   useEffect(() => {
     closeMenu();
   }, [location]);
+
+  useEffect(() => {
+    // Verificar autenticación al montar el componente
+    setIsAuthenticated(authService.isAuthenticated());
+
+    // Configurar un intervalo para verificar la expiración del token
+    const checkAuthInterval = setInterval(() => {
+      const isStillAuthenticated = authService.isAuthenticated();
+      if (!isStillAuthenticated && isAuthenticated) {
+        setIsAuthenticated(false);
+        navigate('/signin');
+      }
+    }, 60000); // Verificar cada minuto
+
+    return () => clearInterval(checkAuthInterval);
+  }, [isAuthenticated, navigate]);
+
+  const handleLogout = () => {
+    authService.logout();
+    setIsAuthenticated(false);
+    setShowLogoutConfirmation(false);
+    navigate('/signin');
+  };
 
   const navLinks = [
     { to: "/", label: "Inicio", icon: faHome },
@@ -59,12 +88,23 @@ function Navbar() {
               </li>
             ))}
             {user && role ? (
-              <li>
-                <Link to="/mi-usuario" onClick={closeMenu} className="profile-link">
-                  <FontAwesomeIcon icon={faUser} />
-                  <span>Mi Perfil</span>
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link to="/mi-usuario" onClick={closeMenu} className="profile-link">
+                    <FontAwesomeIcon icon={faUser} />
+                    <span>Mi Perfil</span>
+                  </Link>
+                </li>
+                <li>
+                  <button 
+                    className="logout-button"
+                    onClick={() => setShowLogoutConfirmation(true)}
+                  >
+                    <FontAwesomeIcon icon={faSignOutAlt} />
+                    Cerrar Sesión
+                  </button>
+                </li>
+              </>
             ) : (
               <li>
                 <Link to="/signin" onClick={closeMenu} className="signin-link">
@@ -76,8 +116,15 @@ function Navbar() {
           </ul>
         </div>
       </div>
+
+      {showLogoutConfirmation && (
+        <LogoutConfirmation
+          onConfirm={handleLogout}
+          onCancel={() => setShowLogoutConfirmation(false)}
+        />
+      )}
     </nav>
   );
-}
+};
 
 export default Navbar;

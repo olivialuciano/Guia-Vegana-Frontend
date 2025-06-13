@@ -112,6 +112,27 @@
   color: white !important;
 }
 
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--text-dark);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+  color: var(--primary-green);
+}
+
+.logout-button svg {
+  font-size: 1.1rem;
+}
+
 /* Responsive Design */
 @media (max-width: 480px) {
   .nav-container {

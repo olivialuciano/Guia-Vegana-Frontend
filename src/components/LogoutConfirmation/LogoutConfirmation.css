@@ -1,0 +1,73 @@
+.logout-confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.logout-confirmation-modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logout-confirmation-icon {
+  font-size: 2.5rem;
+  color: var(--primary-green);
+  margin-bottom: 1rem;
+}
+
+.logout-confirmation-modal h3 {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.logout-confirmation-modal p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.logout-confirmation-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.logout-confirmation-buttons button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-confirmation-cancel {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: none;
+}
+
+.logout-confirmation-cancel:hover {
+  background-color: #e5e7eb;
+}
+
+.logout-confirmation-confirm {
+  background-color: var(--primary-green);
+  color: white;
+  border: none;
+}
+
+.logout-confirmation-confirm:hover {
+  background-color: var(--primary-green-dark);
+} 

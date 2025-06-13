@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import BusinessCard from "../BusinessCard/BusinessCard";
-import Filter from "../Filter/Filter";
 import "./CardGrid.css";
 
 const CardGrid = ({ businesses }) => {
