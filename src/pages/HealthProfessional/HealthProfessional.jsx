@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import "./HealthProfessional.css";
 import defaultImage from "../../assets/img/defaultprofileimage.jpg"; // Imagen por defecto
 import Loading from "../../components/Loading/Loading";
+import Header from "../../components/Header/Header";
+import { faUserDoctor } from "@fortawesome/free-solid-svg-icons";
 
 const HealthProfessional = () => {
   const [healthProfessionals, setHealthProfessionals] = useState([]);
@@ -32,9 +34,12 @@ const HealthProfessional = () => {
 
   return (
     <div className="health-container">
-      <div className="header">
-        <h1 className="header-title">Profesionales de la Salud</h1>
-      </div>
+      <Header 
+        title="Profesionales de la Salud" 
+        icon={faUserDoctor}
+        showRating={false}
+        rating={null}
+      ></Header>
       <div className="health-list">
         {healthProfessionals.map((professional) => (
           <Link
