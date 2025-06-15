@@ -86,7 +86,6 @@ const CardGrid = ({ businesses }) => {
           </div>
         )}
       </div>
-      <Filter onFilterChange={handleFilterChange} initialFilters={activeFilters} />
     </div>
   );
 };

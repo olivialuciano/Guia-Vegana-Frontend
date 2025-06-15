@@ -5,8 +5,9 @@ import Loading from "../../components/Loading/Loading";
 import OpeningHour from "../../components/OpeningHour/OpeningHour";
 import VeganOption from "../../components/VeganOption/VeganOption";
 import defaultImage from "../../assets/img/image.png";
+import Header from "../../components/Header/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faMapMarkerAlt, faTruck, faLeaf, faBreadSlice } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faMapMarkerAlt, faTruck, faLeaf, faBreadSlice, faStore } from "@fortawesome/free-solid-svg-icons";
 
 const BusinessDetail = () => {
   const [business, setBusiness] = useState(null);
@@ -101,12 +102,13 @@ const BusinessDetail = () => {
 
   return (
     <div className="business-detail-container">
-      <div className="business-header">
-        <h1 className="business-title">{business.name}</h1>
-        <div className="business-rating">
-          <span>{ratingMap[business.rating] || business.rating}</span>
-        </div>
-      </div>
+      <Header 
+        title={business.name} 
+        icon={faStore}
+        showRating={true}
+        rating={business.rating}
+      ></Header>
+
 
       <div className="business-image-container">
         <img

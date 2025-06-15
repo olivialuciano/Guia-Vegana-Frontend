@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom"; // Usamos useNavigate para la na
 import "./InformativeResource.css";
 import Loading from "../../components/Loading/Loading";
 import defaultImage from "../../assets/img/image.png";
+import Header from "../../components/Header/Header";
+import { faBook } from "@fortawesome/free-solid-svg-icons";
 
 const InformativeResources = () => {
   const [resources, setResources] = useState([]);
@@ -38,9 +40,12 @@ const InformativeResources = () => {
 
   return (
     <div className="info-container">
-      <div className="header">
-        <h1 className="header-title">Recursos informativos</h1>
-      </div>
+      <Header 
+        title="Recursos informativos" 
+        icon={faBook}
+        showRating={false}
+        rating={null}
+      ></Header>
       <div className="info-list">
         {resources.map((resource) => (
           <div

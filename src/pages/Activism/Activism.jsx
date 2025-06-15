@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "./Activism.css";
 import Image from "../../assets/img/image.png";
 import Loading from "../../components/Loading/Loading"; // Importar el componente Loading
+import Header from "../../components/Header/Header";
+import { faHandshake } from "@fortawesome/free-solid-svg-icons";
 
 const Activism = () => {
   const [events, setEvents] = useState([]);
@@ -27,9 +29,12 @@ const Activism = () => {
 
   return (
     <div className="activism-container">
-      <div className="header">
-        <h1 className="header-title">Activismos</h1>
-      </div>
+      <Header 
+        title="Activismos" 
+        icon={faHandshake}
+        showRating={false}
+        rating={null}
+      ></Header>
       <div className="activism">
         {events.map((event) => (
           <div

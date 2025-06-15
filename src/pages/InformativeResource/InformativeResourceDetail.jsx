@@ -1,66 +1,134 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import Loading from "../../components/Loading/Loading";
-import "./InformativeResourceDetail.css";
-import defaultImage from "../../assets/img/image.png"; // Asegúrate de que existe
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
+import Header from '../../components/Header/Header';
+import { faBook, faCalendarAlt, faUser, faLink, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import defaultImage from '../../assets/img/defaultprofileimage.jpg';
+import './InformativeResourceDetail.css';
 
 const InformativeResourceDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const [resource, setResource] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    fetch(`https://localhost:7032/api/InformativeResource/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchResource = async () => {
+      try {
+        const response = await fetch(`https://localhost:7032/api/InformativeResource/${id}`);
+        if (!response.ok) {
+          throw new Error('Error al cargar el recurso');
+        }
+        const data = await response.json();
         setResource(data);
+      } catch (err) {
+        setError('Error al cargar el recurso informativo');
+        console.error('Error:', err);
+      } finally {
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching resource detail:", error);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchResource();
   }, [id]);
 
-  const handleImageError = (e) => {
-    if (e.target.src !== defaultImage) {
-      e.target.onerror = null; // Evita loop infinito
-      e.target.src = defaultImage;
+  const handleEdit = () => {
+    navigate(`/informative-resources/edit/${id}`);
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm('¿Estás seguro de que deseas eliminar este recurso informativo?')) {
+      try {
+        const response = await fetch(`https://localhost:7032/api/InformativeResource/${id}`, {
+          method: 'DELETE',
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al eliminar el recurso');
+        }
+
+        navigate('/informative-resources');
+      } catch (err) {
+        setError('Error al eliminar el recurso informativo');
+        console.error('Error:', err);
+      }
     }
   };
 
   if (loading) {
-    return <Loading />;
+    return <div className="loading">Cargando...</div>;
   }
 
-  const resourceMap = {
-    0: "Libro",
-    1: "Película/Documental",
-    2: "Recurso Web",
-  };
+  if (error) {
+    return <div className="error-container">{error}</div>;
+  }
+
+  if (!resource) {
+    return <div className="error-container">Recurso no encontrado</div>;
+  }
 
   return (
-    <div className="resource-detail-container">
-      <div className="divtitle">
-        <h1>{resource?.name}</h1>
-      </div>
-      <img
-        className="resource-detail-image"
-        src={
-          resource?.image && resource.image.trim() !== ""
-            ? resource.image
-            : defaultImage
-        }
-        alt={resource?.name}
-        onError={handleImageError}
+    <div className="informative-resource-detail">
+      <Header 
+        title={resource.name}
+        icon={faBook}
+        backUrl="/informative-resources"
       />
-      <p className="resource-detail-text-description">
-        {resource?.description}
-      </p>
-      <p className="resource-detail-text">Tópico: {resource?.topic}</p>
-      <p className="resource-detail-text">Plataforma: {resource?.platform}</p>
-      <p className="resource-detail-text">Tipo: {resourceMap[resource.type]}</p>
+      
+      <div className="detail-content">
+        <div className="detail-section">
+          <div className="image-section">
+            <img 
+              src={resource.image || defaultImage} 
+              alt={resource.name}
+              className="resource-image"
+            />
+          </div>
+        </div>
+
+        <div className="detail-section">
+          <h2>Información del Recurso</h2>
+          <div className="contact-info">
+            <div className="info-item">
+              <FontAwesomeIcon icon={faBook} />
+              <strong>Tipo:</strong> {resource.type}
+            </div>
+            <div className="info-item">
+              <FontAwesomeIcon icon={faBook} />
+              <strong>Tema:</strong> {resource.topic}
+            </div>
+            <div className="info-item">
+              <FontAwesomeIcon icon={faLink} />
+              <strong>Plataforma:</strong> {resource.platform}
+            </div>
+            <div className="info-item">
+              <FontAwesomeIcon icon={faUser} />
+              <strong>Autor:</strong> {resource.user?.name || 'No especificado'}
+            </div>
+          </div>
+        </div>
+
+        <div className="detail-section">
+          <h2>Descripción</h2>
+          <p className="description">{resource.description}</p>
+        </div>
+
+        {user?.role === 'Admin' && (
+          <div className="admin-actions">
+            <button className="edit-button" onClick={handleEdit}>
+              <FontAwesomeIcon icon={faEdit} />
+              Editar Recurso
+            </button>
+            <button className="delete-button" onClick={handleDelete}>
+              <FontAwesomeIcon icon={faTrash} />
+              Eliminar Recurso
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

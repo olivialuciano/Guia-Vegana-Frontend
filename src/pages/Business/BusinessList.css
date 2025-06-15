@@ -19,8 +19,12 @@ body {
 }
 
 .business-list-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.business-list-content {
   padding: 20px;
-  position: relative;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -141,29 +145,32 @@ body {
   transform: translateY(-1px);
 }
 
-.add-business-button {
-  background-color: var(--primary-green);
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 10px;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
+.add-button {
   display: flex;
   align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+.error-container {
+  display: flex;
   justify-content: center;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.add-business-button svg {
-  font-size: 1.5rem;
-}
-
-.add-business-button:hover {
-  background-color: var(--primary-green-dark);
-  transform: translateY(-1px);
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  color: #d32f2f;
+  font-size: 16px;
 }
 
 .business-grid {
@@ -235,8 +242,8 @@ body {
 }
 
 @media (max-width: 768px) {
-  .business-list-container {
-    padding: 1rem;
+  .business-list-content {
+    padding: 16px;
   }
 
   .search-filter-container {
@@ -253,7 +260,7 @@ body {
     width: 100%;
   }
 
-  .add-business-button {
+  .add-button {
     width: 100%;
     justify-content: center;
   }
