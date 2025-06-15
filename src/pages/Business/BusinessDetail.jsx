@@ -104,7 +104,6 @@ const BusinessDetail = () => {
       <div className="business-header">
         <h1 className="business-title">{business.name}</h1>
         <div className="business-rating">
-          <FontAwesomeIcon icon={faStar} />
           <span>{ratingMap[business.rating] || business.rating}</span>
         </div>
       </div>
