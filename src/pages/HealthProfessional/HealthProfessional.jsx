@@ -1,62 +1,69 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "./HealthProfessional.css";
-import defaultImage from "../../assets/img/defaultprofileimage.jpg"; // Imagen por defecto
-import Loading from "../../components/Loading/Loading";
-import Header from "../../components/Header/Header";
-import { faUserDoctor } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import Header from '../../components/Header/Header';
+import CardGrid from '../../components/CardGrid/CardGrid';
+import { faUserMd } from '@fortawesome/free-solid-svg-icons';
+import './HealthProfessional.css';
 
 const HealthProfessional = () => {
-  const [healthProfessionals, setHealthProfessionals] = useState([]);
+  const { user } = useContext(AuthContext);
+  const [professionals, setProfessionals] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    fetch("https://localhost:7032/api/HealthProfessional")
-      .then((response) => response.json())
-      .then((data) => {
-        setHealthProfessionals(data);
-        setLoading(false); // Se desactiva el loading solo después de recibir los datos
-      })
-      .catch((error) => {
-        console.error("Error fetching health professionals:", error);
-        setLoading(false); // También se desactiva el loading si hay un error
-      });
+    const fetchProfessionals = async () => {
+      try {
+        const response = await fetch('https://localhost:7032/api/HealthProfessional');
+        if (!response.ok) {
+          throw new Error('Error al cargar los profesionales');
+        }
+        const data = await response.json();
+        setProfessionals(data);
+      } catch (err) {
+        setError('Error al cargar los profesionales');
+        console.error('Error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfessionals();
   }, []);
 
   if (loading) {
-    return <Loading />;
+    return <div className="loading">Cargando...</div>;
   }
 
-  const handleImageError = (e) => {
-    e.target.src = defaultImage; // Reemplaza la imagen con la predeterminada
-  };
+  if (error) {
+    return <div className="error-container">{error}</div>;
+  }
 
   return (
-    <div className="health-container">
+    <div className="health-professional">
       <Header 
-        title="Profesionales de la Salud" 
-        icon={faUserDoctor}
+        title="Profesionales de la Salud"
+        icon={faUserMd}
         showRating={false}
         rating={null}
-      ></Header>
-      <div className="health-list">
-        {healthProfessionals.map((professional) => (
-          <Link
-            key={professional.id}
-            to={`/healthprofessional/${professional.id}`}
-            className="health-card"
-          >
-            <img
-              src={professional.image || defaultImage} // Si la imagen no existe, usa la predeterminada
-              alt={professional.name}
-              className="health-image"
-              onError={handleImageError} // Si la URL es inválida, se reemplaza
-            />
-            <h2 className="health-name">{professional.name}</h2>
-            <p className="health-specialty">{professional.specialty}</p>
-          </Link>
-        ))}
+      />
+      
+      <div className="list-content">
+        {user?.role === 'Admin' && (
+          <div className="admin-actions">
+            <button 
+              className="add-button"
+              onClick={() => window.location.href = '/health-professionals/new'}
+            >
+              Agregar Profesional
+            </button>
+          </div>
+        )}
+
+        <CardGrid 
+          items={professionals}
+          entityType="healthProfessional"
+        />
       </div>
     </div>
   );

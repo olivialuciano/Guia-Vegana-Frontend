@@ -1,70 +1,72 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Usamos useNavigate para la navegación
-import "./InformativeResource.css";
-import Loading from "../../components/Loading/Loading";
-import defaultImage from "../../assets/img/image.png";
-import Header from "../../components/Header/Header";
-import { faBook } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import Header from '../../components/Header/Header';
+import CardGrid from '../../components/CardGrid/CardGrid';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
+import './InformativeResource.css';
 
-const InformativeResources = () => {
+const InformativeResource = () => {
+  const { user } = useContext(AuthContext);
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); // Hook de navegación
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    fetch("https://localhost:7032/api/InformativeResource")
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchResources = async () => {
+      try {
+        const response = await fetch('https://localhost:7032/api/InformativeResource');
+        if (!response.ok) {
+          throw new Error('Error al cargar los recursos');
+        }
+        const data = await response.json();
         setResources(data);
+      } catch (err) {
+        setError('Error al cargar los recursos');
+        console.error('Error:', err);
+      } finally {
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching informative resources:", error);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchResources();
   }, []);
 
   if (loading) {
-    return <Loading />;
+    return <div className="loading">Cargando...</div>;
   }
 
-  const handleImageError = (e) => {
-    e.target.src = defaultImage; // Imagen por defecto si falla
-  };
-
-  // Función para manejar el clic y redirigir a la página de detalles
-  const handleCardClick = (id) => {
-    navigate(`/informativeresource/${id}`); // Redirige al detalle de la tarjeta
-  };
+  if (error) {
+    return <div className="error-container">{error}</div>;
+  }
 
   return (
-    <div className="info-container">
+    <div className="informative-resource">
       <Header 
-        title="Recursos informativos" 
+        title="Recursos Informativos"
         icon={faBook}
         showRating={false}
         rating={null}
-      ></Header>
-      <div className="info-list">
-        {resources.map((resource) => (
-          <div
-            key={resource.id}
-            className="info-card"
-            onClick={() => handleCardClick(resource.id)} // Redirige al hacer clic
-          >
-            <img
-              src={resource.image ? resource.image : defaultImage}
-              alt={resource.name}
-              className="info-image"
-              onError={handleImageError}
-            />
-            <h2 className="info-name">{resource.name}</h2>
+      />
+      
+      <div className="list-content">
+        {user?.role === 'Admin' && (
+          <div className="admin-actions">
+            <button 
+              className="add-button"
+              onClick={() => window.location.href = '/informative-resources/new'}
+            >
+              Agregar Recurso
+            </button>
           </div>
-        ))}
+        )}
+
+        <CardGrid 
+          items={resources}
+          entityType="informativeResource"
+        />
       </div>
     </div>
   );
 };
 
-export default InformativeResources;
+export default InformativeResource;

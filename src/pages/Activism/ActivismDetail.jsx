@@ -75,7 +75,8 @@ const ActivismDetail = () => {
       <Header 
         title={activism.name}
         icon={faUser}
-        backUrl="/activism"
+        showRating={false}
+        rating={null}
       />
       
       <div className="detail-content">

@@ -1,61 +1,69 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./Activism.css";
-import Image from "../../assets/img/image.png";
-import Loading from "../../components/Loading/Loading"; // Importar el componente Loading
-import Header from "../../components/Header/Header";
-import { faHandshake } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import Header from '../../components/Header/Header';
+import CardGrid from '../../components/CardGrid/CardGrid';
+import { faHandHoldingHeart } from '@fortawesome/free-solid-svg-icons';
+import './Activism.css';
 
 const Activism = () => {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true); // Estado de carga
-  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  const [activism, setActivism] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    fetch("https://localhost:7032/api/Activism")
-      .then((response) => response.json())
-      .then((data) => {
-        setEvents(data);
+    const fetchActivism = async () => {
+      try {
+        const response = await fetch('https://localhost:7032/api/Activism');
+        if (!response.ok) {
+          throw new Error('Error al cargar las actividades');
+        }
+        const data = await response.json();
+        setActivism(data);
+      } catch (err) {
+        setError('Error al cargar las actividades');
+        console.error('Error:', err);
+      } finally {
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching events:", error);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchActivism();
   }, []);
 
-  if (loading) return <Loading />; // Mostrar el componente Loading mientras carga
+  if (loading) {
+    return <div className="loading">Cargando...</div>;
+  }
+
+  if (error) {
+    return <div className="error-container">{error}</div>;
+  }
 
   return (
-    <div className="activism-container">
+    <div className="activism">
       <Header 
-        title="Activismos" 
-        icon={faHandshake}
+        title="Actividades de Activismo"
+        icon={faHandHoldingHeart}
         showRating={false}
         rating={null}
-      ></Header>
-      <div className="activism">
-        {events.map((event) => (
-          <div
-            key={event.id}
-            className="activism-card"
-            onClick={() => navigate(`/activism/${event.id}`)}
-            style={{ cursor: "pointer" }}
-          >
-            <img
-              src={event.image || Image}
-              alt={event.name}
-              className="activism-image"
-              onError={(e) => {
-                if (e.target.src !== Image) {
-                  e.target.src = Image;
-                }
-              }}
-            />
-            <h2 className="activism-title">{event.name}</h2>
+      />
+      
+      <div className="list-content">
+        {user?.role === 'Admin' && (
+          <div className="admin-actions">
+            <button 
+              className="add-button"
+              onClick={() => window.location.href = '/activism/new'}
+            >
+              Agregar Actividad
+            </button>
           </div>
-        ))}
+        )}
+
+        <CardGrid 
+          items={activism}
+          entityType="activism"
+        />
       </div>
     </div>
   );
