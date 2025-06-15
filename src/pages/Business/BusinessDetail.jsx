@@ -137,7 +137,7 @@ const BusinessDetail = () => {
 
         <div className="business-features">
           {business.glutenFree && (
-            <div className="feature-tag">
+            <div className="feature-tag-sintacc">
               <FontAwesomeIcon icon={faBreadSlice} />
               <span>Opciones sin TACC</span>
             </div>
