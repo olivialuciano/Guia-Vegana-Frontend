@@ -129,7 +129,7 @@ const ActivismDetail = () => {
   };
 
   const getImageUrl = () => {
-    if (!activism.image) return defaultImage;
+    if (!activism.image) return image;
     
     // Si la URL es de Google Drive, asegurarse de que sea accesible
     if (activism.image.includes('drive.google.com')) {
@@ -184,7 +184,7 @@ const ActivismDetail = () => {
               className="activism-image"
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = defaultImage;
+                e.target.src = image;
               }}
             />
           </div>
