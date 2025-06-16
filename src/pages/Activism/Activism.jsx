@@ -3,6 +3,7 @@ import { AuthContext } from '../../context/AuthContext';
 import Header from '../../components/Header/Header';
 import CardGrid from '../../components/CardGrid/CardGrid';
 import { faHandHoldingHeart } from '@fortawesome/free-solid-svg-icons';
+import NewActivismForm from '../../components/NewActivismForm/NewActivismForm';
 import './Activism.css';
 
 const Activism = () => {
@@ -10,26 +11,34 @@ const Activism = () => {
   const [activism, setActivism] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showNewForm, setShowNewForm] = useState(false);
+
+  const canEdit = user && (user.role === 'Sysadmin' || user.role === 'Investigador');
 
   useEffect(() => {
-    const fetchActivism = async () => {
-      try {
-        const response = await fetch('https://localhost:7032/api/Activism');
-        if (!response.ok) {
-          throw new Error('Error al cargar las actividades');
-        }
-        const data = await response.json();
-        setActivism(data);
-      } catch (err) {
-        setError('Error al cargar las actividades');
-        console.error('Error:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchActivism();
   }, []);
+
+  const fetchActivism = async () => {
+    try {
+      const response = await fetch('https://localhost:7032/api/Activism');
+      if (!response.ok) {
+        throw new Error('Error al cargar las actividades');
+      }
+      const data = await response.json();
+      setActivism(data);
+    } catch (err) {
+      setError('Error al cargar las actividades');
+      console.error('Error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleActivismAdded = (newActivism) => {
+    setActivism(prev => [...prev, newActivism]);
+    setShowNewForm(false);
+  };
 
   if (loading) {
     return <div className="loading">Cargando...</div>;
@@ -49,15 +58,22 @@ const Activism = () => {
       />
       
       <div className="list-content">
-        {user?.role === 'Admin' && (
+        {canEdit && (
           <div className="admin-actions">
             <button 
               className="add-button"
-              onClick={() => window.location.href = '/activism/new'}
+              onClick={() => setShowNewForm(true)}
             >
               Agregar Actividad
             </button>
           </div>
+        )}
+
+        {showNewForm && (
+          <NewActivismForm
+            onActivismAdded={handleActivismAdded}
+            onCancel={() => setShowNewForm(false)}
+          />
         )}
 
         <CardGrid 

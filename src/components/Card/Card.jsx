@@ -20,11 +20,29 @@ import './Card.css';
 
 const Card = ({ item, entityType }) => {
   const handleImageError = (e) => {
+    e.target.onerror = null;
     e.target.src = entityType === 'healthProfessional' ? defaultProfileImage : defaultImage;
   };
 
   const getDefaultImage = () => {
-    return entityType === 'healthProfessional' ? defaultProfileImage : defaultImage;
+    if (entityType === 'healthProfessional') return defaultProfileImage;
+    if (entityType === 'activism') return defaultImage;
+    return defaultImage;
+  };
+
+  const getImageUrl = () => {
+    if (!item.image) return getDefaultImage();
+    
+    // Si la URL es de Google Drive, asegurarse de que sea accesible
+    if (item.image.includes('drive.google.com')) {
+      // Convertir la URL de Google Drive a una URL directa de descarga
+      const fileId = item.image.match(/[-\w]{25,}/);
+      if (fileId) {
+        return `https://drive.google.com/uc?export=view&id=${fileId[0]}`;
+      }
+    }
+    
+    return item.image;
   };
 
   const getEntityIcon = () => {
@@ -152,7 +170,7 @@ const Card = ({ item, entityType }) => {
     <Link to={getEntityPath()} className="card">
       <div className="card-image-container">
         <img
-          src={item.image || getDefaultImage()}
+          src={getImageUrl()}
           alt={item.name || item.title}
           className="card-image"
           onError={handleImageError}
