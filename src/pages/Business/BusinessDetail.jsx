@@ -460,7 +460,24 @@ const BusinessDetail = () => {
             }));
           }}
         />
-        <VeganOption options={veganOptions} />
+        <VeganOption 
+          veganOptions={veganOptions} 
+          businessId={parseInt(id)}
+          onOptionAdded={(newOption) => {
+            console.log('New option added:', newOption); // Debug log
+            setVeganOptions(prev => [...prev, newOption]);
+          }}
+          onOptionUpdated={(updatedOption) => {
+            console.log('Option updated:', updatedOption); // Debug log
+            setVeganOptions(prev => 
+              prev.map(option => option.id === updatedOption.id ? updatedOption : option)
+            );
+          }}
+          onOptionDeleted={(optionId) => {
+            console.log('Option deleted:', optionId); // Debug log
+            setVeganOptions(prev => prev.filter(option => option.id !== optionId));
+          }}
+        />
       </div>
 
       <ConfirmDialog
