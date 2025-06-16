@@ -12,49 +12,77 @@ import { AuthContext } from "../../context/AuthContext";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
 
 const BusinessDetail = () => {
-  const [business, setBusiness] = useState(null);
+  const [business, setBusiness] = useState({
+    openingHours: []
+  });
   const [openingHours, setOpeningHours] = useState([]);
   const [veganOptions, setVeganOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedBusiness, setEditedBusiness] = useState(null);
+  const [editedBusiness, setEditedBusiness] = useState({
+    openingHours: []
+  });
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { id } = useParams();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchBusiness();
+    if (id) {
+      fetchBusiness();
+    }
   }, [id]);
 
   const fetchBusiness = async () => {
     try {
       setLoading(true);
+      setError(null);
 
-      // Fetch para obtener los detalles del negocio
-      const businessResponse = await fetch(
-        `https://localhost:7032/api/Business/${id}`
-      );
-      const businessData = await businessResponse.json();
+      const response = await fetch(`https://localhost:7032/api/Business/${id}`);
+      if (!response.ok) {
+        throw new Error('Error al cargar el negocio');
+      }
+      const data = await response.json();
+      setBusiness({
+        ...data,
+        openingHours: data.openingHours || []
+      });
+      setEditedBusiness({
+        ...data,
+        openingHours: data.openingHours || []
+      });
 
-      setBusiness(businessData);
-      setEditedBusiness(businessData);
+      // Fetch opening hours
+      const hoursResponse = await fetch(`https://localhost:7032/api/OpeningHour/business/${id}`);
+      if (hoursResponse.ok) {
+        const hoursData = await hoursResponse.json();
+        setBusiness(prev => ({
+          ...prev,
+          openingHours: hoursData || []
+        }));
+      } else if (hoursResponse.status === 404) {
+        // If no hours found, set empty array
+        setBusiness(prev => ({
+          ...prev,
+          openingHours: []
+        }));
+      } else {
+        throw new Error('Error al cargar los horarios');
+      }
 
-      // Fetch para obtener los horarios de apertura
-      const openingHoursResponse = await fetch(
-        `https://localhost:7032/api/openinghour/business/${id}`
-      );
-      const openingHoursData = await openingHoursResponse.json();
-      setOpeningHours(openingHoursData);
-
-      // Fetch para obtener las opciones veganas
-      const veganOptionsResponse = await fetch(
-        `https://localhost:7032/api/VeganOption/business/${id}`
-      );
-      const veganOptionsData = await veganOptionsResponse.json();
-      setVeganOptions(veganOptionsData);
+      // Fetch vegan options
+      const optionsResponse = await fetch(`https://localhost:7032/api/VeganOption/business/${id}`);
+      if (optionsResponse.ok) {
+        const optionsData = await optionsResponse.json();
+        setVeganOptions(optionsData || []);
+      } else if (optionsResponse.status === 404) {
+        setVeganOptions([]);
+      } else {
+        throw new Error('Error al cargar las opciones veganas');
+      }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -161,11 +189,15 @@ const BusinessDetail = () => {
   };
 
   if (loading) {
-    return <Loading />;
+    return <div className="loading">Cargando...</div>;
+  }
+
+  if (error) {
+    return <div className="error-message">{error}</div>;
   }
 
   if (!business) {
-    return <div>No se encontraron detalles del negocio.</div>;
+    return <div className="error-message">No se encontró el negocio</div>;
   }
 
   const zoneMap = {
@@ -401,7 +433,33 @@ const BusinessDetail = () => {
       </div>
 
       <div className="business-details-grid">
-        <OpeningHour hours={openingHours} />
+        <OpeningHour 
+          openingHours={business.openingHours || []} 
+          businessId={parseInt(id)}
+          onHourAdded={(newHour) => {
+            console.log('New hour added:', newHour); // Debug log
+            setBusiness(prev => ({
+              ...prev,
+              openingHours: [...(prev.openingHours || []), newHour]
+            }));
+          }}
+          onHourUpdated={(updatedHour) => {
+            console.log('Hour updated:', updatedHour); // Debug log
+            setBusiness(prev => ({
+              ...prev,
+              openingHours: prev.openingHours.map(hour => 
+                hour.id === updatedHour.id ? updatedHour : hour
+              )
+            }));
+          }}
+          onHourDeleted={(hourId) => {
+            console.log('Hour deleted:', hourId); // Debug log
+            setBusiness(prev => ({
+              ...prev,
+              openingHours: prev.openingHours.filter(hour => hour.id !== hourId)
+            }));
+          }}
+        />
         <VeganOption options={veganOptions} />
       </div>
 

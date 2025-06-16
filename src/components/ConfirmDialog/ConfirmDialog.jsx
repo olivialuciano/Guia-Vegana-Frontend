@@ -1,6 +1,4 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import './ConfirmDialog.css';
 
 const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message }) => {
@@ -9,20 +7,11 @@ const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message }) => {
   return (
     <div className="confirm-dialog-overlay">
       <div className="confirm-dialog">
-        <div className="confirm-dialog-header">
-          <FontAwesomeIcon icon={faExclamationTriangle} className="warning-icon" />
-          <h3>{title}</h3>
-        </div>
-        <div className="confirm-dialog-content">
-          <p>{message}</p>
-        </div>
-        <div className="confirm-dialog-actions">
-          <button className="cancel-button" onClick={onClose}>
-            Cancelar
-          </button>
-          <button className="confirm-button" onClick={onConfirm}>
-            Eliminar
-          </button>
+        <h3>{title}</h3>
+        <p>{message}</p>
+        <div className="confirm-dialog-buttons">
+          <button className="cancel-btn" onClick={onClose}>Cancelar</button>
+          <button className="confirm-btn" onClick={onConfirm}>Confirmar</button>
         </div>
       </div>
     </div>
