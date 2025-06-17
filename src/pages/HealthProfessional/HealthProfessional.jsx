@@ -3,6 +3,7 @@ import { AuthContext } from '../../context/AuthContext';
 import Header from '../../components/Header/Header';
 import CardGrid from '../../components/CardGrid/CardGrid';
 import { faUserMd } from '@fortawesome/free-solid-svg-icons';
+import NewHealthProfessionalForm from '../../components/NewHealthProfessionalForm/NewHealthProfessionalForm';
 import './HealthProfessional.css';
 
 const HealthProfessional = () => {
@@ -10,26 +11,34 @@ const HealthProfessional = () => {
   const [professionals, setProfessionals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showNewForm, setShowNewForm] = useState(false);
+
+  const canEdit = user && (user.role === 'Sysadmin' || user.role === 'Investigador');
 
   useEffect(() => {
-    const fetchProfessionals = async () => {
-      try {
-        const response = await fetch('https://localhost:7032/api/HealthProfessional');
-        if (!response.ok) {
-          throw new Error('Error al cargar los profesionales');
-        }
-        const data = await response.json();
-        setProfessionals(data);
-      } catch (err) {
-        setError('Error al cargar los profesionales');
-        console.error('Error:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProfessionals();
   }, []);
+
+  const fetchProfessionals = async () => {
+    try {
+      const response = await fetch('https://localhost:7032/api/HealthProfessional');
+      if (!response.ok) {
+        throw new Error('Error al cargar los profesionales');
+      }
+      const data = await response.json();
+      setProfessionals(data);
+    } catch (err) {
+      setError('Error al cargar los profesionales');
+      console.error('Error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleProfessionalAdded = (newProfessional) => {
+    setProfessionals(prev => [...prev, newProfessional]);
+    setShowNewForm(false);
+  };
 
   if (loading) {
     return <div className="loading">Cargando...</div>;
@@ -49,15 +58,22 @@ const HealthProfessional = () => {
       />
       
       <div className="list-content">
-        {user?.role === 'Admin' && (
+        {canEdit && (
           <div className="admin-actions">
             <button 
               className="add-button"
-              onClick={() => window.location.href = '/health-professionals/new'}
+              onClick={() => setShowNewForm(true)}
             >
               Agregar Profesional
             </button>
           </div>
+        )}
+
+        {showNewForm && (
+          <NewHealthProfessionalForm
+            onProfessionalAdded={handleProfessionalAdded}
+            onCancel={() => setShowNewForm(false)}
+          />
         )}
 
         <CardGrid 

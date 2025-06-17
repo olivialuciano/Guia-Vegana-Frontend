@@ -1,37 +1,32 @@
 .health-professional-detail {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding-top: 1rem;
-  margin-top: 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .detail-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  margin-top: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 20px;
 }
 
 .detail-section {
-  background-color: white;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
 }
 
 .image-section {
-  display: flex;
-  justify-content: center;
-  padding: 1rem;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .professional-image {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  max-height: 400px;
   object-fit: cover;
-  border: 4px solid #4CAF50;
 }
 
 .detail-section h2 {
@@ -46,39 +41,26 @@
 .contact-info {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 15px;
 }
 
 .info-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  color: #666;
-  font-size: 1rem;
-  padding: 0.5rem;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.info-item:hover {
-  background-color: #f5f5f5;
+  gap: 10px;
+  font-size: 1.1em;
 }
 
 .info-item svg {
   color: #4CAF50;
-  font-size: 1.1rem;
-  min-width: 20px;
-}
-
-.info-item strong {
-  color: #333;
-  margin-right: 0.5rem;
+  width: 20px;
 }
 
 .info-item a {
   color: #4CAF50;
   text-decoration: none;
   transition: color 0.3s ease;
+  word-break: break-all;
 }
 
 .info-item a:hover {
@@ -86,131 +68,166 @@
   text-decoration: underline;
 }
 
-.specialties-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.specialty-tag {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-}
-
-.description {
-  color: #666;
+.specialty {
   line-height: 1.6;
-  white-space: pre-line;
-  font-size: 1rem;
+  color: #333;
+  font-size: 1.1em;
 }
 
-.rating-display {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.stars {
-  display: flex;
-  gap: 0.25rem;
-}
-
-.rating-icon {
-  font-size: 1.25rem;
-  transition: transform 0.3s ease;
-}
-
-.rating-icon.filled {
-  color: #FFD700;
-}
-
-.rating-icon.empty {
-  color: #ddd;
-}
-
-.rating-value {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #666;
-}
-
-.admin-actions {
+.header-actions {
   display: flex;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-left: auto;
 }
 
-.edit-button,
-.delete-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
+.icon-button {
+  width: 40px;
+  height: 40px;
   border: none;
-  border-radius: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.icon-button svg {
+  font-size: 1.2rem;
   transition: all 0.3s ease;
 }
 
-.edit-button {
+.icon-button.edit {
+  color: #4CAF50;
+}
+
+.icon-button.edit:hover {
+  background-color: #e8f5e9;
+  transform: translateY(-2px);
+}
+
+.icon-button.delete {
+  color: #dc3545;
+}
+
+.icon-button.delete:hover {
+  background-color: #ffebee;
+  transform: translateY(-2px);
+}
+
+/* Form Styles */
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+}
+
+.form-group input:focus {
+  border-color: #4CAF50;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+  background-color: white;
+}
+
+.form-group input::placeholder {
+  color: #999;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.cancel-button,
+.save-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-button {
+  background-color: #f8f9fa;
+  color: #666;
+}
+
+.save-button {
   background-color: #4CAF50;
   color: white;
 }
 
-.edit-button:hover {
-  background-color: #45a049;
+.cancel-button:hover {
+  background-color: #e9ecef;
 }
 
-.delete-button {
-  background-color: #f44336;
-  color: white;
+.save-button:hover {
+  background-color: #43A047;
 }
 
-.delete-button:hover {
-  background-color: #d32f2f;
+.loading {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.2em;
+  color: #666;
 }
 
 .error-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  color: #d32f2f;
-  font-size: 1rem;
+  text-align: center;
+  padding: 20px;
+  color: #f44336;
+  font-size: 1.2em;
 }
 
 @media (max-width: 768px) {
+  .health-professional-detail {
+    padding: 10px;
+  }
+
   .detail-content {
-    padding: 1rem;
-    margin-top: 1rem;
+    padding: 15px;
   }
 
-  .detail-section {
-    padding: 1rem;
-  }
-
-  .professional-image {
-    width: 150px;
-    height: 150px;
-  }
-
-  .admin-actions {
-    flex-direction: column;
+  .header-actions {
     gap: 0.5rem;
   }
 
-  .edit-button,
-  .delete-button {
-    width: 100%;
-    justify-content: center;
+  .icon-button {
+    width: 35px;
+    height: 35px;
   }
 
-  .info-item {
-    font-size: 0.9rem;
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-button,
+  .save-button {
+    width: 100%;
   }
 }
