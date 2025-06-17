@@ -171,7 +171,7 @@ const ActivismDetail = () => {
             <button className="icon-button delete" onClick={handleDelete} title="Eliminar activismo">
               <FontAwesomeIcon icon={faTrash} />
             </button>
-          </div>
+      </div>
         )}
       </Header>
 
@@ -296,8 +296,8 @@ const ActivismDetail = () => {
                   {' '}
                   <a 
                     href={activism.socialMediaLink} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+          target="_blank"
+          rel="noopener noreferrer"
                   >
                     {activism.socialMediaLink}
                   </a>
