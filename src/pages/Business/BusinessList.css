@@ -201,10 +201,11 @@ body {
   transform: translateY(-1px);
 }
 
-.business-grid {
+.business-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
+  padding: 1.5rem;
 }
 
 .business-card {
@@ -270,8 +271,10 @@ body {
 }
 
 @media (max-width: 768px) {
-  .business-list-content {
-    padding: 16px;
+  .business-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
   }
 
   .search-filter-container {
@@ -291,6 +294,14 @@ body {
   .add-button {
     width: 100%;
     justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .business-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0.5rem;
   }
 }
 

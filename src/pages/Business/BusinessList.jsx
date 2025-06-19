@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Header from "../../components/Header/Header";
-import CardGrid from "../../components/CardGrid/CardGrid";
+import BusinessCard from "../../components/BusinessCard/BusinessCard";
 import NewBusinessForm from "../../components/NewBusinessForm/NewBusinessForm";
 import Loading from "../../components/Loading/Loading";
 import { faStore } from "@fortawesome/free-solid-svg-icons";
@@ -21,7 +21,35 @@ const BusinessList = () => {
         throw new Error("Error al cargar los negocios");
       }
       const data = await response.json();
-      setBusinesses(data);
+      
+      // Cargar horarios de apertura para cada negocio
+      const businessesWithHours = await Promise.all(
+        data.map(async (business) => {
+          try {
+            const hoursResponse = await fetch(`https://localhost:7032/api/OpeningHour/business/${business.id}`);
+            if (hoursResponse.ok) {
+              const hoursData = await hoursResponse.json();
+              return {
+                ...business,
+                openingHours: hoursData || []
+              };
+            } else {
+              return {
+                ...business,
+                openingHours: []
+              };
+            }
+          } catch (error) {
+            console.error(`Error loading hours for business ${business.id}:`, error);
+            return {
+              ...business,
+              openingHours: []
+            };
+          }
+        })
+      );
+      
+      setBusinesses(businessesWithHours);
     } catch (err) {
       setError("Error al cargar los negocios");
       console.error("Error:", err);
@@ -66,7 +94,11 @@ const BusinessList = () => {
           </div>
         )}
 
-        <CardGrid items={businesses} entityType="business" />
+        <div className="business-cards-grid">
+          {businesses.map((business) => (
+            <BusinessCard key={business.id} business={business} />
+          ))}
+        </div>
       </div>
 
       {showForm && <NewBusinessForm onClose={handleCloseForm} />}

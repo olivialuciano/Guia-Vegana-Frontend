@@ -579,3 +579,35 @@ body {
   background-color: #ffebee;
   transform: translateY(-2px);
 }
+
+.business-status-indicator {
+  margin-bottom: 1rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.status-badge.open {
+  background-color: #4CAF50;
+}
+
+.status-badge.closed {
+  background-color: #f44336;
+}
+
+.status-badge.unknown {
+  background-color: #9e9e9e;
+}
+
+.status-badge svg {
+  font-size: 1rem;
+}

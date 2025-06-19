@@ -7,9 +7,10 @@ import VeganOption from "../../components/VeganOption/VeganOption";
 import defaultImage from "../../assets/img/image.png";
 import Header from "../../components/Header/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faMapMarkerAlt, faTruck, faLeaf, faBreadSlice, faStore, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faMapMarkerAlt, faTruck, faLeaf, faBreadSlice, faStore, faEdit, faTrash, faDoorOpen, faDoorClosed, faClock } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from "../../context/AuthContext";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
+import { useBusinessStatus } from "../../hooks/useBusinessStatus";
 
 const BusinessDetail = () => {
   const [business, setBusiness] = useState({
@@ -27,6 +28,8 @@ const BusinessDetail = () => {
   const { id } = useParams();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [error, setError] = useState(null);
+
+  const { isOpen, getStatusText, getStatusClass } = useBusinessStatus(business.openingHours);
 
   useEffect(() => {
     if (id) {
@@ -186,6 +189,11 @@ const BusinessDetail = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+  };
+
+  const getStatusIcon = () => {
+    if (isOpen === null) return faClock;
+    return isOpen ? faDoorOpen : faDoorClosed;
   };
 
   if (loading) {
@@ -397,6 +405,13 @@ const BusinessDetail = () => {
           </form>
         ) : (
           <>
+            <div className="business-status-indicator">
+              <div className={`status-badge ${getStatusClass()}`}>
+                <FontAwesomeIcon icon={getStatusIcon()} />
+                <span>{getStatusText()}</span>
+              </div>
+            </div>
+
             <div className="business-type">
               {businessTypeMap[business.businessType] || business.businessType}
             </div>
