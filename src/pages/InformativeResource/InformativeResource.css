@@ -16,6 +16,7 @@
   min-height: 100vh;
   margin-top: 0;
   padding-top: 4rem; /* Agrega suficiente espacio para que el contenido no se solape */
+  background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 50%, #f0f8f0 100%);
 }
 
 .info-list {

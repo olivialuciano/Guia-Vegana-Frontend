@@ -2,13 +2,13 @@
   --green: #86cd82;
   --dark-green: #5c8f58;
   --light-green: #d3efd1;
-  --text: #333;
+  --text: #344234;
   --white: #fff;
 }
 
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--light-green);
+  background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 50%, #f0f8f0 100%);
   margin: 0;
   padding: 0;
 }
@@ -44,6 +44,10 @@ body {
 .home-title {
   font-size: 2.2rem;
   margin-bottom: 10px;
+  color: var(--text);
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .home-description {
@@ -51,6 +55,7 @@ body {
   max-width: 800px;
   margin: 0 auto;
   line-height: 1.6;
+  color: var(--text);
 }
 
 /* Tarjetas */

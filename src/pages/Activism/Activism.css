@@ -4,6 +4,7 @@
   align-items: center;
   min-height: 100vh;
   margin-top: 6rem;
+  background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 50%, #f0f8f0 100%);
 }
 
 .activism {

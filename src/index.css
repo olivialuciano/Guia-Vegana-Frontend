@@ -20,13 +20,23 @@
   box-sizing: border-box;
 }
 
+html {
+  background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 50%, #f0f8f0 100%);
+  min-height: 100vh;
+}
+
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   line-height: 1.6;
   color: var(--text-primary);
-  background-color: var(--background-light);
+  background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 50%, #f0f8f0 100%);
   min-height: 100vh;
   width: 100%;
+}
+
+#root {
+  background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 50%, #f0f8f0 100%);
+  min-height: 100vh;
 }
 
 a {
