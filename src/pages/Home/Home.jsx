@@ -1,37 +1,51 @@
 // import React from "react";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import "./Home.css";
 
-const cardData = [
-  {
-    id: 1,
-    title: "Negocios",
-    description:
-      "Bares, restaurantes, heladerías, dietéticas, panaderías y mercados.",
-    link: "/business",
-  },
-  {
-    id: 2,
-    title: "Activismo",
-    description: "Todo tipo de activismos.",
-    link: "/activism",
-  },
-  {
-    id: 3,
-    title: "Profesionales de la Salud",
-    description:
-      "Profesionales de la salud de distintas áreas de la medicina y nutrición.",
-    link: "/healthprofessional",
-  },
-  {
-    id: 4,
-    title: "Recursos Informativos",
-    description: "Películas, documentales, libros y recursos web.",
-    link: "/informativeresource",
-  },
-];
-
 const Home = () => {
+  const { user } = useContext(AuthContext);
+
+  const cardData = [
+    {
+      id: 1,
+      title: "Negocios",
+      description:
+        "Bares, restaurantes, heladerías, dietéticas, panaderías y mercados.",
+      link: "/business",
+    },
+    {
+      id: 2,
+      title: "Activismo",
+      description: "Todo tipo de activismos.",
+      link: "/activism",
+    },
+    {
+      id: 3,
+      title: "Profesionales de la Salud",
+      description:
+        "Profesionales de la salud de distintas áreas de la medicina y nutrición.",
+      link: "/healthprofessional",
+    },
+    {
+      id: 4,
+      title: "Recursos Informativos",
+      description: "Películas, documentales, libros y recursos web.",
+      link: "/informativeresource",
+    },
+  ];
+
+  // Agregar tarjeta de Usuarios solo para Sysadmin
+  if (user?.role === "Sysadmin") {
+    cardData.push({
+      id: 5,
+      title: "Usuarios",
+      description: "Gestión de usuarios del sistema.",
+      link: "/users",
+    });
+  }
+
   return (
     <main className="home">
       {/* Encapsulado en un div con fondo verde */}

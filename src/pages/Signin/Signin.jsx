@@ -80,7 +80,6 @@ const Signin = () => {
           <form onSubmit={handleSubmit} className="signin-form">
             <div className="input-group">
               <label>
-                <FontAwesomeIcon icon={faEnvelope} className="input-icon" />
                 Correo Electrónico
               </label>
               <input
@@ -95,7 +94,6 @@ const Signin = () => {
 
             <div className="input-group">
               <label>
-                <FontAwesomeIcon icon={faLock} className="input-icon" />
                 Contraseña
               </label>
               <input

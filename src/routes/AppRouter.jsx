@@ -13,6 +13,7 @@ import InformativeResource from "../pages/InformativeResource/InformativeResourc
 import InformativeResourceDetail from "../pages/InformativeResource/InformativeResourceDetail";
 import UserProfile from "../pages/UserProfile/UserProfile";
 import Comments from "../pages/Comments/Comments";
+import User from "../pages/User/User";
 
 const AppRouter = () => {
   return (
@@ -22,6 +23,7 @@ const AppRouter = () => {
       <Route path="/signin" element={<Signin />} />
       <Route path="/comments" element={<Comments />} />
       <Route path="/mi-usuario" element={<UserProfile />} />
+      <Route path="/users" element={<User />} />
       <Route path="/business" element={<Business />} />
       <Route path="/business/:id" element={<BusinessDetail />} />
       <Route path="/activism" element={<Activism />} />
