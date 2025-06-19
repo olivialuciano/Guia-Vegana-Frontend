@@ -317,7 +317,7 @@ const ActivismDetail = () => {
 
       <ConfirmDialog
         isOpen={showConfirmDialog}
-        onClose={() => setShowConfirmDialog(false)}
+        onCancel={() => setShowConfirmDialog(false)}
         onConfirm={confirmDelete}
         title="Eliminar Activismo"
         message="¿Estás seguro de que deseas eliminar este activismo?"

@@ -482,7 +482,7 @@ const BusinessDetail = () => {
 
       <ConfirmDialog
         isOpen={showDeleteConfirm}
-        onClose={() => setShowDeleteConfirm(false)}
+        onCancel={() => setShowDeleteConfirm(false)}
         onConfirm={handleDelete}
         title="Eliminar Negocio"
         message="¿Estás seguro de que deseas eliminar este negocio? Esta acción no se puede deshacer."
