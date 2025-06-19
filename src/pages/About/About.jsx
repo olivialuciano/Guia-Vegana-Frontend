@@ -12,8 +12,7 @@ const About = () => {
       <div className="about-content">
         <div className="about-text">
           <p className="primerp">
-            Bienvenid@s a nuestra plataforma. Somos Olivia Luciano y Lucía
-            Palazzini, creadoras y desarrolladoras de esta página web. Ambas
+            Bienvenid@s a nuestra página web. Somos Olivia y Lucía, creadoras y desarrolladoras de esta página web. Ambas
             somos Técnicas Universitarias en Programación, apasionadas por la
             tecnología y el desarrollo.
           </p>
@@ -35,12 +34,26 @@ const About = () => {
 
         <div className="about-photos">
           <div className="photo-container">
-            <img src={Olivia} alt="Olivia Luciano" className="profile-photo" />
-            <p>Olivia</p>
+            <a 
+              href="https://linkedin.com/in/olivialuciano"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="photo-link"
+            >
+              <img src={Olivia} alt="Olivia Luciano" className="profile-photo" />
+              <p>Olivia</p>
+            </a>
           </div>
           <div className="photo-container">
-            <img src={Lucia} alt="Lucía Palazzini" className="profile-photo" />
-            <p>Lucía</p>
+            <a 
+              href="https://linkedin.com/in/luciapalazzini"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="photo-link"
+            >
+              <img src={Lucia} alt="Lucía Palazzini" className="profile-photo" />
+              <p>Lucía</p>
+            </a>
           </div>
         </div>
       </div>
@@ -48,27 +61,7 @@ const About = () => {
       <h2>Contacto</h2>
       <p>
         📧 <strong>Correo electrónico:</strong>{" "}
-        <a href="mailto:tuemail@example.com">tuemail@example.com</a>
-      </p>
-      <p>
-        🔗 <strong>LinkedIn Olivia:</strong>{" "}
-        <a
-          href="https://linkedin.com/in/olivialuciano"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          linkedin.com/in/olivialuciano
-        </a>
-      </p>
-      <p>
-        🔗 <strong>LinkedIn Lucía:</strong>{" "}
-        <a
-          href="https://linkedin.com/in/luciapalazzini"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          linkedin.com/in/luciapalazzini
-        </a>
+        <a href="mailto:guiaveganaderosario@gmail.com">guiaveganaderosario@gmail.com</a>
       </p>
     </div>
   );

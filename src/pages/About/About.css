@@ -1,6 +1,6 @@
 .about-container {
   max-width: 800px;
-  margin: 50px auto;
+  margin: 5px auto;
   padding: 120px 20px 60px; /* Aumenta el padding-top para evitar que el texto quede oculto */
   background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 50%, #f0f8f0 100%);
   border-radius: 12px;
@@ -63,6 +63,19 @@
   align-items: center;
 }
 
+.photo-link {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.photo-link:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+}
+
 .profile-photo {
   width: 150px;
   height: 150px;
@@ -70,6 +83,12 @@
   border-radius: 50%;
   border: 3px solid #28a745;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.photo-link:hover .profile-photo {
+  border-color: #1e7e34;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
 }
 
 .photo-container p {
@@ -77,4 +96,9 @@
   font-size: 1.2rem;
   font-weight: bold;
   color: #333;
+  transition: color 0.3s ease;
+}
+
+.photo-link:hover .photo-container p {
+  color: #28a745;
 }
