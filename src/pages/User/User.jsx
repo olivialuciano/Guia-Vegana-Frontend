@@ -100,9 +100,9 @@ const User = () => {
 
   const getRoleDisplayName = (role) => {
     switch (role) {
-      case 'Sysadmin':
+      case 0:
         return 'Sysadmin';
-      case 'Investigador':
+      case 1:
         return 'Investigador';
       default:
         return role;
