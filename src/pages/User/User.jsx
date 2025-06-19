@@ -24,15 +24,7 @@ const User = () => {
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  // Verificar si el usuario tiene permisos
-  if (user?.role !== "Sysadmin") {
-    return (
-      <div className="unauthorized-container">
-        <h2>Acceso Denegado</h2>
-        <p>No tienes permisos para acceder a esta página.</p>
-      </div>
-    );
-  }
+
 
   const fetchUsers = async () => {
     try {
