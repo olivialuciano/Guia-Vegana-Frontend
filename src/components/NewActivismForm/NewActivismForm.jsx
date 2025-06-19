@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { jwtDecode } from "jwt-decode";
+import Loading from '../Loading/Loading';
 import './NewActivismForm.css';
 
 const NewActivismForm = ({ onActivismAdded, onCancel }) => {
@@ -15,38 +16,47 @@ const NewActivismForm = ({ onActivismAdded, onCancel }) => {
     description: ''
   });
   const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
     
     // Validaciones
     if (!formData.name.trim()) {
       setError('El nombre es requerido');
+      setIsSubmitting(false);
       return;
     }
 
     if (!formData.contact.trim()) {
       setError('El contacto es requerido');
+      setIsSubmitting(false);
       return;
     }
 
     if (!formData.socialMediaUsername.trim()) {
       setError('El nombre de usuario en redes sociales es requerido');
+      setIsSubmitting(false);
       return;
     }
 
     if (!formData.socialMediaLink.trim()) {
       setError('El enlace de redes sociales es requerido');
+      setIsSubmitting(false);
       return;
     }
 
     if (!formData.description.trim()) {
       setError('La descripción es requerida');
+      setIsSubmitting(false);
       return;
     }
 
     if (!token) {
       setError('No estás autorizado para realizar esta acción');
+      setIsSubmitting(false);
       return;
     }
 
@@ -95,6 +105,8 @@ const NewActivismForm = ({ onActivismAdded, onCancel }) => {
     } catch (error) {
       console.error('Error completo:', error);
       setError(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -110,6 +122,13 @@ const NewActivismForm = ({ onActivismAdded, onCancel }) => {
     <div className="new-activism-form-container">
       <form onSubmit={handleSubmit} className="new-activism-form">
         <h4>Agregar Nuevo Activismo</h4>
+        
+        {isSubmitting && (
+          <div className="form-loading">
+            <Loading />
+            <p>Creando activismo...</p>
+          </div>
+        )}
         
         {error && (
           <div className="error-message">

@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import Header from '../../components/Header/Header';
 import CardGrid from '../../components/CardGrid/CardGrid';
+import Loading from '../../components/Loading/Loading';
 import { faBook } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
+import NewInformativeResourceForm from '../../components/NewInformativeResourceForm/NewInformativeResourceForm';
 import './InformativeResource.css';
 
 const InformativeResource = () => {
@@ -133,7 +135,7 @@ const InformativeResource = () => {
   };
 
   if (loading) {
-    return <div className="loading">Cargando...</div>;
+    return <Loading />;
   }
 
   if (error) {

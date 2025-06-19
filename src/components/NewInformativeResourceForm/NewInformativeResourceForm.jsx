@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Loading from '../Loading/Loading';
 import './NewInformativeResourceForm.css';
 
 const NewInformativeResourceForm = ({ onResourceAdded, onCancel }) => {
@@ -108,6 +109,13 @@ const NewInformativeResourceForm = ({ onResourceAdded, onCancel }) => {
             <FontAwesomeIcon icon={faTimes} />
           </button>
         </div>
+
+        {isSubmitting && (
+          <div className="form-loading">
+            <Loading />
+            <p>Creando recurso...</p>
+          </div>
+        )}
 
         {error && (
           <div className="error-message">

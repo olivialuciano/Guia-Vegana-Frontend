@@ -3,6 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import Header from "../../components/Header/Header";
 import CardGrid from "../../components/CardGrid/CardGrid";
 import NewBusinessForm from "../../components/NewBusinessForm/NewBusinessForm";
+import Loading from "../../components/Loading/Loading";
 import { faStore } from "@fortawesome/free-solid-svg-icons";
 import "./BusinessList.css";
 
@@ -40,7 +41,7 @@ const BusinessList = () => {
   };
 
   if (loading) {
-    return <div className="loading">Cargando...</div>;
+    return <Loading />;
   }
 
   if (error) {

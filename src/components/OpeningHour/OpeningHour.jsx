@@ -4,6 +4,7 @@ import { faClock, faDoorOpen, faDoorClosed, faPlus, faEdit, faTrash } from '@for
 import { AuthContext } from '../../context/AuthContext';
 import NewOpeningHourForm from '../NewOpeningHourForm/NewOpeningHourForm';
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
+import Loading from '../Loading/Loading';
 import './OpeningHour.css';
 
 const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated, onHourDeleted }) => {
@@ -12,6 +13,7 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
   const [error, setError] = useState(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [hourToDelete, setHourToDelete] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(AuthContext);
 
   const canEdit = user && (user.role === 'Sysadmin' || user.role === 'Investigador');
@@ -40,6 +42,7 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
 
   const confirmDelete = async () => {
     try {
+      setIsLoading(true);
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
@@ -59,6 +62,8 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
       setError(error.message);
       setShowConfirmDialog(false);
       setHourToDelete(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -67,6 +72,7 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
     if (!editingHour || typeof editingHour.day !== 'number') return;
 
     try {
+      setIsLoading(true);
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
@@ -85,6 +91,8 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
       setEditingHour(null);
     } catch (error) {
       setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -143,15 +151,15 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
           validOpeningHours.map((hour) => (
             <div key={hour.id} className="opening-hour-item">
               {editingHour?.id === hour.id && editingHour ? (
-  <form onSubmit={handleSave} className="editing-form">
-    <select
-      value={editingHour.day}
-      onChange={(e) => setEditingHour({ ...editingHour, day: parseInt(e.target.value) })}
-    >
-      {[...Array(7)].map((_, i) => (
-        <option key={i} value={i}>{getDayName(i)}</option>
-      ))}
-    </select>
+                <form onSubmit={handleSave} className="editing-form">
+                  <select
+                    value={editingHour.day}
+                    onChange={(e) => setEditingHour({ ...editingHour, day: parseInt(e.target.value) })}
+                  >
+                    {[...Array(7)].map((_, i) => (
+                      <option key={i} value={i}>{getDayName(i)}</option>
+                    ))}
+                  </select>
                   <div className="time-inputs">
                     <div className="time-group">
                       <label>Primer horario:</label>
@@ -235,6 +243,13 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
         title="Eliminar Horario"
         message="¿Estás seguro de que deseas eliminar este horario?"
       />
+
+      {isLoading && (
+        <div className="loading-overlay">
+          <Loading />
+          <p>Procesando...</p>
+        </div>
+      )}
     </div>
   );
 };

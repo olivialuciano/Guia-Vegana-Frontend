@@ -189,7 +189,7 @@ const BusinessDetail = () => {
   };
 
   if (loading) {
-    return <div className="loading">Cargando...</div>;
+    return <Loading />;
   }
 
   if (error) {

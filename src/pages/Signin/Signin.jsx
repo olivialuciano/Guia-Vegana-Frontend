@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faLeaf } from "@fortawesome/free-solid-svg-icons";
 import { jwtDecode } from "jwt-decode";
+import Loading from "../../components/Loading/Loading";
 import "./Signin.css";
 
 const Signin = () => {
@@ -113,7 +114,10 @@ const Signin = () => {
               disabled={loading}
             >
               {loading ? (
-                <span className="loading-spinner"></span>
+                <div className="button-loading">
+                  <Loading />
+                  <span>Iniciando sesión...</span>
+                </div>
               ) : (
                 "Iniciar Sesión"
               )}

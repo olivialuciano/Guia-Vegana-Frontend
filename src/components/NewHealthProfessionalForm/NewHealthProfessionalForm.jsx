@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Loading from '../Loading/Loading';
 import './NewHealthProfessionalForm.css';
 
 const NewHealthProfessionalForm = ({ onProfessionalAdded, onCancel }) => {
@@ -112,6 +113,13 @@ const NewHealthProfessionalForm = ({ onProfessionalAdded, onCancel }) => {
             <FontAwesomeIcon icon={faTimes} />
           </button>
         </div>
+
+        {isSubmitting && (
+          <div className="form-loading">
+            <Loading />
+            <p>Creando profesional...</p>
+          </div>
+        )}
 
         {error && (
           <div className="error-message">

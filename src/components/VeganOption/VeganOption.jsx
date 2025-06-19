@@ -4,6 +4,7 @@ import { faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../../context/AuthContext';
 import NewVeganOptionForm from '../NewVeganOptionForm/NewVeganOptionForm';
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
+import Loading from '../Loading/Loading';
 import './VeganOption.css';
 
 const VeganOption = ({ veganOptions = [], businessId, onOptionAdded, onOptionUpdated, onOptionDeleted }) => {
@@ -12,6 +13,7 @@ const VeganOption = ({ veganOptions = [], businessId, onOptionAdded, onOptionUpd
   const [error, setError] = useState(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [optionToDelete, setOptionToDelete] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(AuthContext);
 
   const canEdit = user && (user.role === 'Sysadmin' || user.role === 'Investigador');
@@ -29,6 +31,7 @@ const VeganOption = ({ veganOptions = [], businessId, onOptionAdded, onOptionUpd
 
   const confirmDelete = async () => {
     try {
+      setIsLoading(true);
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
@@ -48,6 +51,8 @@ const VeganOption = ({ veganOptions = [], businessId, onOptionAdded, onOptionUpd
       setError(error.message);
       setShowConfirmDialog(false);
       setOptionToDelete(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -56,6 +61,7 @@ const VeganOption = ({ veganOptions = [], businessId, onOptionAdded, onOptionUpd
     if (!editingOption) return;
 
     try {
+      setIsLoading(true);
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
@@ -78,6 +84,8 @@ const VeganOption = ({ veganOptions = [], businessId, onOptionAdded, onOptionUpd
       setEditingOption(null);
     } catch (error) {
       setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -207,6 +215,13 @@ const VeganOption = ({ veganOptions = [], businessId, onOptionAdded, onOptionUpd
         title="Eliminar Opción Vegana"
         message="¿Estás seguro de que deseas eliminar esta opción vegana?"
       />
+
+      {isLoading && (
+        <div className="loading-overlay">
+          <Loading />
+          <p>Procesando...</p>
+        </div>
+      )}
     </div>
   );
 };

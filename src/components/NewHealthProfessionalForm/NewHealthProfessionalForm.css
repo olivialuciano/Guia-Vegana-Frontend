@@ -147,4 +147,21 @@
   .submit-button {
     width: 100%;
   }
+}
+
+.form-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.form-loading p {
+  margin-top: 10px;
+  color: #489b5a;
+  font-weight: 500;
 } 

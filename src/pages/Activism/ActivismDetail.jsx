@@ -2,11 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import Header from '../../components/Header/Header';
+import Loading from '../../components/Loading/Loading';
 import { faUser, faLink, faEdit, faTrash, faPhone, faHandHoldingHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import image from '../../assets/img/image.png';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
 import './ActivismDetail.css';
+
 const ActivismDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -144,7 +146,7 @@ const ActivismDetail = () => {
   };
 
   if (loading) {
-    return <div className="loading">Cargando...</div>;
+    return <Loading />;
   }
 
   if (error) {

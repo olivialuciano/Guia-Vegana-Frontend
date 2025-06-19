@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Loading from '../Loading/Loading';
 import './NewVeganOptionForm.css';
 
 const NewVeganOptionForm = ({ businessId, onOptionAdded, onCancel }) => {
@@ -8,6 +11,7 @@ const NewVeganOptionForm = ({ businessId, onOptionAdded, onCancel }) => {
     businessId: businessId || 0 // Aseguramos que no sea null
   });
   const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,6 +45,7 @@ const NewVeganOptionForm = ({ businessId, onOptionAdded, onCancel }) => {
 
       console.log('Enviando datos:', veganOptionToCreate); // Para debugging
 
+      setIsSubmitting(true);
       const response = await fetch('https://localhost:7032/api/VeganOption', {
         method: 'POST',
         headers: {
@@ -62,6 +67,8 @@ const NewVeganOptionForm = ({ businessId, onOptionAdded, onCancel }) => {
     } catch (error) {
       console.error('Error completo:', error); // Para debugging
       setError(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -76,8 +83,20 @@ const NewVeganOptionForm = ({ businessId, onOptionAdded, onCancel }) => {
   return (
     <div className="new-vegan-option-form-container">
       <form onSubmit={handleSubmit} className="new-vegan-option-form">
-        <h4>Agregar Nueva Opción Vegana</h4>
-        
+        <div className="form-header">
+          <h3>Agregar Opción Vegana</h3>
+          <button className="close-button" onClick={onCancel}>
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        </div>
+
+        {isSubmitting && (
+          <div className="form-loading">
+            <Loading />
+            <p>Creando opción vegana...</p>
+          </div>
+        )}
+
         {error && (
           <div className="error-message">
             <span>{error}</span>

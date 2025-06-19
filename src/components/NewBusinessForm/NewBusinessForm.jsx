@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from '../../context/AuthContext';
 import { jwtDecode } from "jwt-decode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Loading from "../Loading/Loading";
 import { 
   faStore, 
   faImage, 
@@ -153,6 +154,13 @@ const NewBusinessForm = ({ onClose }) => {
         <h2>
           <FontAwesomeIcon icon={faStore} /> Nuevo Negocio
         </h2>
+
+        {isSubmitting && (
+          <div className="form-loading">
+            <Loading />
+            <p>Creando negocio...</p>
+          </div>
+        )}
 
         <div className="form-group">
           <label htmlFor="name">

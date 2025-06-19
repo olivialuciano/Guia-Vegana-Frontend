@@ -1,10 +1,12 @@
 import React from "react";
-import "./Loading.css"; // Si prefieres mantener los estilos en un archivo separado.
+import "./Loading.css";
 
 const Loading = () => {
   return (
-    <div className="loading-spinner">
-      <div className="spinner"></div>
+    <div id="loading-wrapper">
+      <div className="loading-spinner">
+        <div className="spinner"></div>
+      </div>
     </div>
   );
 };

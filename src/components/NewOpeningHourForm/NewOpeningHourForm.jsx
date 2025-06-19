@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Loading from '../Loading/Loading';
 import './NewOpeningHourForm.css';
 
 const NewOpeningHourForm = ({ businessId, onHourAdded, onCancel }) => {
@@ -10,10 +13,12 @@ const NewOpeningHourForm = ({ businessId, onHourAdded, onCancel }) => {
     closeTime2: ''
   });
   const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+    setIsSubmitting(true);
 
     try {
       const token = localStorage.getItem('token');
@@ -47,6 +52,8 @@ const NewOpeningHourForm = ({ businessId, onHourAdded, onCancel }) => {
       });
     } catch (error) {
       setError(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -60,6 +67,20 @@ const NewOpeningHourForm = ({ businessId, onHourAdded, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit} className="new-opening-hour-form">
+      <div className="form-header">
+        <h3>Agregar Horario</h3>
+        <button className="close-button" onClick={onCancel}>
+          <FontAwesomeIcon icon={faTimes} />
+        </button>
+      </div>
+
+      {isSubmitting && (
+        <div className="form-loading">
+          <Loading />
+          <p>Creando horario...</p>
+        </div>
+      )}
+
       {error && (
         <div className="error-message">
           <span>{error}</span>
