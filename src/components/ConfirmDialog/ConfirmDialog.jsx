@@ -1,7 +1,11 @@
 import React from 'react';
 import './ConfirmDialog.css';
 
-const ConfirmDialog = ({ title, message, onConfirm, onCancel }) => {
+const ConfirmDialog = ({ isOpen, title, message, onConfirm, onCancel }) => {
+  if (!isOpen) {
+    return null;
+  }
+
   return (
     <div className="confirm-dialog-overlay">
       <div className="confirm-dialog">

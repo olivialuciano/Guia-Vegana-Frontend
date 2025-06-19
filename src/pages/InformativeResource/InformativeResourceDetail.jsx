@@ -294,15 +294,13 @@ const InformativeResourceDetail = () => {
         )}
       </div>
 
-      {showDeleteDialog && (
-        <ConfirmDialog
-          isOpen={showDeleteDialog}
-          onClose={handleDeleteCancel}
-          onConfirm={handleDelete}
-          title="Eliminar Recurso"
-          message="¿Está seguro de que desea eliminar este recurso? Esta acción no se puede deshacer."
-        />
-      )}
+      <ConfirmDialog
+        isOpen={showDeleteDialog}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDelete}
+        title="Eliminar Recurso"
+        message="¿Está seguro de que desea eliminar este recurso? Esta acción no se puede deshacer."
+      />
     </div>
   );
 };

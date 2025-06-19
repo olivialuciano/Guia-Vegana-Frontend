@@ -360,14 +360,13 @@ const HealthProfessionalDetail = () => {
         )}
       </div>
 
-      {showConfirmDialog && (
-        <ConfirmDialog
-          title="Eliminar Profesional"
-          message="¿Estás seguro de que deseas eliminar este profesional? Esta acción no se puede deshacer."
-          onConfirm={confirmDelete}
-          onCancel={() => setShowConfirmDialog(false)}
-        />
-      )}
+      <ConfirmDialog
+        isOpen={showConfirmDialog}
+        title="Eliminar Profesional"
+        message="¿Estás seguro de que deseas eliminar este profesional? Esta acción no se puede deshacer."
+        onConfirm={confirmDelete}
+        onCancel={() => setShowConfirmDialog(false)}
+      />
     </div>
   );
 };
