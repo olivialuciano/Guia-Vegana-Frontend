@@ -13,10 +13,12 @@ export const AuthProvider = ({ children }) => {
       try {
         // Decodificar el JWT para obtener claims (opcional)
         const payload = JSON.parse(atob(token.split(".")[1]));
+        console.log("Token payload:", payload); // Debug log
         setUser(payload);
         setRole(payload.role || "");
-        setId(payload.id || "");
-      } catch {
+        setId(payload.userId || payload.id || "");
+      } catch (error) {
+        console.error("Error decoding token:", error); // Debug log
         // Si token inválido, limpiar
         localStorage.removeItem("token");
         localStorage.removeItem("role");
@@ -28,8 +30,17 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("id");
+    setUser(null);
+    setRole("");
+    setId("");
+  };
+
   return (
-    <AuthContext.Provider value={{ user, role, id, setUser, setRole }}>
+    <AuthContext.Provider value={{ user, role, id, setUser, setRole, logout }}>
       {children}
     </AuthContext.Provider>
   );

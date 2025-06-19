@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faLeaf } from "@fortawesome/free-solid-svg-icons";
 import { jwtDecode } from "jwt-decode";
+import { AuthContext } from "../../context/AuthContext";
 import Loading from "../../components/Loading/Loading";
 import "./Signin.css";
 
@@ -11,6 +12,7 @@ const Signin = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { setUser, setRole, setId } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,6 +48,11 @@ const Signin = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("userRole", decoded.role);
       localStorage.setItem("userId", decoded.userId);
+
+      // Actualizar el contexto de autenticación
+      setUser(decoded);
+      setRole(decoded.role || "");
+      setId(decoded.userId || "");
 
       // Redirigir según el rol
       if (decoded.role === "Admin") {
