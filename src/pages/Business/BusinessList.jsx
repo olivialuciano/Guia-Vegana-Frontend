@@ -263,9 +263,6 @@ const BusinessList = () => {
           <div className="filters-overlay" onClick={handleToggleFilters}>
             <div className="filters-panel" onClick={(e) => e.stopPropagation()}>
               <div className="filters-header">
-                <button className="back-btn" onClick={handleToggleFilters}>
-                  <FontAwesomeIcon icon={faArrowLeft} />
-                </button>
                 <h3>
                   <FontAwesomeIcon icon={faFilter} />
                   Filtros
@@ -374,7 +371,7 @@ const BusinessList = () => {
                     />
                     <label htmlFor="glutenFree">
                       <FontAwesomeIcon icon={faWheatAwn} />
-                      Sin Gluten
+                     {} Sin Gluten
                     </label>
                   </div>
 
@@ -387,7 +384,7 @@ const BusinessList = () => {
                     />
                     <label htmlFor="allPlantBased">
                       <FontAwesomeIcon icon={faLeaf} />
-                      100% Plant Based
+                      {} 100% Plant Based
                     </label>
                   </div>
 
@@ -400,10 +397,24 @@ const BusinessList = () => {
                     />
                     <label htmlFor="openNow">
                       <FontAwesomeIcon icon={faClock} />
-                      Abierto Ahora
+                      {} Abierto Ahora
                     </label>
                   </div>
                 </div>
+
+                {/* Botón de aplicar filtros */}
+                <button className="apply-filters-btn" onClick={handleToggleFilters}>
+                  <FontAwesomeIcon icon={faFilter} />
+                  Aplicar Filtros
+                </button>
+              </div>
+
+              {/* Botón volver más abajo */}
+              <div className="back-btn-container">
+                <button className="back-btn" onClick={handleToggleFilters}>
+                  <FontAwesomeIcon icon={faArrowLeft} />
+                  Volver
+                </button>
               </div>
             </div>
           </div>

@@ -426,7 +426,7 @@ body {
 
 .filters-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 1.5rem;
   background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
@@ -455,6 +455,8 @@ body {
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.3s ease;
+  position: absolute;
+  left: 1.5rem;
 }
 
 .back-btn:hover {
@@ -473,6 +475,8 @@ body {
   border-radius: 6px;
   transition: all 0.3s ease;
   font-size: 0.9rem;
+  position: absolute;
+  right: 1.5rem;
 }
 
 .clear-filters-btn:hover {
@@ -481,6 +485,7 @@ body {
 
 .filters-content {
   padding: 1.5rem;
+  padding-bottom: 0;
 }
 
 .filter-group {
@@ -776,6 +781,20 @@ body {
   .star {
     font-size: 0.8rem;
   }
+
+  .apply-filters-btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .back-btn-container {
+    padding: 0.75rem 1rem;
+  }
+
+  .back-btn-container .back-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -814,4 +833,69 @@ body {
   .star {
     font-size: 0.75rem;
   }
+
+  .apply-filters-btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .back-btn-container {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .back-btn-container .back-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Botón de aplicar filtros al final */
+.apply-filters-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  font-weight: 600;
+  width: 100%;
+  margin-top: 1rem;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.apply-filters-btn:hover {
+  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+/* Contenedor para el botón volver más abajo */
+.back-btn-container {
+  display: flex;
+  justify-content: flex-start;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e8f5e8;
+  background: #f8fff8;
+}
+
+.back-btn-container .back-btn {
+  position: static;
+  background: #4CAF50;
+  color: white;
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.back-btn-container .back-btn:hover {
+  background: #45a049;
 }
