@@ -18,6 +18,9 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
 
   const canEdit = user && (user.role === 'Sysadmin' || user.role === 'Investigador');
 
+  // Debug log para ver los datos que llegan
+  console.log('OpeningHours received:', openingHours);
+
   const getDayName = (day) => {
     if (typeof day !== 'number') return '';
     const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -30,8 +33,11 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
   };
 
   const handleEdit = (hour) => {
-    if (!hour || typeof hour.day !== 'number') return;
-    setEditingHour(hour);
+    if (!hour || !hour.id) {
+      console.error('Hour object is invalid or missing id:', hour);
+      return;
+    }
+    setEditingHour({ ...hour });
   };
 
   const handleDelete = async (hourId) => {
@@ -69,12 +75,17 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
 
   const handleSave = async (e) => {
     e.preventDefault();
-    if (!editingHour || typeof editingHour.day !== 'number') return;
+    if (!editingHour || !editingHour.id) {
+      setError('Error: No se puede editar un horario sin ID');
+      return;
+    }
 
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
+
+      console.log('Editing hour with ID:', editingHour.id); // Debug log
 
       const response = await fetch(`https://localhost:7032/api/OpeningHour/${editingHour.id}`, {
         method: 'PUT',
@@ -101,6 +112,7 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
     ? openingHours.filter(hour => 
         hour && 
         typeof hour === 'object' && 
+        hour.id && // Asegurar que tenga ID
         typeof hour.day === 'number' &&
         hour.day >= 0 && 
         hour.day <= 6
