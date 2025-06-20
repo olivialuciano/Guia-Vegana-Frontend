@@ -17,6 +17,7 @@ import {
   faCheck
 } from "@fortawesome/free-solid-svg-icons";
 import "./NewBusinessForm.css";
+import { API } from '../../services/api';
 
 const zoneMapping = {
   Norte: 0,
@@ -124,7 +125,7 @@ const NewBusinessForm = ({ onClose }) => {
         userId: parseInt(decodedToken.userId)
       };
 
-      const response = await fetch("https://localhost:7032/api/Business", {
+      const response = await fetch(`${API}/Business`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

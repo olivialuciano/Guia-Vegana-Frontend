@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../Loading/Loading';
 import './NewVeganOptionForm.css';
+import { API } from '../../services/api';
 
 const NewVeganOptionForm = ({ businessId, onOptionAdded, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -46,7 +47,7 @@ const NewVeganOptionForm = ({ businessId, onOptionAdded, onCancel }) => {
       console.log('Enviando datos:', veganOptionToCreate); // Para debugging
 
       setIsSubmitting(true);
-      const response = await fetch('https://localhost:7032/api/VeganOption', {
+      const response = await fetch(`${API}/VeganOption`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

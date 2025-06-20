@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "../../context/AuthContext";
 import Loading from "../../components/Loading/Loading";
 import "./Signin.css";
+import { API } from '../../services/api';
 
 const Signin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -25,7 +26,7 @@ const Signin = () => {
 
     try {
       const response = await fetch(
-        "https://localhost:7032/api/User/authorization",
+        `${API}/User/authorization`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

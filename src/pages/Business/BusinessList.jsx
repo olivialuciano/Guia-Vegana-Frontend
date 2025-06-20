@@ -21,6 +21,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { applyBusinessFilters, getFilterStats } from "../../utils/businessFilters";
+import { API } from '../../services/api';
 import "./BusinessList.css";
 
 const BusinessList = () => {
@@ -84,7 +85,7 @@ const BusinessList = () => {
 
   const fetchBusinesses = async () => {
     try {
-      const response = await fetch("https://localhost:7032/api/Business");
+      const response = await fetch(`${API}/Business`);
       if (!response.ok) {
         throw new Error("Error al cargar los negocios");
       }
@@ -94,7 +95,7 @@ const BusinessList = () => {
       const businessesWithHours = await Promise.all(
         data.map(async (business) => {
           try {
-            const hoursResponse = await fetch(`https://localhost:7032/api/OpeningHour/business/${business.id}`);
+            const hoursResponse = await fetch(`${API}/OpeningHour/business/${business.id}`);
             if (hoursResponse.ok) {
               const hoursData = await hoursResponse.json();
               return {

@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./NewUserForm.css";
+import { API } from '../../services/api';
 
 const NewUserForm = ({ onClose }) => {
   const { user } = useContext(AuthContext);
@@ -80,7 +81,7 @@ const NewUserForm = ({ onClose }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch("https://localhost:7032/api/User", {
+      const response = await fetch(`${API}/User`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

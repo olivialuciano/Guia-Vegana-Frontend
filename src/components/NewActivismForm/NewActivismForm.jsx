@@ -3,6 +3,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { jwtDecode } from "jwt-decode";
 import Loading from '../Loading/Loading';
 import './NewActivismForm.css';
+import { API } from '../../services/api';
 
 const NewActivismForm = ({ onActivismAdded, onCancel }) => {
   const { user } = useContext(AuthContext);
@@ -76,7 +77,7 @@ const NewActivismForm = ({ onActivismAdded, onCancel }) => {
 
       console.log('Enviando datos:', activismToCreate); // Debug log
 
-      const response = await fetch('https://localhost:7032/api/Activism', {
+      const response = await fetch(`${API}/Activism`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

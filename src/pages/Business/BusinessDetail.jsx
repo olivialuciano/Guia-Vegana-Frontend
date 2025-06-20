@@ -11,6 +11,7 @@ import { faStar, faMapMarkerAlt, faTruck, faLeaf, faBreadSlice, faStore, faEdit,
 import { AuthContext } from "../../context/AuthContext";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
 import { useBusinessStatus } from "../../hooks/useBusinessStatus";
+import { API } from '../../services/api';
 
 const BusinessDetail = () => {
   const [business, setBusiness] = useState({
@@ -42,7 +43,7 @@ const BusinessDetail = () => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`https://localhost:7032/api/Business/${id}`);
+      const response = await fetch(`${API}/Business/${id}`);
       if (!response.ok) {
         throw new Error('Error al cargar el negocio');
       }
@@ -57,7 +58,7 @@ const BusinessDetail = () => {
       });
 
       // Fetch opening hours
-      const hoursResponse = await fetch(`https://localhost:7032/api/OpeningHour/business/${id}`);
+      const hoursResponse = await fetch(`${API}/OpeningHour/business/${id}`);
       if (hoursResponse.ok) {
         const hoursData = await hoursResponse.json();
         setBusiness(prev => ({
@@ -75,7 +76,7 @@ const BusinessDetail = () => {
       }
 
       // Fetch vegan options
-      const optionsResponse = await fetch(`https://localhost:7032/api/VeganOption/business/${id}`);
+      const optionsResponse = await fetch(`${API}/VeganOption/business/${id}`);
       if (optionsResponse.ok) {
         const optionsData = await optionsResponse.json();
         setVeganOptions(optionsData || []);
@@ -107,7 +108,7 @@ const BusinessDetail = () => {
         throw new Error('No hay token de autenticación');
       }
 
-      const response = await fetch(`https://localhost:7032/api/Business`, {
+      const response = await fetch(`${API}/Business`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -162,7 +163,7 @@ const BusinessDetail = () => {
         throw new Error('No hay token de autenticación');
       }
 
-      const response = await fetch(`https://localhost:7032/api/Business/${id}`, {
+      const response = await fetch(`${API}/Business/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

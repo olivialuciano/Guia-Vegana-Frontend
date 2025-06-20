@@ -6,6 +6,7 @@ import { faHandsHelping, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NewActivismForm from '../../components/NewActivismForm/NewActivismForm';
 import './Activism.css';
+import { API } from '../../services/api';
 
 const Activism = () => {
   const { user } = useContext(AuthContext);
@@ -22,7 +23,7 @@ const Activism = () => {
 
   const fetchActivism = async () => {
     try {
-      const response = await fetch('https://localhost:7032/api/Activism');
+      const response = await fetch(`${API}/Activism`);
       if (!response.ok) {
         throw new Error('Error al cargar las actividades');
       }

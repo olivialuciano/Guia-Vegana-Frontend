@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./User.css";
+import { API } from '../../services/api';
 
 const User = () => {
   const { user } = useContext(AuthContext);
@@ -29,7 +30,7 @@ const User = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch("https://localhost:7032/api/User", {
+      const response = await fetch(`${API}/User`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -63,7 +64,7 @@ const User = () => {
   const handleActivateUser = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://localhost:7032/api/User/activate/${userId}`, {
+      const response = await fetch(`${API}/User/activate/${userId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -82,7 +83,7 @@ const User = () => {
   const handleInactivateUser = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://localhost:7032/api/User/inactivate/${userId}`, {
+      const response = await fetch(`${API}/User/inactivate/${userId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

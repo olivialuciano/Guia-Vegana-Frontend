@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../Loading/Loading';
+import { API } from '../../services/api';
 import './NewOpeningHourForm.css';
 
 const NewOpeningHourForm = ({ businessId, onHourAdded, onCancel }) => {
@@ -24,7 +25,7 @@ const NewOpeningHourForm = ({ businessId, onHourAdded, onCancel }) => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      const response = await fetch('https://localhost:7032/api/OpeningHour', {
+      const response = await fetch(`${API}/OpeningHour`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

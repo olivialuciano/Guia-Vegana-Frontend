@@ -6,6 +6,7 @@ import { faBook, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NewInformativeResourceForm from '../../components/NewInformativeResourceForm/NewInformativeResourceForm';
 import './InformativeResource.css';
+import { API } from '../../services/api';
 
 const InformativeResource = () => {
   const { user } = useContext(AuthContext);
@@ -22,7 +23,7 @@ const InformativeResource = () => {
 
   const fetchResources = async () => {
     try {
-      const response = await fetch('https://localhost:7032/api/InformativeResource');
+      const response = await fetch(`${API}/InformativeResource`);
       if (!response.ok) {
         throw new Error('Error al cargar los recursos');
       }

@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/AuthContext';
 import NewOpeningHourForm from '../NewOpeningHourForm/NewOpeningHourForm';
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
 import Loading from '../Loading/Loading';
+import { API } from '../../services/api';
 import './OpeningHour.css';
 
 const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated, onHourDeleted }) => {
@@ -52,7 +53,7 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      const response = await fetch(`https://localhost:7032/api/OpeningHour/${hourToDelete}`, {
+      const response = await fetch(`${API}/OpeningHour/${hourToDelete}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -87,7 +88,7 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
 
       console.log('Editing hour with ID:', editingHour.id); // Debug log
 
-      const response = await fetch(`https://localhost:7032/api/OpeningHour/${editingHour.id}`, {
+      const response = await fetch(`${API}/OpeningHour/${editingHour.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -20,6 +20,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ReportDetail.css';
+import { API } from '../../services/api';
 
 const ReportDetail = () => {
   const { reportId } = useParams();
@@ -58,13 +59,13 @@ const ReportDetail = () => {
         usersResponse,
         veganOptionsResponse
       ] = await Promise.all([
-        fetch('https://localhost:7032/api/Business', {
+        fetch(`${API}/Business`, {
           headers: { 'Authorization': `Bearer ${token}` }
         }),
-        fetch('https://localhost:7032/api/User', {
+        fetch(`${API}/User`, {
           headers: { 'Authorization': `Bearer ${token}` }
         }),
-        fetch('https://localhost:7032/api/VeganOption', {
+        fetch(`${API}/VeganOption`, {
           headers: { 'Authorization': `Bearer ${token}` }
         })
       ]);

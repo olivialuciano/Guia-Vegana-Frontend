@@ -7,6 +7,7 @@ import { faUser, faLink, faEdit, faTrash, faPhone, faHandHoldingHeart } from '@f
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import image from '../../assets/img/image.png';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
+import { API } from '../../services/api';
 import './ActivismDetail.css';
 
 const ActivismDetail = () => {
@@ -25,7 +26,7 @@ const ActivismDetail = () => {
   useEffect(() => {
     const fetchActivism = async () => {
       try {
-        const response = await fetch(`https://localhost:7032/api/Activism/${id}`);
+        const response = await fetch(`${API}/Activism/${id}`);
         if (!response.ok) {
           throw new Error('Error al cargar el activismo');
         }
@@ -57,7 +58,7 @@ const ActivismDetail = () => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      const response = await fetch(`https://localhost:7032/api/Activism/${id}`, {
+      const response = await fetch(`${API}/Activism/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -110,7 +111,7 @@ const ActivismDetail = () => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      const response = await fetch(`https://localhost:7032/api/Activism/${id}`, {
+      const response = await fetch(`${API}/Activism/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

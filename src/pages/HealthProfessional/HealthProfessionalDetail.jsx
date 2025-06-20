@@ -19,6 +19,7 @@ import Header from '../../components/Header/Header';
 import Loading from '../../components/Loading/Loading';
 import defaultImage from '../../assets/img/defaultprofileimage.jpg';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
+import { API } from '../../services/api';
 import './HealthProfessionalDetail.css';
 
 const HealthProfessionalDetail = () => {
@@ -37,7 +38,7 @@ const HealthProfessionalDetail = () => {
   useEffect(() => {
     const fetchProfessional = async () => {
       try {
-        const response = await fetch(`https://localhost:7032/api/HealthProfessional/${id}`);
+        const response = await fetch(`${API}/HealthProfessional/${id}`);
         if (!response.ok) {
           throw new Error('Error al cargar el profesional');
         }
@@ -69,7 +70,7 @@ const HealthProfessionalDetail = () => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      const response = await fetch(`https://localhost:7032/api/HealthProfessional/${id}`, {
+      const response = await fetch(`${API}/HealthProfessional/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -122,7 +123,7 @@ const HealthProfessionalDetail = () => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      const response = await fetch(`https://localhost:7032/api/HealthProfessional/${id}`, {
+      const response = await fetch(`${API}/HealthProfessional/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

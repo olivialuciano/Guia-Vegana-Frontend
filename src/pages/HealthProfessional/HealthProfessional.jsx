@@ -6,6 +6,7 @@ import { faUserMd, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NewHealthProfessionalForm from '../../components/NewHealthProfessionalForm/NewHealthProfessionalForm';
 import './HealthProfessional.css';
+import { API } from '../../services/api';
 
 const HealthProfessional = () => {
   const { user } = useContext(AuthContext);
@@ -22,7 +23,7 @@ const HealthProfessional = () => {
 
   const fetchHealthProfessionals = async () => {
     try {
-      const response = await fetch('https://localhost:7032/api/HealthProfessional');
+      const response = await fetch(`${API}/HealthProfessional`);
       if (!response.ok) {
         throw new Error('Error al cargar los profesionales');
       }

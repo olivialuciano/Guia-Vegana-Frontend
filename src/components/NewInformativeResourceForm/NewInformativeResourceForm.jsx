@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../Loading/Loading';
 import './NewInformativeResourceForm.css';
+import { API } from '../../services/api';
 
 const NewInformativeResourceForm = ({ onResourceAdded, onCancel }) => {
   const { user } = useContext(AuthContext);
@@ -74,7 +75,7 @@ const NewInformativeResourceForm = ({ onResourceAdded, onCancel }) => {
 
       console.log('Enviando datos:', resourceData);
 
-      const response = await fetch('https://localhost:7032/api/InformativeResource', {
+      const response = await fetch(`${API}/InformativeResource`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

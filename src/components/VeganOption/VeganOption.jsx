@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/AuthContext';
 import NewVeganOptionForm from '../NewVeganOptionForm/NewVeganOptionForm';
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
 import Loading from '../Loading/Loading';
+import { API } from '../../services/api';
 import './VeganOption.css';
 
 const VeganOption = ({ veganOptions = [], businessId, onOptionAdded, onOptionUpdated, onOptionDeleted }) => {
@@ -35,7 +36,7 @@ const VeganOption = ({ veganOptions = [], businessId, onOptionAdded, onOptionUpd
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      const response = await fetch(`https://localhost:7032/api/VeganOption/${optionToDelete}`, {
+      const response = await fetch(`${API}/VeganOption/${optionToDelete}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -65,7 +66,7 @@ const VeganOption = ({ veganOptions = [], businessId, onOptionAdded, onOptionUpd
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      const response = await fetch(`https://localhost:7032/api/VeganOption/${editingOption.id}`, {
+      const response = await fetch(`${API}/VeganOption/${editingOption.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../Loading/Loading';
 import './NewHealthProfessionalForm.css';
+import { API } from '../../services/api';
 
 const NewHealthProfessionalForm = ({ onProfessionalAdded, onCancel }) => {
   const { user } = useContext(AuthContext);
@@ -78,7 +79,7 @@ const NewHealthProfessionalForm = ({ onProfessionalAdded, onCancel }) => {
 
       console.log('Enviando datos:', professionalData);
 
-      const response = await fetch('https://localhost:7032/api/HealthProfessional', {
+      const response = await fetch(`${API}/HealthProfessional`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

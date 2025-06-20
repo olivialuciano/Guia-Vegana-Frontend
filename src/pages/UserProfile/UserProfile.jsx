@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./UserProfile.css";
+import { API } from '../../services/api';
 
 const UserProfile = () => {
   const { user: authUser, logout } = useContext(AuthContext);
@@ -64,7 +65,7 @@ const UserProfile = () => {
       // Si el usuario es Sysadmin, usar el endpoint de la API
       if (userRole === 'Sysadmin') {
         const token = localStorage.getItem('token');
-        const response = await fetch(`https://localhost:7032/api/User/${userId}`, {
+        const response = await fetch(`${API}/User/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -155,7 +156,7 @@ const UserProfile = () => {
       const token = localStorage.getItem('token');
       const userId = authUser.userId || authUser.id || authUser.user_id;
       
-      const response = await fetch("https://localhost:7032/api/User", {
+      const response = await fetch(`${API}/User`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

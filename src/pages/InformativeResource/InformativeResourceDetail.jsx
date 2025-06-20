@@ -9,6 +9,7 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import image from '../../assets/img/image.png';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
 import './InformativeResourceDetail.css';
+import { API } from '../../services/api';
 
 const InformativeResourceDetail = () => {
   const { id } = useParams();
@@ -33,7 +34,7 @@ const InformativeResourceDetail = () => {
   useEffect(() => {
     const fetchResource = async () => {
       try {
-        const response = await fetch(`https://localhost:7032/api/InformativeResource/${id}`);
+        const response = await fetch(`${API}/InformativeResource/${id}`);
         if (!response.ok) {
           throw new Error('Error al cargar el recurso');
         }
@@ -87,7 +88,7 @@ const InformativeResourceDetail = () => {
         userId: resource.userId
       };
 
-      const response = await fetch(`https://localhost:7032/api/InformativeResource/${id}`, {
+      const response = await fetch(`${API}/InformativeResource/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -127,7 +128,7 @@ const InformativeResourceDetail = () => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      const response = await fetch(`https://localhost:7032/api/InformativeResource/${id}`, {
+      const response = await fetch(`${API}/InformativeResource/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
