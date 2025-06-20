@@ -15,7 +15,9 @@ import {
   faBuilding,
   faClock,
   faDoorOpen,
-  faDoorClosed
+  faDoorClosed,
+  faLocationDot,
+  faMapLocationDot
 } from '@fortawesome/free-solid-svg-icons';
 import defaultProfileImage from '../../assets/img/defaultprofileimage.jpg';
 import image from '../../assets/img/image.png';
@@ -51,7 +53,7 @@ const Card = ({
     title: title,
     image: imageUrl,
     rating: rating,
-    address: info?.text,
+    address: businessData?.address || info?.text,
     specialty: subtitle,
     topic: subtitle,
     description: description,
@@ -69,16 +71,6 @@ const Card = ({
   // Lógica de negocio (estado abierto/cerrado, etc)
   const isBusiness = cardEntityType === 'business';
   const { isOpen, getStatusText, getStatusClass } = isBusiness ? useBusinessStatus(cardItem?.openingHours) : { isOpen: null, getStatusText: () => '', getStatusClass: () => 'unknown' };
-
-  // Debug logs (temporal)
-  if (isBusiness && cardItem?.name) {
-    console.log(`Business: ${cardItem.name}`, {
-      openingHours: cardItem.openingHours,
-      isOpen,
-      statusText: getStatusText(),
-      statusClass: getStatusClass()
-    });
-  }
 
   const handleImageError = (e) => {
     e.target.onerror = null;
@@ -139,7 +131,13 @@ const Card = ({
   // Lógica específica de negocio
   const formatAddress = (address) => {
     if (!address) return 'Dirección no disponible';
-    return address.length > 50 ? `${address.substring(0, 50)}...` : address;
+    
+    // Si la dirección es muy larga, la truncamos
+    if (address.length > 60) {
+      return `${address.substring(0, 60)}...`;
+    }
+    
+    return address;
   };
 
   const getStatusIcon = () => {
@@ -222,10 +220,15 @@ const Card = ({
   const renderBusinessInfo = () => (
     <>
       <h2 className="card-title">{cardItem?.name || cardItem?.title}</h2>
-      <div className="card-info">
-        <FontAwesomeIcon icon={faMapMarkerAlt} />
-        <span>{formatAddress(cardItem?.address)}</span>
-      </div>
+      
+      
+      {/* Dirección */}
+      {cardItem?.address && (
+        <div className="card-info address">
+          <FontAwesomeIcon icon={faMapLocationDot} />
+          <span>{formatAddress(cardItem.address)}</span>
+        </div>
+      )}
       
       <div className="card-rating">
         {renderStars(cardItem?.rating)}

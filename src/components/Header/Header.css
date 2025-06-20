@@ -87,10 +87,7 @@
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+
   position: relative;
 }
 
@@ -162,7 +159,6 @@
 
 .rating-value {
   font-weight: 700;
-  margin-left: var(--spacing-xs);
 }
 
 .header-right {
