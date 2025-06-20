@@ -4,8 +4,9 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 50%, #f0f8f0 100%);
-  padding: 1rem;
+  padding: calc(80px + var(--spacing-lg)) var(--spacing-lg) calc(60px + var(--spacing-lg));
+  background: var(--background-gradient);
+  position: relative;
 }
 
 .signin-content {

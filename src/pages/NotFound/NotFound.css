@@ -7,6 +7,9 @@
   height: 100vh;
   text-align: center;
   background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 50%, #f0f8f0 100%);
+  min-height: 100vh;
+  padding: calc(80px + var(--spacing-lg)) var(--spacing-lg) calc(60px + var(--spacing-lg));
+  position: relative;
 }
 
 /* Animación del fondo */

@@ -1,20 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import Header from '../../components/Header/Header';
 import Loading from '../../components/Loading/Loading';
 import { 
   faChartBar, 
-  faChartLine, 
-  faChartPie, 
   faUsers, 
   faStore, 
-  faLeaf,
-  faCalendarAlt,
-  faTrophy,
-  faArrowRight,
-  faDownload,
-  faTable
+  faLeaf, 
+  faCalendarAlt, 
+  faChartLine, 
+  faChartPie, 
+  faTrophy, 
+  faArrowRight 
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './Reports.css';
@@ -264,59 +261,60 @@ const Reports = () => {
   }
 
   return (
-    <div className="reports">
-      <Header 
-        title="Reportes y Estadísticas"
-        icon={faChartBar}
-        showRating={false}
-        rating={null}
-      />
-      
-      <div className="reports-content">
-        <div className="reports-header">
-          <h2>Panel de Reportes</h2>
-          <p>Selecciona un reporte para ver el análisis detallado</p>
-        </div>
+    <div className="reports-container">
+      <div className="reports">
+        <div className="reports-content">
+          {/* Header de la página */}
+          <div className="page-header">
+            <h1 className="page-title">Reportes y Estadísticas</h1>
 
-        <div className="reports-grid">
-          {reportCards.map((card) => (
-            <div 
-              key={card.id} 
-              className="report-card"
-              onClick={() => handleCardClick(card.id)}
-            >
-              <div className="card-header" style={{ backgroundColor: card.color }}>
-                <div className="card-icon">
-                  <FontAwesomeIcon icon={card.icon} />
-                </div>
-                <div className="card-title">
-                  <h3>{card.title}</h3>
-                  <p>{card.description}</p>
-                </div>
-              </div>
-              
-              <div className="card-stats">
-                {card.stats.map((stat, index) => (
-                  <div key={index} className="stat-item">
-                    <div className="stat-icon">
-                      <FontAwesomeIcon icon={stat.icon} />
-                    </div>
-                    <div className="stat-content">
-                      <span className="stat-value">{stat.value}</span>
-                      <span className="stat-label">{stat.label}</span>
-                    </div>
+          </div>
+
+          <div className="reports-header">
+            <h2>Panel de Reportes</h2>
+            <p>Selecciona un reporte para ver el análisis detallado</p>
+          </div>
+
+          <div className="reports-grid">
+            {reportCards.map((card) => (
+              <div 
+                key={card.id} 
+                className="report-card"
+                onClick={() => handleCardClick(card.id)}
+              >
+                <div className="card-header" style={{ backgroundColor: card.color }}>
+                  <div className="card-icon">
+                    <FontAwesomeIcon icon={card.icon} />
                   </div>
-                ))}
-              </div>
+                  <div className="card-title">
+                    <h3>{card.title}</h3>
+                    <p>{card.description}</p>
+                  </div>
+                </div>
+                
+                <div className="card-stats">
+                  {card.stats.map((stat, index) => (
+                    <div key={index} className="stat-item">
+                      <div className="stat-icon">
+                        <FontAwesomeIcon icon={stat.icon} />
+                      </div>
+                      <div className="stat-content">
+                        <span className="stat-value">{stat.value}</span>
+                        <span className="stat-label">{stat.label}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
-              <div className="card-actions">
-                <button className="view-details-btn">
-                  <FontAwesomeIcon icon={faArrowRight} />
-                  Ver Detalles
-                </button>
+                <div className="card-actions">
+                  <button className="view-details-btn">
+                    <FontAwesomeIcon icon={faArrowRight} />
+                    Ver Detalles
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import Header from "../../components/Header/Header";
 import Loading from "../../components/Loading/Loading";
 import { 
   faUser, 
@@ -223,136 +222,144 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="user-profile">
-      <Header 
-        title="Mi Perfil"
-        icon={faUser}
-        showRating={false}
-        rating={null}
-      />
-
-      <div className="profile-content">
-        <div className="profile-card">
-          <div className="profile-header">
-            <div className="profile-avatar">
-              <FontAwesomeIcon icon={faUser} />
-            </div>
-            <div className="profile-status">
-              {user.isActive ? (
-                <FontAwesomeIcon icon={faCheckCircle} className="status-active" />
-              ) : (
-                <FontAwesomeIcon icon={faTimesCircle} className="status-inactive" />
-              )}
-            </div>
-          </div>
-
-          {updateError && (
-            <div className="error-message">
-              <FontAwesomeIcon icon={faTimesCircle} />
-              {updateError}
-            </div>
-          )}
-
-          {updateSuccess && (
-            <div className="success-message">
-              <FontAwesomeIcon icon={faCheckCircle} />
-              {updateSuccess}
-            </div>
-          )}
-
-          <div className="profile-info">
-            <div className="info-group">
-              <label>
-                <FontAwesomeIcon icon={faUser} />
-                Nombre
-              </label>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="name"
-                  value={editForm.name}
-                  onChange={handleInputChange}
-                  placeholder="Ingrese su nombre"
-                />
-              ) : (
-                <span className="info-value">{user.name}</span>
-              )}
-            </div>
-
-            <div className="info-group">
-              <label>
-                <FontAwesomeIcon icon={faEnvelope} />
-                Email
-              </label>
-              {isEditing ? (
-                <input
-                  type="email"
-                  name="email"
-                  value={editForm.email}
-                  onChange={handleInputChange}
-                  placeholder="usuario@ejemplo.com"
-                />
-              ) : (
-                <span className="info-value">{user.email}</span>
-              )}
-            </div>
-
-            <div className="info-group">
-              <label>
-                <FontAwesomeIcon icon={faShieldAlt} />
-                Rol
-              </label>
-              <span className="info-value">{getRoleDisplayName(user.role)}</span>
-            </div>
-
-            <div className="info-group">
-              <label>Estado</label>
-              <span className={`info-value status ${user.isActive ? 'active' : 'inactive'}`}>
-                {user.isActive ? 'Activo' : 'Inactivo'}
-              </span>
-            </div>
-
-            
-          </div>
-
-          <div className="profile-actions">
-            {isEditing ? (
-              <div className="edit-actions">
-                <button 
-                  className="action-btn cancel-btn"
-                  onClick={handleCancel}
-                  disabled={updateLoading}
-                >
-                  <FontAwesomeIcon icon={faTimes} />
-                  Cancelar
-                </button>
-                <button 
-                  className="action-btn save-btn"
-                  onClick={handleSave}
-                  disabled={updateLoading}
-                >
-                  <FontAwesomeIcon icon={faSave} />
-                  {updateLoading ? "Guardando..." : "Guardar"}
-                </button>
+    <div className="user-profile-container">
+      <div className="user-profile">
+        {/* Header de la página */}
+        <div className="page-header">
+          <div className="header-content">
+            <div className="header-left">
+              
+              <div className="header-title-section">
+                <h1 className="page-title">Perfil de usuario de {user.name}</h1>        
               </div>
-            ) : (
-              <div className="view-actions">
-                <button 
-                  className="action-btn edit-btn"
-                  onClick={handleEdit}
-                >
-                  <FontAwesomeIcon icon={faEdit} />
-                  Editar Perfil
-                </button>
-                <button 
-                  className="action-btn logout-btn"
-                  onClick={handleLogout}
-                >
-                  <FontAwesomeIcon icon={faSignOutAlt} />
-                  Cerrar Sesión
-                </button>
+            </div>
+           
+          </div>
+        </div>
+
+        <div className="profile-content">
+          <div className="profile-card">
+            <div className="profile-header">
+              <div className="profile-avatar">
+                <FontAwesomeIcon icon={faUser} />
+              </div>
+              <div className="profile-status">
+                {user.isActive ? (
+                  <FontAwesomeIcon icon={faCheckCircle} className="status-active" />
+                ) : (
+                  <FontAwesomeIcon icon={faTimesCircle} className="status-inactive" />
+                )}
+              </div>
+            </div>
+
+            {updateError && (
+              <div className="error-message">
+                <FontAwesomeIcon icon={faTimesCircle} />
+                {updateError}
               </div>
             )}
+
+            {updateSuccess && (
+              <div className="success-message">
+                <FontAwesomeIcon icon={faCheckCircle} />
+                {updateSuccess}
+              </div>
+            )}
+
+            <div className="profile-info">
+              <div className="info-group">
+                <label>
+                  <FontAwesomeIcon icon={faUser} />
+                  Nombre
+                </label>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    name="name"
+                    value={editForm.name}
+                    onChange={handleInputChange}
+                    placeholder="Ingrese su nombre"
+                  />
+                ) : (
+                  <span className="info-value">{user.name}</span>
+                )}
+              </div>
+
+              <div className="info-group">
+                <label>
+                  <FontAwesomeIcon icon={faEnvelope} />
+                  Email
+                </label>
+                {isEditing ? (
+                  <input
+                    type="email"
+                    name="email"
+                    value={editForm.email}
+                    onChange={handleInputChange}
+                    placeholder="usuario@ejemplo.com"
+                  />
+                ) : (
+                  <span className="info-value">{user.email}</span>
+                )}
+              </div>
+
+              <div className="info-group">
+                <label>
+                  <FontAwesomeIcon icon={faShieldAlt} />
+                  Rol
+                </label>
+                <span className="info-value">{getRoleDisplayName(user.role)}</span>
+              </div>
+
+              <div className="info-group">
+                <label>Estado</label>
+                <span className={`info-value status ${user.isActive ? 'active' : 'inactive'}`}>
+                  {user.isActive ? 'Activo' : 'Inactivo'}
+                </span>
+              </div>
+
+              
+            </div>
+
+            <div className="profile-actions">
+              {isEditing ? (
+                <div className="edit-actions">
+                  <button 
+                    className="action-btn cancel-btn"
+                    onClick={handleCancel}
+                    disabled={updateLoading}
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                    Cancelar
+                  </button>
+                  <button 
+                    className="action-btn save-btn"
+                    onClick={handleSave}
+                    disabled={updateLoading}
+                  >
+                    <FontAwesomeIcon icon={faSave} />
+                    {updateLoading ? "Guardando..." : "Guardar"}
+                  </button>
+                </div>
+              ) : (
+                <div className="view-actions">
+                  <button 
+                    className="action-btn edit-btn"
+                    onClick={handleEdit}
+                  >
+                    <FontAwesomeIcon icon={faEdit} />
+                    Editar Perfil
+                  </button>
+                  <button 
+                    className="action-btn logout-btn"
+                    onClick={handleLogout}
+                  >
+                    <FontAwesomeIcon icon={faSignOutAlt} />
+                    Cerrar Sesión
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

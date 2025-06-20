@@ -15,7 +15,6 @@ import {
   faUser,
   faLink
 } from '@fortawesome/free-solid-svg-icons';
-import Header from '../../components/Header/Header';
 import Loading from '../../components/Loading/Loading';
 import defaultImage from '../../assets/img/defaultprofileimage.jpg';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
@@ -169,210 +168,218 @@ const HealthProfessionalDetail = () => {
   }
 
   return (
-    <div className="health-professional-detail">
-      <Header 
-        title={professional.name}
-        icon={faUserMd}
-        backUrl="/health-professionals"
-        showRating={false}
-        rating={null}
-      >
-        {canEdit && (
-          <div className="header-actions">
-            <button className="icon-button edit" onClick={handleEdit} title="Editar profesional">
-              <FontAwesomeIcon icon={faEdit} />
-            </button>
-            <button className="icon-button delete" onClick={handleDelete} title="Eliminar profesional">
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
-          </div>
-        )}
-      </Header>
-
-      <div className="detail-content">
-        <div className="detail-section image-section">
-          <img 
-            src={getImageUrl()} 
-        alt={professional.name}
-            className="professional-image"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = defaultImage;
-            }}
-          />
-        </div>
-
-        {isEditing ? (
-          <form className="edit-form" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
-            <div className="form-group">
-              <label htmlFor="name">Nombre</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={editedProfessional.name}
-                onChange={handleInputChange}
-                required
-                placeholder="Ingrese el nombre del profesional"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="image">URL de la imagen</label>
-              <input
-                type="url"
-                id="image"
-                name="image"
-                value={editedProfessional.image || ''}
-                onChange={handleInputChange}
-                placeholder="Ingrese la URL de la imagen"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="specialty">Especialidad</label>
-              <input
-                type="text"
-                id="specialty"
-                name="specialty"
-                value={editedProfessional.specialty}
-                onChange={handleInputChange}
-                required
-                placeholder="Ingrese la especialidad"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="license">Licencia</label>
-              <input
-                type="text"
-                id="license"
-                name="license"
-                value={editedProfessional.license}
-                onChange={handleInputChange}
-                required
-                placeholder="Ingrese el número de licencia"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="socialMediaUsername">Usuario en redes sociales</label>
-              <input
-                type="text"
-                id="socialMediaUsername"
-                name="socialMediaUsername"
-                value={editedProfessional.socialMediaUsername}
-                onChange={handleInputChange}
-                placeholder="Ingrese el usuario de redes sociales"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="socialMediaLink">Enlace de redes sociales</label>
-              <input
-                type="url"
-                id="socialMediaLink"
-                name="socialMediaLink"
-                value={editedProfessional.socialMediaLink}
-                onChange={handleInputChange}
-                placeholder="Ingrese el enlace de redes sociales"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="whatsappNumber">Número de WhatsApp</label>
-              <input
-                type="tel"
-                id="whatsappNumber"
-                name="whatsappNumber"
-                value={editedProfessional.whatsappNumber}
-                onChange={handleInputChange}
-                required
-                placeholder="Ingrese el número de WhatsApp"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="email">Correo electrónico</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={editedProfessional.email}
-                onChange={handleInputChange}
-                placeholder="Ingrese el correo electrónico"
-              />
-            </div>
-
-            <div className="form-actions">
-              <button type="button" className="cancel-button" onClick={handleCancel}>
-                Cancelar
-              </button>
-              <button type="submit" className="save-button">
-                Guardar
-              </button>
-            </div>
-          </form>
-        ) : (
-          <>
-            <div className="detail-section">
-              <h2>Información Profesional</h2>
-              <div className="contact-info">
-                <div className="info-item">
-                  <FontAwesomeIcon icon={faGraduationCap} />
-                  <span><strong>Especialidad:</strong> {professional.specialty}</span>
-                </div>
-                <div className="info-item">
-                  <FontAwesomeIcon icon={faIdCard} />
-                  <span><strong>Matrícula:</strong> {professional.license}</span>
-                </div>
+    <div className="health-professional-detail-container">
+      <div className="health-professional-detail">
+        {/* Header de la página */}
+        <div className="page-header">
+          <div className="header-content">
+            <div className="header-left">
+              <div className="header-icon">
+                <FontAwesomeIcon icon={faUserMd} />
+              </div>
+              <div className="header-title-section">
+                <h1 className="page-title">{professional.name}</h1>
+                <p className="page-subtitle">{professional.specialty}</p>
               </div>
             </div>
-
-            <div className="detail-section">
-              <h2>Información de Contacto</h2>
-              <div className="contact-info">
-                <div className="info-item">
-                  <FontAwesomeIcon icon={faPhone} />
-                  <span><strong>WhatsApp:</strong> {professional.whatsappNumber}</span>
-                </div>
-                {professional.email && (
-                  <div className="info-item">
-                    <FontAwesomeIcon icon={faEnvelope} />
-                    <span><strong>Email:</strong> {professional.email}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {professional.socialMediaUsername && professional.socialMediaLink && (
-              <div className="detail-section">
-                <h2>Redes Sociales</h2>
-                <div className="contact-info">
-                  <div className="info-item">
-                    <FontAwesomeIcon icon={faUser} />
-        <a
-          href={professional.socialMediaLink}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          @{professional.socialMediaUsername}
-        </a>
-                  </div>
-                </div>
+            {user && (
+              <div className="header-actions">
+                <button className="icon-button edit" onClick={handleEdit} title="Editar profesional">
+                  <FontAwesomeIcon icon={faEdit} />
+                </button>
+                <button className="icon-button delete" onClick={() => setShowDeleteConfirm(true)} title="Eliminar profesional">
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
               </div>
             )}
-          </>
-        )}
-      </div>
+          </div>
+        </div>
 
-      <ConfirmDialog
-        isOpen={showConfirmDialog}
-        title="Eliminar Profesional"
-        message="¿Estás seguro de que deseas eliminar este profesional? Esta acción no se puede deshacer."
-        onConfirm={confirmDelete}
-        onCancel={() => setShowConfirmDialog(false)}
-      />
+        <div className="detail-content">
+          <div className="detail-section image-section">
+            <img 
+              src={getImageUrl()} 
+              alt={professional.name}
+              className="professional-image"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = defaultImage;
+              }}
+            />
+          </div>
+
+          {isEditing ? (
+            <form className="edit-form" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+              <div className="form-group">
+                <label htmlFor="name">Nombre</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={editedProfessional.name}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Ingrese el nombre del profesional"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="image">URL de la imagen</label>
+                <input
+                  type="url"
+                  id="image"
+                  name="image"
+                  value={editedProfessional.image || ''}
+                  onChange={handleInputChange}
+                  placeholder="Ingrese la URL de la imagen"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="specialty">Especialidad</label>
+                <input
+                  type="text"
+                  id="specialty"
+                  name="specialty"
+                  value={editedProfessional.specialty}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Ingrese la especialidad"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="license">Licencia</label>
+                <input
+                  type="text"
+                  id="license"
+                  name="license"
+                  value={editedProfessional.license}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Ingrese el número de licencia"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="socialMediaUsername">Usuario en redes sociales</label>
+                <input
+                  type="text"
+                  id="socialMediaUsername"
+                  name="socialMediaUsername"
+                  value={editedProfessional.socialMediaUsername}
+                  onChange={handleInputChange}
+                  placeholder="Ingrese el usuario de redes sociales"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="socialMediaLink">Enlace de redes sociales</label>
+                <input
+                  type="url"
+                  id="socialMediaLink"
+                  name="socialMediaLink"
+                  value={editedProfessional.socialMediaLink}
+                  onChange={handleInputChange}
+                  placeholder="Ingrese el enlace de redes sociales"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="whatsappNumber">Número de WhatsApp</label>
+                <input
+                  type="tel"
+                  id="whatsappNumber"
+                  name="whatsappNumber"
+                  value={editedProfessional.whatsappNumber}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Ingrese el número de WhatsApp"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="email">Correo electrónico</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={editedProfessional.email}
+                  onChange={handleInputChange}
+                  placeholder="Ingrese el correo electrónico"
+                />
+              </div>
+
+              <div className="form-actions">
+                <button type="button" className="cancel-button" onClick={handleCancel}>
+                  Cancelar
+                </button>
+                <button type="submit" className="save-button">
+                  Guardar
+                </button>
+              </div>
+            </form>
+          ) : (
+            <>
+              <div className="detail-section">
+                <h2>Información Profesional</h2>
+                <div className="contact-info">
+                  <div className="info-item">
+                    <FontAwesomeIcon icon={faGraduationCap} />
+                    <span><strong>Especialidad:</strong> {professional.specialty}</span>
+                  </div>
+                  <div className="info-item">
+                    <FontAwesomeIcon icon={faIdCard} />
+                    <span><strong>Matrícula:</strong> {professional.license}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="detail-section">
+                <h2>Información de Contacto</h2>
+                <div className="contact-info">
+                  <div className="info-item">
+                    <FontAwesomeIcon icon={faPhone} />
+                    <span><strong>WhatsApp:</strong> {professional.whatsappNumber}</span>
+                  </div>
+                  {professional.email && (
+                    <div className="info-item">
+                      <FontAwesomeIcon icon={faEnvelope} />
+                      <span><strong>Email:</strong> {professional.email}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {professional.socialMediaUsername && professional.socialMediaLink && (
+                <div className="detail-section">
+                  <h2>Redes Sociales</h2>
+                  <div className="contact-info">
+                    <div className="info-item">
+                      <FontAwesomeIcon icon={faUser} />
+                      <a
+                        href={professional.socialMediaLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        @{professional.socialMediaUsername}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+
+        <ConfirmDialog
+          isOpen={showConfirmDialog}
+          title="Eliminar Profesional"
+          message="¿Estás seguro de que deseas eliminar este profesional? Esta acción no se puede deshacer."
+          onConfirm={confirmDelete}
+          onCancel={() => setShowConfirmDialog(false)}
+        />
+      </div>
     </div>
   );
 };

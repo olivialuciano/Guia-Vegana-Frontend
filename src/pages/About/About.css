@@ -1,12 +1,13 @@
 .about-container {
   max-width: 800px;
   margin: 5px auto;
-  padding: 120px 20px 60px; /* Aumenta el padding-top para evitar que el texto quede oculto */
-  background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 50%, #f0f8f0 100%);
+  padding: calc(80px + var(--spacing-lg)) var(--spacing-lg) calc(60px + var(--spacing-lg));
+  background: var(--background-gradient);
   border-radius: 12px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   min-height: 100vh;
+  position: relative;
 }
 
 .sobrenosotras {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import Header from "../../components/Header/Header";
 import Loading from "../../components/Loading/Loading";
 import NewUserForm from "../../components/NewUserForm/NewUserForm";
 import { 
@@ -119,87 +118,89 @@ const User = () => {
   }
 
   return (
-    <div className="user-list">
-      <Header 
-        title="Usuarios"
-        icon={faUsers}
-        showRating={false}
-        rating={null}
-      />
-
-      <div className="list-content">
-        <div className="admin-actions">
-          <button className="add-button" onClick={handleOpenForm}>
-            <FontAwesomeIcon icon={faPlus} />
-            Agregar Usuario
-          </button>
-        </div>
-
-        <div className="users-stats">
-          <p>Total de usuarios: {users.length}</p>
-          <p>Usuarios activos: {users.filter(u => u.isActive).length}</p>
-          <p>Usuarios inactivos: {users.filter(u => !u.isActive).length}</p>
-        </div>
-
-        {users.length === 0 ? (
-          <div className="no-results">
-            <p>No hay usuarios registrados.</p>
+    <div className="user-container">
+      <div className="user-list">
+        <div className="list-content">
+          {/* Header de la página */}
+          <div className="page-header">
+            <h1 className="page-title">Gestión de Usuarios</h1>
+            {/* Barra de acciones */}
+            <div className="actions-bar">
+              <div className="admin-actions">
+                <button className="add-button" onClick={handleOpenForm}>
+                  <FontAwesomeIcon icon={faPlus} />
+                  Agregar Usuario
+                </button>
+              </div>
+            </div>
           </div>
-        ) : (
-          <div className="users-grid">
-            {users.map((userItem) => (
-              <div key={userItem.id} className={`user-card ${!userItem.isActive ? 'inactive' : ''}`}>
-                <div className="user-header">
-                  <div className="user-avatar">
-                    <FontAwesomeIcon icon={faUser} />
+
+          <div className="users-stats">
+            <p>Total de usuarios: {users.length}</p>
+            <p>Usuarios activos: {users.filter(u => u.isActive).length}</p>
+            <p>Usuarios inactivos: {users.filter(u => !u.isActive).length}</p>
+          </div>
+
+          {users.length === 0 ? (
+            <div className="no-results">
+              <p>No hay usuarios registrados.</p>
+            </div>
+          ) : (
+            <div className="users-grid">
+              {users.map((userItem) => (
+                <div key={userItem.id} className={`user-card ${!userItem.isActive ? 'inactive' : ''}`}>
+                  <div className="user-header">
+                    <div className="user-avatar">
+                      <FontAwesomeIcon icon={faUser} />
+                    </div>
+                    <div className="user-status">
+                      {userItem.isActive ? (
+                        <FontAwesomeIcon icon={faCheckCircle} className="status-active" />
+                      ) : (
+                        <FontAwesomeIcon icon={faTimesCircle} className="status-inactive" />
+                      )}
+                    </div>
                   </div>
-                  <div className="user-status">
+                  
+                  <div className="user-info">
+                    <h3 className="user-name">{userItem.name}</h3>
+                    <div className="user-email">
+                      <FontAwesomeIcon icon={faEnvelope} />
+                      <span>{userItem.email}</span>
+                    </div>
+                    <div className="user-role">
+                      <FontAwesomeIcon icon={faShieldAlt} />
+                      <span>{getRoleDisplayName(userItem.role)}</span>
+                    </div>
+                  </div>
+
+                  <div className="user-actions">
                     {userItem.isActive ? (
-                      <FontAwesomeIcon icon={faCheckCircle} className="status-active" />
+                      <button 
+                        className="action-btn deactivate-btn"
+                        onClick={() => handleInactivateUser(userItem.id)}
+                        title="Desactivar usuario"
+                      >
+                        <FontAwesomeIcon icon={faTimesCircle} />
+                      </button>
                     ) : (
-                      <FontAwesomeIcon icon={faTimesCircle} className="status-inactive" />
+                      <button 
+                        className="action-btn activate-btn"
+                        onClick={() => handleActivateUser(userItem.id)}
+                        title="Activar usuario"
+                      >
+                        <FontAwesomeIcon icon={faCheckCircle} />
+                      </button>
                     )}
                   </div>
                 </div>
-                
-                <div className="user-info">
-                  <h3 className="user-name">{userItem.name}</h3>
-                  <div className="user-email">
-                    <FontAwesomeIcon icon={faEnvelope} />
-                    <span>{userItem.email}</span>
-                  </div>
-                  <div className="user-role">
-                    <FontAwesomeIcon icon={faShieldAlt} />
-                    <span>{getRoleDisplayName(userItem.role)}</span>
-                  </div>
-                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-                <div className="user-actions">
-                  {userItem.isActive ? (
-                    <button 
-                      className="action-btn deactivate-btn"
-                      onClick={() => handleInactivateUser(userItem.id)}
-                      title="Desactivar usuario"
-                    >
-                      <FontAwesomeIcon icon={faTimesCircle} />
-                    </button>
-                  ) : (
-                    <button 
-                      className="action-btn activate-btn"
-                      onClick={() => handleActivateUser(userItem.id)}
-                      title="Activar usuario"
-                    >
-                      <FontAwesomeIcon icon={faCheckCircle} />
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        {showForm && <NewUserForm onClose={handleCloseForm} />}
       </div>
-
-      {showForm && <NewUserForm onClose={handleCloseForm} />}
     </div>
   );
 };

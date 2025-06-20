@@ -26,7 +26,7 @@ const Home = () => {
   console.log('Home - Is Sysadmin:', isSysadmin);
 
   return (
-    <div className="home">
+    <div className="home-container">
       <div className="home-content">
         <section className="hero-section">
           <h1 className="hero-title">
@@ -48,7 +48,7 @@ const Home = () => {
               <div className="feature-icon">
                 <FontAwesomeIcon icon={faStore} />
               </div>
-              <h3 className="feature-title">Negocios Veganos</h3>
+              <h3 className="feature-title">Negocios</h3>
               <p className="feature-description">
                 Descubrí restaurantes, cafeterías, tiendas y otros negocios que ofrecen opciones veganas.
               </p>

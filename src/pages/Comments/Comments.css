@@ -13,10 +13,10 @@
 /* Contenedor principal */
 .comments-container {
   min-height: 100vh;
-  padding: 2rem 1rem;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 50%, #f0f8f0 100%);
-  margin-top: 100px;
+  position: relative;
+  margin-top:20px;
 }
 
 /* Header de la página */

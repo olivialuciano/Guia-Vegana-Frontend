@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import Card from '../../components/Card/Card';
 import Loading from '../../components/Loading/Loading';
-import Header from '../../components/Header/Header';
 import { faBook, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NewInformativeResourceForm from '../../components/NewInformativeResourceForm/NewInformativeResourceForm';
@@ -49,14 +48,16 @@ const InformativeResource = () => {
 
   if (error) {
     return (
-      <div className="informative-resource">
-        <div className="list-content">
-          <div className="error-container">
-            <p>{error}</p>
-            <button className="add-button" onClick={fetchResources}>
-              <FontAwesomeIcon icon={faPlus} />
-              Reintentar
-            </button>
+      <div className="informative-resource-container">
+        <div className="informative-resource">
+          <div className="list-content">
+            <div className="error-container">
+              <p>{error}</p>
+              <button className="add-button" onClick={fetchResources}>
+                <FontAwesomeIcon icon={faPlus} />
+                Reintentar
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -64,54 +65,58 @@ const InformativeResource = () => {
   }
 
   return (
-    <div className="informative-resource">
-      <Header 
-        title="Recursos Informativos"
-        icon={faBook}
-        showRating={false}
-        rating={null}
-      >
-        {canEdit && (
-          <button 
-            className="add-button"
-            onClick={() => setShowNewForm(true)}
-          >
-            <FontAwesomeIcon icon={faPlus} />
-            <span>Agregar Recurso</span>
-          </button>
-        )}
-      </Header>
-
-      <div className="list-content">
-        {/* Grid de tarjetas */}
-        {resources.length > 0 ? (
-          <div className="business-cards-grid">
-            {resources.map((item) => (
-              <Card
-                key={item.id}
-                title={item.name}
-                subtitle={item.topic}
-                description={item.description}
-                image={item.image}
-                icon={faBook}
-                to={`/informativeresource/${item.id}`}
-                informativeResourceData={item}
-              />
-            ))}
+    <div className="informative-resource-container">
+      <div className="informative-resource">
+        <div className="list-content">
+          {/* Header de la página */}
+          <div className="page-header">
+            <h1 className="page-title">Recursos Informativos</h1>
+            {/* Barra de acciones */}
+            <div className="actions-bar">
+              <div className="admin-actions">
+                {canEdit && (
+                  <button 
+                    className="add-button"
+                    onClick={() => setShowNewForm(true)}
+                  >
+                    <FontAwesomeIcon icon={faPlus} />
+                    <span>Agregar Recurso</span>
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
-        ) : (
-          <div className="no-results">
-            <p>No hay recursos informativos disponibles</p>
-          </div>
-        )}
 
-        {/* Formulario de nuevo recurso */}
-        {showNewForm && (
-          <NewInformativeResourceForm
-            onResourceAdded={handleResourceAdded}
-            onCancel={() => setShowNewForm(false)}
-          />
-        )}
+          {/* Grid de tarjetas */}
+          {resources.length > 0 ? (
+            <div className="business-cards-grid">
+              {resources.map((item) => (
+                <Card
+                  key={item.id}
+                  title={item.name}
+                  subtitle={item.topic}
+                  description={item.description}
+                  image={item.image}
+                  icon={faBook}
+                  to={`/informativeresource/${item.id}`}
+                  informativeResourceData={item}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="no-results">
+              <p>No hay recursos informativos disponibles</p>
+            </div>
+          )}
+
+          {/* Formulario de nuevo recurso */}
+          {showNewForm && (
+            <NewInformativeResourceForm
+              onResourceAdded={handleResourceAdded}
+              onCancel={() => setShowNewForm(false)}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

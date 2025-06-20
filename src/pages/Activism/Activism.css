@@ -1,11 +1,9 @@
 /* Activism.css - Diseño Unificado */
 
-.activism {
+.activism-container {
   min-height: 100vh;
   background: var(--background-gradient);
-  padding-top: 120px; /* Margen para el header fijo */
   position: relative;
-  overflow: hidden;
 }
 
 /* Efectos de fondo */
@@ -34,14 +32,14 @@
 
 /* Header de la página */
 .page-header {
-  background: var(--background-card);
-  border-radius: var(--border-radius-large);
+  background: var(--background-gradient);
+  border-radius: 0 0 var(--border-radius-large) var(--border-radius-large);
   padding: var(--spacing-xl);
-  margin-bottom: var(--spacing-xl);
-  box-shadow: var(--shadow-card);
+  margin: 0 calc(-1 * var(--spacing-lg)) var(--spacing-xl) calc(-1 * var(--spacing-lg));
   text-align: center;
   position: relative;
   overflow: hidden;
+  margin-bottom: 0;
 }
 
 .page-header::before {
@@ -62,6 +60,7 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: var(--spacing-md);
+  font-family: 'Inter', sans-serif;
 }
 
 .page-subtitle {
@@ -101,7 +100,6 @@
   cursor: pointer;
   transition: var(--transition-medium);
   text-decoration: none;
-  box-shadow: var(--shadow-light);
 }
 
 .add-button:hover {
@@ -174,7 +172,7 @@
 
 @media (max-width: 768px) {
   .activism {
-    padding: var(--spacing-lg) 0;
+    padding:  0;
   }
   
   .page-header {

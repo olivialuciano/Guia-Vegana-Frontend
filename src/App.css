@@ -29,9 +29,7 @@ body {
   padding-top: 0;
 }
 
-.main-content .home-content {
-  padding-top: var(--spacing-xxl);
-}
+
 
 /* Efectos globales */
 .App::before {
@@ -52,12 +50,12 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
   .main-content {
-    padding-top: 70px;
+    padding-top: 0px;
   }
 }
 
 @media (max-width: 480px) {
   .main-content {
-    padding-top: 60px;
+    padding-top: 0px;
   }
 }

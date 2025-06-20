@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import Card from '../../components/Card/Card';
 import Loading from '../../components/Loading/Loading';
-import Header from '../../components/Header/Header';
 import { faHandsHelping, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NewActivismForm from '../../components/NewActivismForm/NewActivismForm';
@@ -49,14 +48,16 @@ const Activism = () => {
 
   if (error) {
     return (
-      <div className="activism">
-        <div className="list-content">
-          <div className="error-container">
-            <p>{error}</p>
-            <button className="add-button" onClick={fetchActivism}>
-              <FontAwesomeIcon icon={faPlus} />
-              Reintentar
-            </button>
+      <div className="activism-container">
+        <div className="activism">
+          <div className="list-content">
+            <div className="error-container">
+              <p>{error}</p>
+              <button className="add-button" onClick={fetchActivism}>
+                <FontAwesomeIcon icon={faPlus} />
+                Reintentar
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -64,54 +65,60 @@ const Activism = () => {
   }
 
   return (
-    <div className="activism">
-      <Header 
-        title="Actividades de Activismo"
-        icon={faHandsHelping}
-        showRating={false}
-        rating={null}
-      >
-        {canEdit && (
-          <button 
-            className="add-button"
-            onClick={() => setShowNewForm(true)}
-          >
-            <FontAwesomeIcon icon={faPlus} />
-            <span>Agregar Actividad</span>
-          </button>
-        )}
-      </Header>
+    <div className="activism-container">
+      <div className="activism">
+        <div className="list-content">
+          {/* Header de la página */}
+          <div className="page-header">
+            <h1 className="page-title">Activismo</h1>
 
-      <div className="list-content">
-        {/* Grid de tarjetas */}
-        {activism.length > 0 ? (
-          <div className="business-cards-grid">
-            {activism.map((item) => (
-              <Card
-                key={item.id}
-                title={item.name}
-                subtitle={item.type}
-                description={item.description}
-                image={item.image}
-                icon={faHandsHelping}
-                to={`/activism/${item.id}`}
-                activismData={item}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="no-results">
-            <p>No hay actividades de activismo disponibles</p>
-          </div>
-        )}
+            {/* Barra de acciones */}
 
-        {/* Formulario de nueva actividad */}
-        {showNewForm && (
-          <NewActivismForm
-            onActivismAdded={handleActivismAdded}
-            onCancel={() => setShowNewForm(false)}
-          />
-        )}
+            <div className="actions-bar">
+              <div className="admin-actions">
+                {canEdit && (
+                  <button 
+                    className="add-button"
+                    onClick={() => setShowNewForm(true)}
+                  >
+                    <FontAwesomeIcon icon={faPlus} />
+                    <span>Agregar Activismo</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Grid de tarjetas */}
+          {activism.length > 0 ? (
+            <div className="business-cards-grid">
+              {activism.map((item) => (
+                <Card
+                  key={item.id}
+                  title={item.name}
+                  subtitle={item.type}
+                  description={item.description}
+                  image={item.image}
+                  icon={faHandsHelping}
+                  to={`/activism/${item.id}`}
+                  activismData={item}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="no-results">
+              <p>No hay actividades de activismo disponibles</p>
+            </div>
+          )}
+
+          {/* Formulario de nueva actividad */}
+          {showNewForm && (
+            <NewActivismForm
+              onActivismAdded={handleActivismAdded}
+              onCancel={() => setShowNewForm(false)}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

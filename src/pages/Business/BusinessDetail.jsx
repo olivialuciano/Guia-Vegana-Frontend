@@ -5,9 +5,8 @@ import Loading from "../../components/Loading/Loading";
 import OpeningHour from "../../components/OpeningHour/OpeningHour";
 import VeganOption from "../../components/VeganOption/VeganOption";
 import defaultImage from "../../assets/img/image.png";
-import Header from "../../components/Header/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faMapMarkerAlt, faTruck, faLeaf, faBreadSlice, faStore, faEdit, faTrash, faDoorOpen, faDoorClosed, faClock } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faMapMarkerAlt, faTruck, faLeaf, faBreadSlice, faStore, faEdit, faTrash, faDoorOpen, faDoorClosed, faClock, faCheckCircle, faTimesCircle, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from "../../context/AuthContext";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
 import { useBusinessStatus } from "../../hooks/useBusinessStatus";
@@ -255,250 +254,268 @@ const BusinessDetail = () => {
 
   return (
     <div className="business-detail-container">
-      <Header 
-        title={business.name} 
-        icon={faStore}
-        showRating={true}
-        rating={business.rating}
-      >
-        {user && (
-          <div className="header-actions">
-            <button className="icon-button edit" onClick={handleEdit} title="Editar negocio">
-              <FontAwesomeIcon icon={faEdit} />
-            </button>
-            <button className="icon-button delete" onClick={() => setShowDeleteConfirm(true)} title="Eliminar negocio">
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
+      <div className="business-detail">
+        {/* Header de la página */}
+        <div className="page-header">
+          <div className="header-content">
+            <div className="header-left">
+              <div className="header-icon">
+                <FontAwesomeIcon icon={faStore} />
+              </div>
+              <div className="header-title-section">
+                <h1 className="page-title">{business.name}</h1>
+                <div className="business-rating">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <FontAwesomeIcon
+                      key={star}
+                      icon={faStar}
+                      className={star <= business.rating ? 'star filled' : 'star'}
+                    />
+                  ))}
+                  <span className="rating-value">{business.rating}/5</span>
+                </div>
+              </div>
+            </div>
+            {user && (
+              <div className="header-actions">
+                <button className="icon-button edit" onClick={handleEdit} title="Editar negocio">
+                  <FontAwesomeIcon icon={faEdit} />
+                </button>
+                <button className="icon-button delete" onClick={() => setShowDeleteConfirm(true)} title="Eliminar negocio">
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
+            )}
           </div>
-        )}
-      </Header>
+        </div>
 
-      <div className="business-image-container">
-        <img
-          src={getImageUrl()}
-          alt={business.name}
-          className="business-detail-image"
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = defaultImage;
-          }}
-        />
-      </div>
+        <div className="business-image-container">
+          <img
+            src={getImageUrl()}
+            alt={business.name}
+            className="business-detail-image"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = defaultImage;
+            }}
+          />
+        </div>
 
-      <div className="business-info-container">
-        {isEditing ? (
-          <form className="edit-form" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
-            <div className="form-group">
-              <label htmlFor="name">Nombre</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={editedBusiness.name}
-                onChange={handleInputChange}
-                required
-                placeholder="Ingrese el nombre del negocio"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="address">Dirección</label>
-              <input
-                type="text"
-                id="address"
-                name="address"
-                value={editedBusiness.address}
-                onChange={handleInputChange}
-                required
-                placeholder="Ingrese la dirección"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="zone">Zona</label>
-              <select
-                id="zone"
-                name="zone"
-                value={editedBusiness.zone}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Seleccione una zona</option>
-                {Object.entries(zoneMap).map(([key, value]) => (
-                  <option key={key} value={parseInt(key)}>{value}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="delivery">Tipo de Entrega</label>
-              <select
-                id="delivery"
-                name="delivery"
-                value={editedBusiness.delivery}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Seleccione el tipo de entrega</option>
-                {Object.entries(deliveryMap).map(([key, value]) => (
-                  <option key={key} value={parseInt(key)}>{value}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="businessType">Tipo de Negocio</label>
-              <select
-                id="businessType"
-                name="businessType"
-                value={editedBusiness.businessType}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Seleccione el tipo de negocio</option>
-                {Object.entries(businessTypeMap).map(([key, value]) => (
-                  <option key={key} value={parseInt(key)}>{value}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="rating">Calificación</label>
-              <select
-                id="rating"
-                name="rating"
-                value={editedBusiness.rating}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Seleccione una calificación</option>
-                {Object.entries(ratingMap).map(([key, value]) => (
-                  <option key={key} value={parseInt(key)}>{value}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="checkbox-group">
-              <input
-                type="checkbox"
-                id="glutenFree"
-                name="glutenFree"
-                checked={editedBusiness.glutenFree}
-                onChange={handleInputChange}
-              />
-              <label htmlFor="glutenFree">Opciones sin TACC</label>
-            </div>
-
-            <div className="checkbox-group">
-              <input
-                type="checkbox"
-                id="allPlantBased"
-                name="allPlantBased"
-                checked={editedBusiness.allPlantBased}
-                onChange={handleInputChange}
-              />
-              <label htmlFor="allPlantBased">100% basado en plantas</label>
-            </div>
-
-            <div className="form-actions">
-              <button type="button" className="cancel-button" onClick={handleCancel}>
-                Cancelar
-              </button>
-              <button type="submit" className="save-button">
-                Guardar
-              </button>
-            </div>
-          </form>
-        ) : (
-          <>
-            <div className="business-status-indicator">
-              <div className={`status-badge ${getStatusClass()}`}>
-                <FontAwesomeIcon icon={getStatusIcon()} />
-                <span>{getStatusText()}</span>
+        <div className="business-info-container">
+          {isEditing ? (
+            <form className="edit-form" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+              <div className="form-group">
+                <label htmlFor="name">Nombre</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={editedBusiness.name}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Ingrese el nombre del negocio"
+                />
               </div>
-            </div>
 
-            <div className="business-type">
-              {businessTypeMap[business.businessType] || business.businessType}
-            </div>
-
-            <div className="business-location">
-              <FontAwesomeIcon icon={faMapMarkerAlt} />
-              <div className="location-details">
-                <p className="business-address">{business.address}</p>
-                <p className="business-zone">{zoneMap[business.zone] || business.zone}</p>
+              <div className="form-group">
+                <label htmlFor="address">Dirección</label>
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  value={editedBusiness.address}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Ingrese la dirección"
+                />
               </div>
-            </div>
 
-            <div className="business-features">
-              {business.glutenFree && (
-                <div className="feature-tag-sintacc">
-                  <FontAwesomeIcon icon={faBreadSlice} />
-                  <span>Opciones sin TACC</span>
+              <div className="form-group">
+                <label htmlFor="zone">Zona</label>
+                <select
+                  id="zone"
+                  name="zone"
+                  value={editedBusiness.zone}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Seleccione una zona</option>
+                  {Object.entries(zoneMap).map(([key, value]) => (
+                    <option key={key} value={parseInt(key)}>{value}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="delivery">Tipo de Entrega</label>
+                <select
+                  id="delivery"
+                  name="delivery"
+                  value={editedBusiness.delivery}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Seleccione el tipo de entrega</option>
+                  {Object.entries(deliveryMap).map(([key, value]) => (
+                    <option key={key} value={parseInt(key)}>{value}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="businessType">Tipo de Negocio</label>
+                <select
+                  id="businessType"
+                  name="businessType"
+                  value={editedBusiness.businessType}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Seleccione el tipo de negocio</option>
+                  {Object.entries(businessTypeMap).map(([key, value]) => (
+                    <option key={key} value={parseInt(key)}>{value}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="rating">Calificación</label>
+                <select
+                  id="rating"
+                  name="rating"
+                  value={editedBusiness.rating}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Seleccione una calificación</option>
+                  {Object.entries(ratingMap).map(([key, value]) => (
+                    <option key={key} value={parseInt(key)}>{value}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="checkbox-group">
+                <input
+                  type="checkbox"
+                  id="glutenFree"
+                  name="glutenFree"
+                  checked={editedBusiness.glutenFree}
+                  onChange={handleInputChange}
+                />
+                <label htmlFor="glutenFree">Opciones sin TACC</label>
+              </div>
+
+              <div className="checkbox-group">
+                <input
+                  type="checkbox"
+                  id="allPlantBased"
+                  name="allPlantBased"
+                  checked={editedBusiness.allPlantBased}
+                  onChange={handleInputChange}
+                />
+                <label htmlFor="allPlantBased">100% basado en plantas</label>
+              </div>
+
+              <div className="form-actions">
+                <button type="button" className="cancel-button" onClick={handleCancel}>
+                  Cancelar
+                </button>
+                <button type="submit" className="save-button">
+                  Guardar
+                </button>
+              </div>
+            </form>
+          ) : (
+            <>
+              <div className="business-status-indicator">
+                <div className={`status-badge ${getStatusClass()}`}>
+                  <FontAwesomeIcon icon={getStatusIcon()} />
+                  <span>{getStatusText()}</span>
                 </div>
-              )}
-              {business.allPlantBased && (
-                <div className="feature-tag">
-                  <FontAwesomeIcon icon={faLeaf} />
-                  <span>100% basado en plantas</span>
+              </div>
+
+              <div className="business-type">
+                {businessTypeMap[business.businessType] || business.businessType}
+              </div>
+
+              <div className="business-location">
+                <FontAwesomeIcon icon={faMapMarkerAlt} />
+                <div className="location-details">
+                  <p className="business-address">{business.address}</p>
+                  <p className="business-zone">{zoneMap[business.zone] || business.zone}</p>
                 </div>
-              )}
-            </div>
+              </div>
 
-            <div className="business-delivery">
-              <FontAwesomeIcon icon={faTruck} />
-              <span>{deliveryMap[business.delivery] || business.delivery}</span>
-            </div>
-          </>
-        )}
-      </div>
+              <div className="business-features">
+                {business.glutenFree && (
+                  <div className="feature-tag-sintacc">
+                    <FontAwesomeIcon icon={faBreadSlice} />
+                    <span>Opciones sin TACC</span>
+                  </div>
+                )}
+                {business.allPlantBased && (
+                  <div className="feature-tag">
+                    <FontAwesomeIcon icon={faLeaf} />
+                    <span>100% basado en plantas</span>
+                  </div>
+                )}
+              </div>
 
-      <div className="business-details-grid">
-        <OpeningHour 
-          openingHours={business.openingHours || []} 
-          businessId={parseInt(id)}
-          onHourAdded={(newHour) => {
-            console.log('New hour added:', newHour); // Debug log
-            setBusiness(prev => ({
-              ...prev,
-              openingHours: [...(prev.openingHours || []), newHour]
-            }));
-          }}
-          onHourUpdated={(updatedHour) => {
-            console.log('Hour updated:', updatedHour); // Debug log
-            setBusiness(prev => ({
-              ...prev,
-              openingHours: prev.openingHours.map(hour => 
-                hour.id === updatedHour.id ? updatedHour : hour
-              )
-            }));
-          }}
-          onHourDeleted={(hourId) => {
-            console.log('Hour deleted:', hourId); // Debug log
-            setBusiness(prev => ({
-              ...prev,
-              openingHours: prev.openingHours.filter(hour => hour.id !== hourId)
-            }));
-          }}
-        />
-        <VeganOption 
-          veganOptions={veganOptions} 
-          businessId={parseInt(id)}
-          onOptionAdded={(newOption) => {
-            console.log('New option added:', newOption); // Debug log
-            setVeganOptions(prev => [...prev, newOption]);
-          }}
-          onOptionUpdated={(updatedOption) => {
-            console.log('Option updated:', updatedOption); // Debug log
-            setVeganOptions(prev => 
-              prev.map(option => option.id === updatedOption.id ? updatedOption : option)
-            );
-          }}
-          onOptionDeleted={(optionId) => {
-            console.log('Option deleted:', optionId); // Debug log
-            setVeganOptions(prev => prev.filter(option => option.id !== optionId));
-          }}
-        />
+              <div className="business-delivery">
+                <FontAwesomeIcon icon={faTruck} />
+                <span>{deliveryMap[business.delivery] || business.delivery}</span>
+              </div>
+            </>
+          )}
+        </div>
+
+        <div className="business-details-grid">
+          <OpeningHour 
+            openingHours={business.openingHours || []} 
+            businessId={parseInt(id)}
+            onHourAdded={(newHour) => {
+              console.log('New hour added:', newHour); // Debug log
+              setBusiness(prev => ({
+                ...prev,
+                openingHours: [...(prev.openingHours || []), newHour]
+              }));
+            }}
+            onHourUpdated={(updatedHour) => {
+              console.log('Hour updated:', updatedHour); // Debug log
+              setBusiness(prev => ({
+                ...prev,
+                openingHours: prev.openingHours.map(hour => 
+                  hour.id === updatedHour.id ? updatedHour : hour
+                )
+              }));
+            }}
+            onHourDeleted={(hourId) => {
+              console.log('Hour deleted:', hourId); // Debug log
+              setBusiness(prev => ({
+                ...prev,
+                openingHours: prev.openingHours.filter(hour => hour.id !== hourId)
+              }));
+            }}
+          />
+          <VeganOption 
+            veganOptions={veganOptions} 
+            businessId={parseInt(id)}
+            onOptionAdded={(newOption) => {
+              console.log('New option added:', newOption); // Debug log
+              setVeganOptions(prev => [...prev, newOption]);
+            }}
+            onOptionUpdated={(updatedOption) => {
+              console.log('Option updated:', updatedOption); // Debug log
+              setVeganOptions(prev => 
+                prev.map(option => option.id === updatedOption.id ? updatedOption : option)
+              );
+            }}
+            onOptionDeleted={(optionId) => {
+              console.log('Option deleted:', optionId); // Debug log
+              setVeganOptions(prev => prev.filter(option => option.id !== optionId));
+            }}
+          />
+        </div>
       </div>
 
       <ConfirmDialog

@@ -14,14 +14,13 @@ body {
 }
 
 /* HOME */
-.home {
+.home-container {
   min-height: 100vh;
   background: var(--background-gradient);
   position: relative;
-  overflow: hidden;
-  margin-bottom: 65px;
-  margin-top: 0;
 
+margin-bottom: 80px;
+margin-top: 20px;
 }
 
 /* Efectos de fondo */

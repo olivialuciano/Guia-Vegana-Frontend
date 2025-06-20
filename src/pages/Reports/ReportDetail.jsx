@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import Header from '../../components/Header/Header';
 import Loading from '../../components/Loading/Loading';
 import ReportsTable from '../../components/ReportsTable/ReportsTable';
 import { 
@@ -555,31 +554,33 @@ const ReportDetail = () => {
   const reportConfig = getReportConfig();
 
   return (
-    <div className="report-detail">
-      <Header 
-        title={reportConfig.title}
-        icon={reportConfig.icon}
-        showRating={false}
-        rating={null}
-      />
-      
-      <div className="report-detail-content">
-        <div className="report-detail-header">
-          <button 
-            className="back-btn"
-            onClick={() => navigate('/reports')}
-          >
-            <FontAwesomeIcon icon={faArrowLeft} />
-            Volver a Reportes
-          </button>
-          <div className="report-info">
-            <h2>{reportConfig.title}</h2>
-            <p>{reportConfig.description}</p>
+    <div className="report-detail-container">
+      <div className="report-detail">
+        {/* Header de la página */}
+        <div className="page-header">
+          <div className="header-content">
+            <div className="header-left">
+              <div className="header-icon">
+                <FontAwesomeIcon icon={faChartBar} />
+              </div>
+              <div className="header-title-section">
+                <h1 className="page-title">{reportConfig.title}</h1>
+                <p className="page-subtitle">{reportConfig.description}</p>
+              </div>
+            </div>
+            <div className="header-actions">
+              <button className="back-btn" onClick={() => navigate('/reports')}>
+                <FontAwesomeIcon icon={faArrowLeft} />
+                Volver
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="report-detail-main">
-          {renderReportContent()}
+        <div className="report-detail-content">
+          <div className="report-detail-main">
+            {renderReportContent()}
+          </div>
         </div>
       </div>
     </div>

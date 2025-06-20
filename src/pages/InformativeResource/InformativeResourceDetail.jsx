@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import Header from '../../components/Header/Header';
 import Loading from '../../components/Loading/Loading';
-import { faBook, faCalendarAlt, faUser, faLink } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faBook, 
+  faEdit, 
+  faTrash, 
+  faGlobe, 
+  faLink 
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import image from '../../assets/img/image.png';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
 import './InformativeResourceDetail.css';
 import { API } from '../../services/api';
@@ -177,140 +180,148 @@ const InformativeResourceDetail = () => {
   }
 
   return (
-    <div className="informative-resource-detail">
-      <Header 
-        title={resource.name}
-        icon={faBook}
-        backUrl="/informative-resource"
-        showRating={false}
-        rating={null}
-      >
-        {user && (user.role === 'Sysadmin' || user.role === 'Investigador') && (
-          <div className="header-actions">
-            <button className="icon-button edit" onClick={() => setIsEditing(!isEditing)}>
-              <FontAwesomeIcon icon={faEdit} />
-            </button>
-            <button className="icon-button delete" onClick={() => setShowDeleteDialog(true)}>
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
-          </div>
-        )}
-      </Header>
-
-      <div className="detail-content">
-        <div className="detail-section">
-          <div className="image-section">
-            <img 
-              src={getImageUrl()} 
-              alt={resource.name}
-              className="resource-image"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = image;
-              }}
-            />
+    <div className="informative-resource-detail-container">
+      <div className="informative-resource-detail">
+        {/* Header de la página */}
+        <div className="page-header">
+          <div className="header-content">
+            <div className="header-left">
+              <div className="header-icon">
+                <FontAwesomeIcon icon={faBook} />
+              </div>
+              <div className="header-title-section">
+                <h1 className="page-title">{resource.name}</h1>
+                <p className="page-subtitle">{resource.topic}</p>
+              </div>
+            </div>
+            {user && (
+              <div className="header-actions">
+                <button className="icon-button edit" onClick={() => setIsEditing(!isEditing)} title="Editar recurso">
+                  <FontAwesomeIcon icon={faEdit} />
+                </button>
+                <button className="icon-button delete" onClick={() => setShowDeleteDialog(true)} title="Eliminar recurso">
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="detail-section">
-          <h2>Información del Recurso</h2>
-          <div className="contact-info">
-            <div className="info-item">
-              <FontAwesomeIcon icon={faBook} />
-              <strong>Tipo:</strong>
-              {isEditing ? (
-                <select
-                  name="type"
-                  value={formData.type}
-                  onChange={handleInputChange}
-                  className="edit-input"
-                >
-                  <option value="0">Libro</option>
-                  <option value="1">Documental</option>
-                  <option value="2">Recurso Web</option>
-                </select>
-              ) : (
-                getTypeLabel(resource.type)
-              )}
+        <div className="detail-content">
+          <div className="detail-section">
+            <div className="image-section">
+              <img 
+                src={getImageUrl()} 
+                alt={resource.name}
+                className="resource-image"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = image;
+                }}
+              />
             </div>
-            <div className="info-item">
-              <FontAwesomeIcon icon={faBook} />
-              <strong>Tema:</strong>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="topic"
-                  value={formData.topic}
-                  onChange={handleInputChange}
-                  className="edit-input"
-                />
-              ) : (
-                resource.topic
-              )}
-            </div>
-            <div className="info-item">
-              <FontAwesomeIcon icon={faLink} />
-              <strong>Plataforma:</strong>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="platform"
-                  value={formData.platform}
-                  onChange={handleInputChange}
-                  className="edit-input"
-                />
-              ) : (
-                resource.platform || 'No especificada'
-              )}
-            </div>
-            
           </div>
-        </div>
 
-        <div className="detail-section">
-          <h2>Descripción</h2>
-          {isEditing ? (
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              className="edit-textarea"
-              rows="4"
-            />
-          ) : (
-            <p className="description">{resource.description}</p>
+          <div className="detail-section">
+            <h2>Información del Recurso</h2>
+            <div className="contact-info">
+              <div className="info-item">
+                <FontAwesomeIcon icon={faBook} />
+                <strong>Tipo:</strong>
+                {isEditing ? (
+                  <select
+                    name="type"
+                    value={formData.type}
+                    onChange={handleInputChange}
+                    className="edit-input"
+                  >
+                    <option value="0">Libro</option>
+                    <option value="1">Documental</option>
+                    <option value="2">Recurso Web</option>
+                  </select>
+                ) : (
+                  getTypeLabel(resource.type)
+                )}
+              </div>
+              <div className="info-item">
+                <FontAwesomeIcon icon={faBook} />
+                <strong>Tema:</strong>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    name="topic"
+                    value={formData.topic}
+                    onChange={handleInputChange}
+                    className="edit-input"
+                  />
+                ) : (
+                  resource.topic
+                )}
+              </div>
+              <div className="info-item">
+                <FontAwesomeIcon icon={faLink} />
+                <strong>Plataforma:</strong>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    name="platform"
+                    value={formData.platform}
+                    onChange={handleInputChange}
+                    className="edit-input"
+                  />
+                ) : (
+                  resource.platform || 'No especificada'
+                )}
+              </div>
+              
+            </div>
+          </div>
+
+          <div className="detail-section">
+            <h2>Descripción</h2>
+            {isEditing ? (
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                className="edit-textarea"
+                rows="4"
+              />
+            ) : (
+              <p className="description">{resource.description}</p>
+            )}
+          </div>
+
+          {isEditing && (
+            <div className="form-actions">
+              <button 
+                type="button" 
+                className="cancel-button" 
+                onClick={() => setIsEditing(false)}
+                disabled={isSubmitting}
+              >
+                Cancelar
+              </button>
+              <button 
+                type="button" 
+                className="submit-button"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Guardando...' : 'Guardar Cambios'}
+              </button>
+            </div>
           )}
         </div>
 
-        {isEditing && (
-          <div className="form-actions">
-            <button 
-              type="button" 
-              className="cancel-button" 
-              onClick={() => setIsEditing(false)}
-              disabled={isSubmitting}
-            >
-              Cancelar
-            </button>
-            <button 
-              type="button" 
-              className="submit-button"
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Guardando...' : 'Guardar Cambios'}
-            </button>
-          </div>
-        )}
+        <ConfirmDialog
+          isOpen={showDeleteDialog}
+          onClose={handleDeleteCancel}
+          onConfirm={handleDelete}
+          title="Eliminar Recurso"
+          message="¿Está seguro de que desea eliminar este recurso? Esta acción no se puede deshacer."
+        />
       </div>
-
-      <ConfirmDialog
-        isOpen={showDeleteDialog}
-        onClose={handleDeleteCancel}
-        onConfirm={handleDelete}
-        title="Eliminar Recurso"
-        message="¿Está seguro de que desea eliminar este recurso? Esta acción no se puede deshacer."
-      />
     </div>
   );
 };

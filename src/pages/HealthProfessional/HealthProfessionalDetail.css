@@ -1,3 +1,125 @@
+.health-professional-detail-container {
+  min-height: 100vh;
+  padding: calc(80px + var(--spacing-lg)) var(--spacing-lg) calc(60px + var(--spacing-lg));
+  background: var(--background-gradient);
+  position: relative;
+}
+
+/* Header de la página */
+.page-header {
+  background: var(--background-card);
+  border-radius: 0 0 var(--border-radius-large) var(--border-radius-large);
+  padding: var(--spacing-xl);
+  margin: 0 calc(-1 * var(--spacing-lg)) var(--spacing-xl) calc(-1 * var(--spacing-lg));
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary-gradient);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  flex: 1;
+}
+
+.header-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--primary-gradient);
+  border-radius: var(--border-radius-circle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-white);
+  font-size: var(--font-size-xl);
+  box-shadow: var(--shadow-light);
+  transition: var(--transition-medium);
+}
+
+.header-icon:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-medium);
+}
+
+.header-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.page-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.page-subtitle {
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.icon-button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.icon-button svg {
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.icon-button.edit {
+  color: var(--primary-color);
+}
+
+.icon-button.edit:hover {
+  background-color: var(--primary-light);
+  transform: translateY(-2px);
+}
+
+.icon-button.delete {
+  color: var(--error-color);
+}
+
+.icon-button.delete:hover {
+  background-color: var(--error-light);
+  transform: translateY(-2px);
+}
+
 .health-professional-detail {
   max-width: 1200px;
   margin: 0 auto;
@@ -74,48 +196,6 @@
   line-height: 1.6;
   color: #333;
   font-size: 1.1em;
-}
-
-.header-actions {
-  display: flex;
-  gap: 1rem;
-  margin-left: auto;
-}
-
-.icon-button {
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: transparent;
-}
-
-.icon-button svg {
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-
-.icon-button.edit {
-  color: #4CAF50;
-}
-
-.icon-button.edit:hover {
-  background-color: #e8f5e9;
-  transform: translateY(-2px);
-}
-
-.icon-button.delete {
-  color: #dc3545;
-}
-
-.icon-button.delete:hover {
-  background-color: #ffebee;
-  transform: translateY(-2px);
 }
 
 /* Form Styles */

@@ -58,8 +58,8 @@
   --spacing-xxl: 48px;
   
   /* Tipografía */
-  --font-family-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  --font-family-secondary: 'Georgia', serif;
+  --font-family-primary: sans-serif;
+  --font-family-secondary: sans-serif;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-md: 1rem;
@@ -77,6 +77,15 @@
   --blur-light: blur(10px);
   --blur-medium: blur(20px);
 }
+:root {
+  --font-family-base: 'Inter', sans-serif;
+}
+
+/* Aplica la fuente a todo el body */
+body {
+  font-family: var(--font-family-base);
+}
+
 
 * {
   margin: 0;
