@@ -10,7 +10,7 @@ class AuthService {
   }
 
   getUserRole() {
-    return localStorage.getItem("userRole");
+    return localStorage.getItem("role");
   }
 
   isAuthenticated() {
@@ -37,7 +37,7 @@ class AuthService {
   logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
-    localStorage.removeItem("userRole");
+    localStorage.removeItem("role");
   }
 
   setAuthData(token) {
@@ -47,7 +47,7 @@ class AuthService {
     // Extraer el ID del usuario de diferentes campos posibles
     const userId = decoded.nameid || decoded.sub || decoded.userId || decoded.id || decoded.user_id;
     
-    localStorage.setItem("userRole", decoded.role || "");
+    localStorage.setItem("role", decoded.role || "");
     localStorage.setItem("userId", userId || "");
   }
 }

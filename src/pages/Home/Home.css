@@ -374,6 +374,55 @@ body {
   color: var(--text-white);
 }
 
+/* Estilos para la feature-card de administración */
+.admin-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 2px solid #667eea;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  opacity: 0;
+  transition: var(--transition-medium);
+}
+
+.admin-card:hover::before {
+  opacity: 1;
+}
+
+.admin-card .feature-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.admin-card .feature-title {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.admin-card .feature-description {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.admin-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+}
+
+.admin-card:hover .feature-icon {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .home-content {
@@ -443,6 +492,18 @@ body {
     max-width: 300px;
     justify-content: center;
   }
+  
+  .admin-card {
+    grid-column: 1 / -1;
+  }
+  
+  .admin-card .feature-title {
+    font-size: var(--font-size-lg);
+  }
+  
+  .admin-card .feature-description {
+    font-size: var(--font-size-sm);
+  }
 }
 
 @media (max-width: 480px) {
@@ -453,7 +514,7 @@ body {
   .hero-title {
     font-size: 1.8rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1rem;
   }

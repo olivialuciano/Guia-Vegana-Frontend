@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import Card from '../../components/Card/Card';
 import Loading from '../../components/Loading/Loading';
+import Header from '../../components/Header/Header';
 import { faBook, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NewInformativeResourceForm from '../../components/NewInformativeResourceForm/NewInformativeResourceForm';
@@ -64,30 +65,24 @@ const InformativeResource = () => {
 
   return (
     <div className="informative-resource">
+      <Header 
+        title="Recursos Informativos"
+        icon={faBook}
+        showRating={false}
+        rating={null}
+      >
+        {canEdit && (
+          <button 
+            className="add-button"
+            onClick={() => setShowNewForm(true)}
+          >
+            <FontAwesomeIcon icon={faPlus} />
+            <span>Agregar Recurso</span>
+          </button>
+        )}
+      </Header>
+
       <div className="list-content">
-        {/* Header de la página */}
-        <div className="page-header">
-          <h1 className="page-title">Recursos Informativos</h1>
-          <p className="page-subtitle">
-            Accedé a artículos, videos, recetas y contenido educativo para aprender más sobre el veganismo
-          </p>
-        </div>
-
-        {/* Barra de acciones */}
-        <div className="actions-bar">
-          <div className="admin-actions">
-            {canEdit && (
-              <button 
-                className="add-button"
-                onClick={() => setShowNewForm(true)}
-              >
-                <FontAwesomeIcon icon={faPlus} />
-                <span>Agregar Recurso</span>
-              </button>
-            )}
-          </div>
-        </div>
-
         {/* Grid de tarjetas */}
         {resources.length > 0 ? (
           <div className="business-cards-grid">

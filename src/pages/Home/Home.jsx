@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -11,9 +11,20 @@ import {
   faLeaf,
   faHeart
 } from '@fortawesome/free-solid-svg-icons';
+import { AuthContext } from '../../context/AuthContext';
 import './Home.css';
 
 const Home = () => {
+  const { user, role } = useContext(AuthContext);
+  const storedRole = localStorage.getItem('role');
+  const isSysadmin = role === 'Sysadmin' || storedRole === 'Sysadmin';
+  
+  // Debug logs
+  console.log('Home - User:', user);
+  console.log('Home - Role from context:', role);
+  console.log('Home - Role from localStorage:', localStorage.getItem('role'));
+  console.log('Home - Is Sysadmin:', isSysadmin);
+
   return (
     <div className="home">
       <div className="home-content">
@@ -72,7 +83,19 @@ const Home = () => {
                 Participa en eventos, campañas y actividades de activismo por los derechos de los animales.
               </p>
             </Link>
-          </div>
+
+            {isSysadmin && (
+              <Link to="/users" className="feature-card admin-card">
+                <div className="feature-icon">
+                  <FontAwesomeIcon icon={faUsers} />
+                </div>
+                <h3 className="feature-title">Gestión de Usuarios</h3>
+                <p className="feature-description">
+                  Administrá usuarios del sistema, activá o desactivá cuentas y gestioná roles de acceso.
+                </p>
+              </Link>
+            )}
+      </div>
         </section>
 
         <section className="stats-section">
@@ -110,9 +133,9 @@ const Home = () => {
             <Link to="/comments" className="cta-button secondary">
               <FontAwesomeIcon icon={faUsers} />
               <span>Unirse a la Comunidad</span>
-            </Link>
+          </Link>
           </div>
-        </section>
+      </section>
       </div>
     </div>
   );

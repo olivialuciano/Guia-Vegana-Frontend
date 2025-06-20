@@ -55,7 +55,7 @@ const Signin = () => {
 
       // Guardar token y claims en localStorage
       localStorage.setItem("token", token);
-      localStorage.setItem("userRole", decoded.role);
+      localStorage.setItem("role", decoded.role);
       localStorage.setItem("userId", userId);
 
       // Actualizar el contexto de autenticación

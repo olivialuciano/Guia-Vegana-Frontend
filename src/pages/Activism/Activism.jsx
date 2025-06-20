@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import Card from '../../components/Card/Card';
 import Loading from '../../components/Loading/Loading';
+import Header from '../../components/Header/Header';
 import { faHandsHelping, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NewActivismForm from '../../components/NewActivismForm/NewActivismForm';
@@ -64,30 +65,24 @@ const Activism = () => {
 
   return (
     <div className="activism">
+      <Header 
+        title="Actividades de Activismo"
+        icon={faHandsHelping}
+        showRating={false}
+        rating={null}
+      >
+        {canEdit && (
+          <button 
+            className="add-button"
+            onClick={() => setShowNewForm(true)}
+          >
+            <FontAwesomeIcon icon={faPlus} />
+            <span>Agregar Actividad</span>
+          </button>
+        )}
+      </Header>
+
       <div className="list-content">
-        {/* Header de la página */}
-        <div className="page-header">
-          <h1 className="page-title">Actividades de Activismo</h1>
-          <p className="page-subtitle">
-            Participá en eventos, campañas y actividades por los derechos de los animales y el medio ambiente
-          </p>
-        </div>
-
-        {/* Barra de acciones */}
-        <div className="actions-bar">
-          <div className="admin-actions">
-            {canEdit && (
-              <button 
-                className="add-button"
-                onClick={() => setShowNewForm(true)}
-              >
-                <FontAwesomeIcon icon={faPlus} />
-                <span>Agregar Actividad</span>
-              </button>
-            )}
-          </div>
-        </div>
-
         {/* Grid de tarjetas */}
         {activism.length > 0 ? (
           <div className="business-cards-grid">

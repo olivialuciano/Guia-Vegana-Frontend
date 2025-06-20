@@ -58,7 +58,7 @@
 .informative-resource {
   min-height: 100vh;
   background: var(--background-gradient);
-  padding: var(--spacing-xl) 0;
+  padding-top: 120px; /* Margen para el header fijo */
   position: relative;
   overflow: hidden;
 }

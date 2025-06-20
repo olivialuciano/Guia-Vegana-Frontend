@@ -193,7 +193,7 @@ const HealthProfessionalDetail = () => {
         <div className="detail-section image-section">
           <img 
             src={getImageUrl()} 
-            alt={professional.name}
+        alt={professional.name}
             className="professional-image"
             onError={(e) => {
               e.target.onerror = null;

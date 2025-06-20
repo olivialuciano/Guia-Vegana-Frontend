@@ -232,27 +232,21 @@ const BusinessList = () => {
 
   return (
     <div className="business-list">
+      <Header 
+        title="Negocios Veganos"
+        icon={faStore}
+        showRating={false}
+        rating={null}
+      >
+        {user && (
+          <button className="add-button" onClick={handleOpenForm}>
+            <FontAwesomeIcon icon={faPlus} />
+            <span>Agregar Negocio</span>
+          </button>
+        )}
+      </Header>
+
       <div className="list-content">
-        {/* Header de la página */}
-        <div className="page-header">
-          <h1 className="page-title">Negocios Veganos</h1>
-          <p className="page-subtitle">
-            Descubrí los mejores restaurantes, cafeterías, tiendas y emprendimientos veganos de Rosario
-          </p>
-        </div>
-
-        {/* Barra de acciones */}
-        <div className="actions-bar">
-          <div className="admin-actions">
-            {user && (
-              <button className="add-button" onClick={handleOpenForm}>
-                <FontAwesomeIcon icon={faPlus} />
-                <span>Agregar Negocio</span>
-              </button>
-            )}
-          </div>
-        </div>
-
         {/* Barra de búsqueda y filtros */}
         <div className="search-filters-bar">
           <div className="search-container">

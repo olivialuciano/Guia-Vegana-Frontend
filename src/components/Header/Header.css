@@ -9,6 +9,38 @@
   border-bottom: 1px solid rgba(76, 175, 80, 0.1);
   transition: var(--transition-medium);
   animation: slideInDown 0.6s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efectos de fondo del header */
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(76, 175, 80, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(156, 39, 176, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(255, 193, 7, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(76, 175, 80, 0.01) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  animation: wave 10s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
 }
 
 @keyframes slideInDown {
@@ -22,7 +54,18 @@
   }
 }
 
+@keyframes wave {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+}
+
 .header-content {
+  position: relative;
+  z-index: 1;
   max-width: 1400px;
   margin: 0 auto;
   padding: var(--spacing-md) var(--spacing-lg);
@@ -83,12 +126,15 @@
 }
 
 .header-title {
-  font-size: var(--font-size-xxl);
-  font-weight: 700;
-  color: var(--text-primary);
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 800;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0;
-
   position: relative;
+  line-height: 1.2;
 }
 
 .header-title::after {
@@ -135,6 +181,23 @@
   font-weight: 600;
   box-shadow: var(--shadow-light);
   transition: var(--transition-medium);
+  position: relative;
+  overflow: hidden;
+}
+
+.rating-display::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: var(--transition-medium);
+}
+
+.rating-display:hover::before {
+  left: 100%;
 }
 
 .rating-display:hover {
@@ -174,6 +237,52 @@
   gap: var(--spacing-sm);
 }
 
+/* Estilos para botones en el header */
+.header-actions .add-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--primary-gradient);
+  color: var(--text-white);
+  border: none;
+  border-radius: var(--border-radius-medium);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-medium);
+  text-decoration: none;
+  box-shadow: var(--shadow-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.header-actions .add-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: var(--transition-medium);
+}
+
+.header-actions .add-button:hover::before {
+  left: 100%;
+}
+
+.header-actions .add-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+  text-decoration: none;
+  color: var(--text-white);
+}
+
+.header-actions .add-button svg {
+  font-size: var(--font-size-lg);
+}
+
 .icon-button {
   width: 40px;
   height: 40px;
@@ -198,7 +307,7 @@
   width: 0;
   height: 0;
   background: var(--primary-gradient);
-  border-radius: var(--border-radius-circle);
+  border-radius: 50%;
   transition: var(--transition-medium);
   transform: translate(-50%, -50%);
 }
@@ -214,31 +323,17 @@
 }
 
 .icon-button svg {
-  font-size: var(--font-size-lg);
   position: relative;
   z-index: 1;
   transition: var(--transition-medium);
 }
 
 .icon-button.edit:hover {
-  color: var(--text-white);
+  background: var(--primary-gradient);
 }
 
 .icon-button.delete:hover {
-  color: var(--text-white);
-}
-
-/* Efectos especiales */
-.header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--primary-gradient);
-  transform: scaleX(0);
-  animation: expandWidth 1s ease-out 0.8s forwards;
+  background: var(--error-gradient);
 }
 
 /* Responsive */
@@ -248,7 +343,7 @@
   }
   
   .header-title {
-    font-size: var(--font-size-xl);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
   }
   
   .header-icon {
@@ -277,7 +372,7 @@
   }
   
   .header-title {
-    font-size: var(--font-size-lg);
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
   }
   
   .header-subtitle {
@@ -296,6 +391,11 @@
     gap: var(--spacing-xs);
   }
   
+  .header-actions .add-button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+  }
+  
   .icon-button {
     width: 36px;
     height: 36px;
@@ -312,7 +412,7 @@
   }
   
   .header-title {
-    font-size: var(--font-size-md);
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
   }
   
   .header-icon {
@@ -322,6 +422,11 @@
   }
   
   .rating-display {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-xs);
+  }
+  
+  .header-actions .add-button {
     padding: var(--spacing-xs) var(--spacing-sm);
     font-size: var(--font-size-xs);
   }

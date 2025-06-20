@@ -50,7 +50,6 @@ const Header = ({ title, icon, showRating = false, rating = null, children }) =>
             </div>
             <div>
               <h1 className="header-title">{title}</h1>
-              <p className="header-subtitle">Guía Vegana</p>
             </div>
           </div>
         </div>
