@@ -128,13 +128,12 @@
 .header-title {
   font-size: clamp(1.8rem, 3vw, 2.5rem);
   font-weight: 800;
-  background: var(--primary-gradient);
+  background: var(--text-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0;
   position: relative;
-  line-height: 1.2;
 }
 
 .header-title::after {
