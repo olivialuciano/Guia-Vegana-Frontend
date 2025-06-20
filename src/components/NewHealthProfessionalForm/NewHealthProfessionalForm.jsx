@@ -129,67 +129,86 @@ const NewHealthProfessionalForm = ({ onProfessionalAdded, onCancel }) => {
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">Nombre *</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              required
-              placeholder="Ingrese el nombre del profesional"
-            />
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="name">Nombre *</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+                placeholder="Ingrese el nombre del profesional"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="specialty">Especialidad *</label>
+              <input
+                type="text"
+                id="specialty"
+                name="specialty"
+                value={formData.specialty}
+                onChange={handleInputChange}
+                required
+                placeholder="Ingrese la especialidad"
+              />
+            </div>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="image">URL de la imagen</label>
-            <input
-              type="url"
-              id="image"
-              name="image"
-              value={formData.image}
-              onChange={handleInputChange}
-              placeholder="Ingrese la URL de la imagen"
-            />
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="license">Licencia *</label>
+              <input
+                type="text"
+                id="license"
+                name="license"
+                value={formData.license}
+                onChange={handleInputChange}
+                required
+                placeholder="Ingrese el número de licencia"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="whatsappNumber">WhatsApp *</label>
+              <input
+                type="tel"
+                id="whatsappNumber"
+                name="whatsappNumber"
+                value={formData.whatsappNumber}
+                onChange={handleInputChange}
+                required
+                placeholder="Ingrese el número de WhatsApp"
+              />
+            </div>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="specialty">Especialidad *</label>
-            <input
-              type="text"
-              id="specialty"
-              name="specialty"
-              value={formData.specialty}
-              onChange={handleInputChange}
-              required
-              placeholder="Ingrese la especialidad"
-            />
-          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="socialMediaUsername">Usuario en redes sociales</label>
+              <input
+                type="text"
+                id="socialMediaUsername"
+                name="socialMediaUsername"
+                value={formData.socialMediaUsername}
+                onChange={handleInputChange}
+                placeholder="Ingrese el usuario de redes sociales"
+              />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="license">Licencia *</label>
-            <input
-              type="text"
-              id="license"
-              name="license"
-              value={formData.license}
-              onChange={handleInputChange}
-              required
-              placeholder="Ingrese el número de licencia"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="socialMediaUsername">Usuario en redes sociales</label>
-            <input
-              type="text"
-              id="socialMediaUsername"
-              name="socialMediaUsername"
-              value={formData.socialMediaUsername}
-              onChange={handleInputChange}
-              placeholder="Ingrese el usuario de redes sociales"
-            />
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Ingrese el email"
+              />
+            </div>
           </div>
 
           <div className="form-group">
@@ -205,45 +224,21 @@ const NewHealthProfessionalForm = ({ onProfessionalAdded, onCancel }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="whatsappNumber">Número de WhatsApp *</label>
+            <label htmlFor="image">URL de la imagen</label>
             <input
-              type="tel"
-              id="whatsappNumber"
-              name="whatsappNumber"
-              value={formData.whatsappNumber}
+              type="url"
+              id="image"
+              name="image"
+              value={formData.image}
               onChange={handleInputChange}
-              required
-              placeholder="Ingrese el número de WhatsApp"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="email">Correo electrónico</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="Ingrese el correo electrónico"
+              placeholder="Ingrese la URL de la imagen"
             />
           </div>
 
           <div className="form-actions">
-            <button 
-              type="button" 
-              className="cancel-button" 
-              onClick={onCancel}
-              disabled={isSubmitting}
-            >
+            <button type="submit" className="submit-btn">Agregar Profesional</button>
+            <button type="button" className="cancel-btn" onClick={onCancel}>
               Cancelar
-            </button>
-            <button 
-              type="submit" 
-              className="submit-button"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Creando...' : 'Crear Profesional'}
             </button>
           </div>
         </form>

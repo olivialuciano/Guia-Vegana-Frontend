@@ -152,9 +152,14 @@ const NewBusinessForm = ({ onClose }) => {
   return (
     <div className="form-container" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <form onSubmit={handleSubmit} className="business-form">
-        <h2>
-          <FontAwesomeIcon icon={faStore} /> Nuevo Negocio
-        </h2>
+        <div className="form-header">
+          <h2>
+            <FontAwesomeIcon icon={faStore} /> Nuevo Negocio
+          </h2>
+          <button type="button" className="close-btn" onClick={onClose}>
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        </div>
 
         {isSubmitting && (
           <div className="form-loading">
@@ -163,48 +168,153 @@ const NewBusinessForm = ({ onClose }) => {
           </div>
         )}
 
-        <div className="form-group">
-          <label htmlFor="name">
-            <FontAwesomeIcon icon={faStore} /> Nombre del Negocio
-          </label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            placeholder="Ingrese el nombre del negocio"
-          />
+        {errorMessage && (
+          <div className="error-message">
+            <span>{errorMessage}</span>
+            <button className="close-error" onClick={() => setErrorMessage("")}>×</button>
+          </div>
+        )}
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="name">
+              <FontAwesomeIcon icon={faStore} /> Nombre del Negocio
+            </label>
+            <input
+              id="name"
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              placeholder="Ingrese el nombre del negocio"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="socialMediaUsername">
+              <FontAwesomeIcon icon={faUser} /> Usuario en Redes Sociales
+            </label>
+            <input
+              id="socialMediaUsername"
+              type="text"
+              name="socialMediaUsername"
+              value={formData.socialMediaUsername}
+              onChange={handleChange}
+              required
+              placeholder="Ingrese el usuario en redes sociales"
+            />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="image">
-            <FontAwesomeIcon icon={faImage} /> URL de la Imagen
-          </label>
-          <input
-            id="image"
-            type="url"
-            name="image"
-            value={formData.image}
-            onChange={handleChange}
-            placeholder="https://ejemplo.com/imagen.jpg"
-          />
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="address">
+              <FontAwesomeIcon icon={faMapMarkerAlt} /> Dirección
+            </label>
+            <input
+              id="address"
+              type="text"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              required
+              placeholder="Ingrese la dirección"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="zone">Zona</label>
+            <select
+              id="zone"
+              name="zone"
+              value={formData.zone}
+              onChange={handleChange}
+              required
+            >
+              <option value="Norte">Zona Norte</option>
+              <option value="Sur">Zona Sur</option>
+              <option value="Oeste">Zona Oeste</option>
+              <option value="Pichincha">Barrio Pichincha</option>
+              <option value="Centro">Zona Centro</option>
+              <option value="Martin">Barrio Martin</option>
+              <option value="Pellegrini">Avenida Pellegrini</option>
+              <option value="Oroño">Bulevar Oroño</option>
+              <option value="Abasto">Barrio Abasto</option>
+              <option value="Sexta">Barrio La Sexta</option>
+              <option value="Echesortu">Barrio Echesortu</option>
+              <option value="Lourdes">Barrio Lourdes</option>
+            </select>
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="socialMediaUsername">
-            <FontAwesomeIcon icon={faUser} /> Usuario en Redes Sociales
-          </label>
-          <input
-            id="socialMediaUsername"
-            type="text"
-            name="socialMediaUsername"
-            value={formData.socialMediaUsername}
-            onChange={handleChange}
-            required
-            placeholder="@usuario"
-          />
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="businessType">Tipo de Negocio</label>
+            <select
+              id="businessType"
+              name="businessType"
+              value={formData.businessType}
+              onChange={handleChange}
+              required
+            >
+              <option value="BarRestaurante">Bar / Restaurante</option>
+              <option value="Panaderia">Panadería</option>
+              <option value="Heladeria">Heladería</option>
+              <option value="MercadoDietetica">Mercado / Dietética</option>
+              <option value="Emprendimiento">Emprendimiento</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="delivery">Tipo de Entrega</label>
+            <select
+              id="delivery"
+              name="delivery"
+              value={formData.delivery}
+              onChange={handleChange}
+              required
+            >
+              <option value="PedidosYa">Pedidos Ya</option>
+              <option value="Rappi">Rappi</option>
+              <option value="Propio">Envío propio</option>
+              <option value="Otro">Otro servicio</option>
+              <option value="NoTiene">No tiene delivery</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="rating">Calificación</label>
+            <select
+              id="rating"
+              name="rating"
+              value={formData.rating}
+              onChange={handleChange}
+              required
+            >
+              <option value="One">⭐</option>
+              <option value="Two">⭐⭐</option>
+              <option value="Three">⭐⭐⭐</option>
+              <option value="Four">⭐⭐⭐⭐</option>
+              <option value="Five">⭐⭐⭐⭐⭐</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="image">
+              <FontAwesomeIcon icon={faImage} /> URL de la Imagen
+            </label>
+            <input
+              id="image"
+              type="url"
+              name="image"
+              value={formData.image}
+              onChange={handleChange}
+              placeholder="https://ejemplo.com/imagen.jpg"
+            />
+          </div>
         </div>
 
         <div className="form-group">
@@ -222,60 +332,7 @@ const NewBusinessForm = ({ onClose }) => {
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="address">
-            <FontAwesomeIcon icon={faMapMarkerAlt} /> Dirección
-          </label>
-          <input
-            id="address"
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            required
-            placeholder="Ingrese la dirección completa"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="zone">
-            <FontAwesomeIcon icon={faMapMarkerAlt} /> Zona
-          </label>
-          <select
-            id="zone"
-            name="zone"
-            value={formData.zone}
-            onChange={handleChange}
-            required
-          >
-            {Object.keys(zoneMapping).map((zone) => (
-              <option key={zone} value={zone}>
-                {zone}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="delivery">
-            <FontAwesomeIcon icon={faTruck} /> Tipo de Entrega
-          </label>
-          <select
-            id="delivery"
-            name="delivery"
-            value={formData.delivery}
-            onChange={handleChange}
-            required
-          >
-            {Object.keys(deliveryMapping).map((delivery) => (
-              <option key={delivery} value={delivery}>
-                {delivery}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
+        <div className="checkbox-row">
           <div className="checkbox-group">
             <input
               type="checkbox"
@@ -285,7 +342,7 @@ const NewBusinessForm = ({ onClose }) => {
               onChange={handleChange}
             />
             <label htmlFor="glutenFree">
-              <FontAwesomeIcon icon={faBreadSlice} /> Sin gluten
+              <FontAwesomeIcon icon={faBreadSlice} /> Sin Gluten
             </label>
           </div>
 
@@ -298,45 +355,19 @@ const NewBusinessForm = ({ onClose }) => {
               onChange={handleChange}
             />
             <label htmlFor="allPlantBased">
-              <FontAwesomeIcon icon={faLeaf} /> 100% basado en plantas
+              <FontAwesomeIcon icon={faLeaf} /> 100% Basado en Plantas
             </label>
           </div>
         </div>
 
         <div className="form-actions">
-          <button 
-            type="submit" 
-            className="submit-btn"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <>
-                <span className="loading-spinner"></span>
-                Creando...
-              </>
-            ) : (
-              <>
-                <FontAwesomeIcon icon={faCheck} />
-                Crear Negocio
-              </>
-            )}
+          <button type="submit" className="submit-btn">
+            <FontAwesomeIcon icon={faCheck} /> Crear Negocio
           </button>
-          <button 
-            type="button" 
-            className="close-btn"
-            onClick={onClose}
-          >
-            <FontAwesomeIcon icon={faTimes} />
+          <button type="button" className="cancel-btn" onClick={onClose}>
             Cancelar
           </button>
         </div>
-
-        {errorMessage && (
-          <div className="error-message">
-            <FontAwesomeIcon icon={faTimes} />
-            {errorMessage}
-          </div>
-        )}
       </form>
     </div>
   );

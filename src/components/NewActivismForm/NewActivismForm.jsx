@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { jwtDecode } from "jwt-decode";
 import Loading from '../Loading/Loading';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import './NewActivismForm.css';
 import { API } from '../../services/api';
 
@@ -122,7 +124,12 @@ const NewActivismForm = ({ onActivismAdded, onCancel }) => {
   return (
     <div className="new-activism-form-container">
       <form onSubmit={handleSubmit} className="new-activism-form">
-        <h4>Agregar Nuevo Activismo</h4>
+        <div className="form-header">
+          <h4>Agregar Nuevo Activismo</h4>
+          <button type="button" className="close-btn" onClick={onCancel}>
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        </div>
         
         {isSubmitting && (
           <div className="form-loading">
@@ -138,18 +145,63 @@ const NewActivismForm = ({ onActivismAdded, onCancel }) => {
           </div>
         )}
 
-        <div className="form-group">
-          <label htmlFor="name">Nombre:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            placeholder="Ingrese el nombre del activismo"
-            maxLength={100}
-          />
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="name">Nombre:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              placeholder="Ingrese el nombre del activismo"
+              maxLength={100}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="contact">Contacto:</label>
+            <input
+              type="text"
+              id="contact"
+              name="contact"
+              value={formData.contact}
+              onChange={handleChange}
+              required
+              placeholder="Ingrese el contacto"
+              maxLength={100}
+            />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="socialMediaUsername">Usuario en redes sociales:</label>
+            <input
+              type="text"
+              id="socialMediaUsername"
+              name="socialMediaUsername"
+              value={formData.socialMediaUsername}
+              onChange={handleChange}
+              required
+              placeholder="Ingrese el nombre de usuario en redes sociales"
+              maxLength={50}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="socialMediaLink">Enlace de redes sociales:</label>
+            <input
+              type="url"
+              id="socialMediaLink"
+              name="socialMediaLink"
+              value={formData.socialMediaLink}
+              onChange={handleChange}
+              required
+              placeholder="Ingrese el enlace de redes sociales"
+            />
+          </div>
         </div>
 
         <div className="form-group">
@@ -166,47 +218,6 @@ const NewActivismForm = ({ onActivismAdded, onCancel }) => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="contact">Contacto:</label>
-          <input
-            type="text"
-            id="contact"
-            name="contact"
-            value={formData.contact}
-            onChange={handleChange}
-            required
-            placeholder="Ingrese el contacto"
-            maxLength={100}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="socialMediaUsername">Usuario en redes sociales:</label>
-          <input
-            type="text"
-            id="socialMediaUsername"
-            name="socialMediaUsername"
-            value={formData.socialMediaUsername}
-            onChange={handleChange}
-            required
-            placeholder="Ingrese el nombre de usuario en redes sociales"
-            maxLength={50}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="socialMediaLink">Enlace de redes sociales:</label>
-          <input
-            type="url"
-            id="socialMediaLink"
-            name="socialMediaLink"
-            value={formData.socialMediaLink}
-            onChange={handleChange}
-            required
-            placeholder="Ingrese el enlace de redes sociales"
-          />
-        </div>
-
-        <div className="form-group">
           <label htmlFor="description">Descripción:</label>
           <textarea
             id="description"
@@ -216,7 +227,7 @@ const NewActivismForm = ({ onActivismAdded, onCancel }) => {
             required
             placeholder="Ingrese la descripción del activismo"
             maxLength={500}
-            rows={4}
+            rows={3}
           />
         </div>
 
