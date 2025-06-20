@@ -142,6 +142,11 @@ const HealthProfessionalDetail = () => {
     }
   };
 
+  const getImageUrl = () => {
+    if (!professional.image) return defaultImage;
+    return professional.image;
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -186,8 +191,8 @@ const HealthProfessionalDetail = () => {
       <div className="detail-content">
         <div className="detail-section image-section">
           <img 
-            src={professional.image || defaultImage} 
-        alt={professional.name}
+            src={getImageUrl()} 
+            alt={professional.name}
             className="professional-image"
             onError={(e) => {
               e.target.onerror = null;

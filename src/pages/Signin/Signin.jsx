@@ -44,15 +44,23 @@ const Signin = () => {
       const decoded = jwtDecode(token);
       console.log("Token decodificado:", decoded);
 
+      // Extraer el ID del usuario de diferentes campos posibles
+      const userId = decoded.nameid || decoded.sub || decoded.userId || decoded.id || decoded.user_id;
+      
+      if (!userId) {
+        console.error('Payload del token:', decoded);
+        throw new Error('No se pudo obtener el ID del usuario del token');
+      }
+
       // Guardar token y claims en localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("userRole", decoded.role);
-      localStorage.setItem("userId", decoded.userId);
+      localStorage.setItem("userId", userId);
 
       // Actualizar el contexto de autenticación
       setUser(decoded);
       setRole(decoded.role || "");
-      setId(decoded.userId || "");
+      setId(userId);
 
       // Redirigir según el rol
       if (decoded.role === "Admin") {

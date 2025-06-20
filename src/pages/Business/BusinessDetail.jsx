@@ -196,6 +196,11 @@ const BusinessDetail = () => {
     return isOpen ? faDoorOpen : faDoorClosed;
   };
 
+  const getImageUrl = () => {
+    if (!business.image) return defaultImage;
+    return business.image;
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -269,7 +274,7 @@ const BusinessDetail = () => {
 
       <div className="business-image-container">
         <img
-          src={business.imageUrl || defaultImage}
+          src={getImageUrl()}
           alt={business.name}
           className="business-detail-image"
           onError={(e) => {

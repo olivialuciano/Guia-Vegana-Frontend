@@ -13,3 +13,51 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.App {
+  min-height: 100vh;
+  background: var(--background-gradient);
+}
+
+.main-content {
+  padding-top: 80px; /* Espacio para el navbar fijo */
+  min-height: calc(100vh - 80px);
+}
+
+/* Ajustes para páginas que ya tienen su propio padding */
+.main-content .home {
+  padding-top: 0;
+}
+
+.main-content .home-content {
+  padding-top: var(--spacing-xxl);
+}
+
+/* Efectos globales */
+.App::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(76, 175, 80, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(156, 39, 176, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(255, 193, 7, 0.01) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding-top: 60px;
+  }
+}

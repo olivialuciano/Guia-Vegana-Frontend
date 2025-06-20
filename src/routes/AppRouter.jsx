@@ -14,6 +14,8 @@ import InformativeResourceDetail from "../pages/InformativeResource/InformativeR
 import UserProfile from "../pages/UserProfile/UserProfile";
 import Comments from "../pages/Comments/Comments";
 import User from "../pages/User/User";
+import Reports from "../pages/Reports/Reports";
+import ReportDetail from "../pages/Reports/ReportDetail";
 
 const AppRouter = () => {
   return (
@@ -24,6 +26,8 @@ const AppRouter = () => {
       <Route path="/comments" element={<Comments />} />
       <Route path="/mi-usuario" element={<UserProfile />} />
       <Route path="/users" element={<User />} />
+      <Route path="/reports" element={<Reports />} />
+      <Route path="/reports/:reportId" element={<ReportDetail />} />
       <Route path="/business" element={<Business />} />
       <Route path="/business/:id" element={<BusinessDetail />} />
       <Route path="/activism" element={<Activism />} />

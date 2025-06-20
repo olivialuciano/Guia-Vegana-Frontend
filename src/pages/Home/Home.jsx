@@ -1,74 +1,120 @@
-// import React from "react";
-import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import "./Home.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faStore, 
+  faUserMd, 
+  faBook, 
+  faHandsHelping, 
+  faArrowRight,
+  faUsers,
+  faLeaf,
+  faHeart
+} from '@fortawesome/free-solid-svg-icons';
+import './Home.css';
 
 const Home = () => {
-  const { user } = useContext(AuthContext);
-
-  const cardData = [
-    {
-      id: 1,
-      title: "Negocios",
-      description:
-        "Bares, restaurantes, heladerías, dietéticas, panaderías y mercados.",
-      link: "/business",
-    },
-    {
-      id: 2,
-      title: "Activismo",
-      description: "Todo tipo de activismos.",
-      link: "/activism",
-    },
-    {
-      id: 3,
-      title: "Profesionales de la Salud",
-      description:
-        "Profesionales de la salud de distintas áreas de la medicina y nutrición.",
-      link: "/healthprofessional",
-    },
-    {
-      id: 4,
-      title: "Recursos Informativos",
-      description: "Películas, documentales, libros y recursos web.",
-      link: "/informativeresource",
-    },
-  ];
-
-  // Agregar tarjeta de Usuarios solo para Sysadmin
-  if (user?.role === "Sysadmin") {
-    cardData.push({
-      id: 5,
-      title: "Usuarios",
-      description: "Gestión de usuarios del sistema.",
-      link: "/users",
-    });
-  }
-
   return (
-    <main className="home">
-      {/* Encapsulado en un div con fondo verde */}
-      <div className="highlight-box">
-        <h1 className="home-title">La Guía Vegana de Rosario</h1>
-        <p className="home-description">
-          Descubrí bares, restaurantes, heladerías, panaderías, emprendimientos,
-          mercados, dietéticas, especialistas, recursos informativos, grupos de
-          activismo y más!
-        </p>
-      </div>
-
-      <section className="card-container">
-        {cardData.map((card) => (
-          <Link to={card.link} className="card-link" key={card.id}>
-            <div className="card">
-              <h2>{card.title}</h2>
-              <p>{card.description}</p>
-            </div>
+    <div className="home">
+      <div className="home-content">
+        <section className="hero-section">
+          <h1 className="hero-title">
+            Guía Vegana de Rosario
+          </h1>
+          <p className="hero-subtitle">
+            Descubrí negocios veganos, profesionales de la salud, recursos informativos y activismos en la ciudad de Rosario. Tu guía completa para una vida vegana.
+          </p>
+          <Link to="/business" className="hero-cta">
+            <span>Explorar Negocios</span>
+            <FontAwesomeIcon icon={faArrowRight} />
           </Link>
-        ))}
-      </section>
-    </main>
+        </section>
+
+        <section className="features-section">
+          <h2 className="section-title">¿Qué encontrarás acá?</h2>
+          <div className="features-grid">
+            <Link to="/business" className="feature-card">
+              <div className="feature-icon">
+                <FontAwesomeIcon icon={faStore} />
+              </div>
+              <h3 className="feature-title">Negocios Veganos</h3>
+              <p className="feature-description">
+                Descubrí restaurantes, cafeterías, tiendas y otros negocios que ofrecen opciones veganas.
+              </p>
+            </Link>
+
+            <Link to="/healthprofessional" className="feature-card">
+              <div className="feature-icon">
+                <FontAwesomeIcon icon={faUserMd} />
+              </div>
+              <h3 className="feature-title">Profesionales de la Salud</h3>
+              <p className="feature-description">
+                Encontrá nutricionistas, médicos y otros profesionales especializados en alimentación basada en plantas y salud integral.
+              </p>
+            </Link>
+
+            <Link to="/informativeresource" className="feature-card">
+              <div className="feature-icon">
+                <FontAwesomeIcon icon={faBook} />
+              </div>
+              <h3 className="feature-title">Recursos Informativos</h3>
+              <p className="feature-description">
+                Accedé a artículos, videos, recetas y contenido educativo para aprender más sobre el veganismo.
+              </p>
+            </Link>
+
+            <Link to="/activism" className="feature-card">
+              <div className="feature-icon">
+                <FontAwesomeIcon icon={faHandsHelping} />
+              </div>
+              <h3 className="feature-title">Activismo</h3>
+              <p className="feature-description">
+                Participa en eventos, campañas y actividades de activismo por los derechos de los animales.
+              </p>
+            </Link>
+          </div>
+        </section>
+
+        <section className="stats-section">
+          <h2 className="section-title">Nuestra Comunidad</h2>
+          <div className="stats-grid">
+            <div className="stat-item">
+              <span className="stat-number">50+</span>
+              <div className="stat-label">Negocios Registrados</div>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">10+</span>
+              <div className="stat-label">Profesionales de la Salud</div>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">50+</span>
+              <div className="stat-label">Recursos Informativos</div>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">5+</span>
+              <div className="stat-label">Activismos</div>
+            </div>
+          </div>
+        </section>
+
+        <section className="cta-section">
+          <h2 className="section-title">¿List@ para empezar?</h2>
+          <p className="hero-subtitle">
+            Unite a nuestra comunidad vegana y descubrí todo lo que Rosario tiene para ofrecer.
+          </p>
+          <div className="cta-buttons">
+            <Link to="/business" className="cta-button primary">
+              <FontAwesomeIcon icon={faStore} />
+              <span>Explorar Negocios</span>
+            </Link>
+            <Link to="/comments" className="cta-button secondary">
+              <FontAwesomeIcon icon={faUsers} />
+              <span>Unirse a la Comunidad</span>
+            </Link>
+          </div>
+        </section>
+      </div>
+    </div>
   );
 };
 

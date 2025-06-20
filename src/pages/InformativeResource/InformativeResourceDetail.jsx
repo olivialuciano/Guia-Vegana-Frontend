@@ -6,7 +6,7 @@ import Loading from '../../components/Loading/Loading';
 import { faBook, faCalendarAlt, faUser, faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import defaultImage from '../../assets/img/defaultprofileimage.jpg';
+import image from '../../assets/img/image.png';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
 import './InformativeResourceDetail.css';
 
@@ -158,6 +158,11 @@ const InformativeResourceDetail = () => {
     }
   };
 
+  const getImageUrl = () => {
+    if (!resource.image) return image;
+    return resource.image;
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -195,9 +200,13 @@ const InformativeResourceDetail = () => {
         <div className="detail-section">
           <div className="image-section">
             <img 
-              src={resource.image || defaultImage} 
+              src={getImageUrl()} 
               alt={resource.name}
               className="resource-image"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = image;
+              }}
             />
           </div>
         </div>

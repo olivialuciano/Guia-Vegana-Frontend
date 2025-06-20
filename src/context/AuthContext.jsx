@@ -14,9 +14,13 @@ export const AuthProvider = ({ children }) => {
         // Decodificar el JWT para obtener claims (opcional)
         const payload = JSON.parse(atob(token.split(".")[1]));
         console.log("Token payload:", payload); // Debug log
+        
+        // Extraer el ID del usuario de diferentes campos posibles
+        const userId = payload.nameid || payload.sub || payload.userId || payload.id || payload.user_id;
+        
         setUser(payload);
         setRole(payload.role || "");
-        setId(payload.userId || payload.id || "");
+        setId(userId || "");
       } catch (error) {
         console.error("Error decoding token:", error); // Debug log
         // Si token inválido, limpiar
@@ -40,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, role, id, setUser, setRole, logout }}>
+    <AuthContext.Provider value={{ user, role, id, setUser, setRole, setId, logout }}>
       {children}
     </AuthContext.Provider>
   );

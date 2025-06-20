@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Header from "../../components/Header/Header";
-import BusinessCard from "../../components/BusinessCard/BusinessCard";
+import Card from "../../components/Card/Card";
 import NewBusinessForm from "../../components/NewBusinessForm/NewBusinessForm";
 import Loading from "../../components/Loading/Loading";
 import { 
@@ -16,7 +16,8 @@ import {
   faStar, 
   faWheatAwn, 
   faLeaf, 
-  faClock
+  faClock,
+  faPlus
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { applyBusinessFilters, getFilterStats } from "../../utils/businessFilters";
@@ -199,8 +200,7 @@ const BusinessList = () => {
         <FontAwesomeIcon 
           key={i} 
           icon={faStar} 
-          className="star" 
-          style={{ color: i <= rating ? '#ffd700' : '#e0e0e0' }}
+          className={i <= rating ? "star filled" : "star"} 
         />
       );
     }
@@ -208,250 +208,254 @@ const BusinessList = () => {
   };
 
   if (loading) {
-    return <Loading />;
+    return <Loading text="Cargando negocios..." subtitle="Buscando los mejores lugares veganos" />;
   }
 
   if (error) {
-    return <div className="error-container">{error}</div>;
+    return (
+      <div className="business-list">
+        <div className="list-content">
+          <div className="error-container">
+            <p>{error}</p>
+            <button className="add-button" onClick={fetchBusinesses}>
+              <FontAwesomeIcon icon={faRefresh} />
+              Reintentar
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
+
+  const filterStats = getFilterStats(businesses, filters);
 
   return (
     <div className="business-list">
-      <Header 
-        title="Negocios"
-        icon={faStore}
-        showRating={false}
-        rating={null}
-      />
-
       <div className="list-content">
-        {(user?.role === "Sysadmin" || user?.role === "Investigador") && (
-          <div className="admin-actions">
-            <button className="add-button" onClick={handleOpenForm}>
-              Agregar Negocio
-            </button>
-          </div>
-        )}
+        {/* Header de la página */}
+        <div className="page-header">
+          <h1 className="page-title">Negocios Veganos</h1>
+          <p className="page-subtitle">
+            Descubrí los mejores restaurantes, cafeterías, tiendas y emprendimientos veganos de Rosario
+          </p>
+        </div>
 
-        {/* Barra de búsqueda y botón de filtros */}
+        {/* Barra de acciones */}
+        <div className="actions-bar">
+          <div className="admin-actions">
+            {user && (
+              <button className="add-button" onClick={handleOpenForm}>
+                <FontAwesomeIcon icon={faPlus} />
+                <span>Agregar Negocio</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Barra de búsqueda y filtros */}
         <div className="search-filters-bar">
           <div className="search-container">
             <FontAwesomeIcon icon={faSearch} className="search-icon" />
             <input
               type="text"
+              className="search-input"
               placeholder="Buscar negocios..."
               value={filters.search}
               onChange={(e) => handleFilterChange('search', e.target.value)}
-              className="search-input"
             />
           </div>
-
-          <button
+          
+          <button 
             className={`filters-toggle-btn ${getActiveFiltersCount() > 0 ? 'has-filters' : ''}`}
             onClick={handleToggleFilters}
-            title="Filtros"
           >
             <FontAwesomeIcon icon={faFilter} />
+            <span>Filtros</span>
             {getActiveFiltersCount() > 0 && (
               <span className="filter-count">{getActiveFiltersCount()}</span>
             )}
           </button>
         </div>
 
-        {/* Panel lateral de filtros */}
+        {/* Estadísticas de filtros */}
+        <div className="filter-stats">
+          <p>
+            Mostrando <span className="active-filters-info">{filteredBusinesses.length}</span> de {businesses.length} negocios
+            {getActiveFiltersCount() > 0 && (
+              <span> con filtros activos</span>
+            )}
+          </p>
+        </div>
+
+        {/* Grid de tarjetas */}
+        {filteredBusinesses.length > 0 ? (
+          <div className="business-cards-grid">
+            {filteredBusinesses.map((business) => (
+              <Card
+                key={business.id}
+                title={business.name}
+                subtitle={businessTypeMap[business.businessType]}
+                description={business.description}
+                image={business.image}
+                icon={faStore}
+                rating={business.rating}
+                info={{
+                  icon: faMapMarkerAlt,
+                  text: zoneMap[business.zone] || 'Zona no especificada'
+                }}
+                to={`/business/${business.id}`}
+                businessData={business}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="no-results">
+            <p>No se encontraron negocios con los filtros aplicados</p>
+            <button className="clear-filters-btn" onClick={clearAllFilters}>
+              Limpiar Filtros
+            </button>
+          </div>
+        )}
+
+        {/* Panel de filtros */}
         {showFilters && (
           <div className="filters-overlay" onClick={handleToggleFilters}>
             <div className="filters-panel" onClick={(e) => e.stopPropagation()}>
               <div className="filters-header">
-                <h3>
-                  <FontAwesomeIcon icon={faFilter} />
-                  Filtros
-                </h3>
-                <button className="clear-filters-btn" onClick={clearAllFilters}>
+                <h3>Filtros</h3>
+                <button className="back-btn" onClick={handleToggleFilters}>
                   <FontAwesomeIcon icon={faTimes} />
-                  Limpiar
                 </button>
               </div>
-
+              
               <div className="filters-content">
-                {/* Filtro por zona */}
+                {/* Zona */}
                 <div className="filter-group">
-                  <label>
-                    <FontAwesomeIcon icon={faMapMarkerAlt} />
-                     {} Zona
-                  </label>
+                  <label>Zona</label>
                   <div className="chip-filter-container">
                     {Object.entries(zoneMap).map(([key, value]) => (
-                      <div
+                      <button
                         key={key}
                         className={`filter-chip ${filters.zone.includes(parseInt(key)) ? 'selected' : ''}`}
                         onClick={() => handleFilterChange('zone', parseInt(key))}
                       >
                         {value}
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Filtro por tipo de entrega */}
+                {/* Tipo de negocio */}
                 <div className="filter-group">
-                  <label>
-                    <FontAwesomeIcon icon={faTruck} />
-                   {} Tipo de Entrega
-                  </label>
-                  <div className="chip-filter-container">
-                    {Object.entries(deliveryTypeMap).map(([key, value]) => (
-                      <div
-                        key={key}
-                        className={`filter-chip ${filters.deliveryType.includes(parseInt(key)) ? 'selected' : ''}`}
-                        onClick={() => handleFilterChange('deliveryType', parseInt(key))}
-                      >
-                        {value}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Filtro por tipo de negocio */}
-                <div className="filter-group">
-                  <label>
-                    <FontAwesomeIcon icon={faUtensils} />
-                    {} Tipo de Negocio
-                  </label>
+                  <label>Tipo de Negocio</label>
                   <div className="chip-filter-container">
                     {Object.entries(businessTypeMap).map(([key, value]) => (
-                      <div
+                      <button
                         key={key}
                         className={`filter-chip ${filters.businessType.includes(parseInt(key)) ? 'selected' : ''}`}
                         onClick={() => handleFilterChange('businessType', parseInt(key))}
                       >
                         {value}
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Filtro por rating con estrellas */}
+                {/* Delivery */}
                 <div className="filter-group">
-                  <label>
-                    <FontAwesomeIcon icon={faStar} />
-                    {} Calificación
-                  </label>
-                  <div className="star-rating-container">
-                    {[5, 4, 3, 2, 1].map(rating => (
-                      <div 
-                        key={rating}
-                        className={`star-rating-option ${filters.rating.includes(rating) ? 'selected' : ''}`}
-                        onClick={() => handleFilterChange('rating', rating)}
+                  <label>Delivery</label>
+                  <div className="chip-filter-container">
+                    {Object.entries(deliveryTypeMap).map(([key, value]) => (
+                      <button
+                        key={key}
+                        className={`filter-chip ${filters.deliveryType.includes(parseInt(key)) ? 'selected' : ''}`}
+                        onClick={() => handleFilterChange('deliveryType', parseInt(key))}
                       >
-                        <input 
-                          type="checkbox" 
-                          checked={filters.rating.includes(rating)}
-                          readOnly
+                        {value}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Rating */}
+                <div className="filter-group">
+                  <label>Calificación</label>
+                  <div className="star-rating-container">
+                    {Object.entries(ratingMap).map(([key]) => (
+                      <div
+                        key={key}
+                        className={`star-rating-option ${filters.rating.includes(parseInt(key)) ? 'selected' : ''}`}
+                        onClick={() => handleFilterChange('rating', parseInt(key))}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={filters.rating.includes(parseInt(key))}
+                          onChange={() => {}}
                         />
                         <div className="stars">
-                          {renderStars(rating)}
+                          {renderStars(parseInt(key))}
                         </div>
-                        <span className="star-rating-text">
-                        
-                        </span>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 {/* Filtros booleanos */}
-                <div className="boolean-filters">
-                  <div className="checkbox-item">
-                    <input
-                      type="checkbox"
-                      id="glutenFree"
-                      checked={filters.glutenFree}
-                      onChange={(e) => handleFilterChange('glutenFree', e.target.checked)}
-                    />
-                    <label htmlFor="glutenFree">
-                      <FontAwesomeIcon icon={faWheatAwn} />
-                     {} Sin Gluten
-                    </label>
-                  </div>
-
-                  <div className="checkbox-item">
-                    <input
-                      type="checkbox"
-                      id="allPlantBased"
-                      checked={filters.allPlantBased}
-                      onChange={(e) => handleFilterChange('allPlantBased', e.target.checked)}
-                    />
-                    <label htmlFor="allPlantBased">
-                      <FontAwesomeIcon icon={faLeaf} />
-                      {} 100% Plant Based
-                    </label>
-                  </div>
-
-                  <div className="checkbox-item">
-                    <input
-                      type="checkbox"
-                      id="openNow"
-                      checked={filters.openNow}
-                      onChange={(e) => handleFilterChange('openNow', e.target.checked)}
-                    />
-                    <label htmlFor="openNow">
-                      <FontAwesomeIcon icon={faClock} />
-                      {} Abierto Ahora
-                    </label>
+                <div className="filter-group">
+                  <label>Opciones Especiales</label>
+                  <div className="boolean-filters">
+                    <div className="checkbox-item">
+                      <input
+                        type="checkbox"
+                        id="glutenFree"
+                        checked={filters.glutenFree}
+                        onChange={(e) => handleFilterChange('glutenFree', e.target.checked)}
+                      />
+                      <label htmlFor="glutenFree">
+                        <FontAwesomeIcon icon={faWheatAwn} />
+                       {} Sin Gluten
+                      </label>
+                    </div>
+                    <div className="checkbox-item">
+                      <input
+                        type="checkbox"
+                        id="allPlantBased"
+                        checked={filters.allPlantBased}
+                        onChange={(e) => handleFilterChange('allPlantBased', e.target.checked)}
+                      />
+                      <label htmlFor="allPlantBased">
+                        <FontAwesomeIcon icon={faLeaf} />
+                        {} 100% Basado en Plantas
+                      </label>
+                    </div>
+                    <div className="checkbox-item">
+                      <input
+                        type="checkbox"
+                        id="openNow"
+                        checked={filters.openNow}
+                        onChange={(e) => handleFilterChange('openNow', e.target.checked)}
+                      />
+                      <label htmlFor="openNow">
+                        <FontAwesomeIcon icon={faClock} />
+                        {} Abierto Ahora 
+                      </label>
+                    </div>
                   </div>
                 </div>
 
-                {/* Botón de aplicar filtros */}
-                <button className="apply-filters-btn" onClick={handleToggleFilters}>
-                  <FontAwesomeIcon icon={faFilter} />
-                  Aplicar Filtros
-                </button>
-              </div>
-
-              {/* Botón volver más abajo */}
-              <div className="back-btn-container">
-                <button className="back-btn" onClick={handleToggleFilters}>
-                  <FontAwesomeIcon icon={faArrowLeft} />
-                  Volver
+                <button className="clear-filters-btn" onClick={clearAllFilters}>
+                  Limpiar Todos los Filtros
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* Estadísticas de filtros */}
-        <div className="filter-stats">
-          <p>
-            Mostrando {filteredBusinesses.length} de {businesses.length} negocios
-            {getActiveFiltersCount() > 0 && (
-              <span className="active-filters-info">
-                {" "}({getActiveFiltersCount()} filtro{getActiveFiltersCount() > 1 ? 's' : ''} activo{getActiveFiltersCount() > 1 ? 's' : ''})
-              </span>
-            )}
-          </p>
-        </div>
-
-        {filteredBusinesses.length === 0 ? (
-          <div className="no-results">
-            <p>No se encontraron negocios que coincidan con los filtros aplicados.</p>
-            <button 
-              className="clear-filters-btn"
-              onClick={clearAllFilters}
-            >
-              Limpiar filtros
-            </button>
-          </div>
-        ) : (
-          <div className="business-cards-grid">
-            {filteredBusinesses.map((business) => (
-              <BusinessCard key={business.id} business={business} />
-            ))}
-          </div>
+        {/* Formulario de nuevo negocio */}
+        {showForm && (
+          <NewBusinessForm onClose={handleCloseForm} />
         )}
       </div>
-
-      {showForm && <NewBusinessForm onClose={handleCloseForm} />}
     </div>
   );
 };

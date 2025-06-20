@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import Header from '../../components/Header/Header';
-import CardGrid from '../../components/CardGrid/CardGrid';
+import Card from '../../components/Card/Card';
 import Loading from '../../components/Loading/Loading';
-import { faUserMd } from '@fortawesome/free-solid-svg-icons';
+import { faUserMd, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NewHealthProfessionalForm from '../../components/NewHealthProfessionalForm/NewHealthProfessionalForm';
 import './HealthProfessional.css';
 
 const HealthProfessional = () => {
   const { user } = useContext(AuthContext);
-  const [professionals, setProfessionals] = useState([]);
+  const [healthProfessionals, setHealthProfessionals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showNewForm, setShowNewForm] = useState(false);
@@ -17,17 +17,17 @@ const HealthProfessional = () => {
   const canEdit = user && (user.role === 'Sysadmin' || user.role === 'Investigador');
 
   useEffect(() => {
-    fetchProfessionals();
+    fetchHealthProfessionals();
   }, []);
 
-  const fetchProfessionals = async () => {
+  const fetchHealthProfessionals = async () => {
     try {
       const response = await fetch('https://localhost:7032/api/HealthProfessional');
       if (!response.ok) {
         throw new Error('Error al cargar los profesionales');
       }
       const data = await response.json();
-      setProfessionals(data);
+      setHealthProfessionals(data);
     } catch (err) {
       setError('Error al cargar los profesionales');
       console.error('Error:', err);
@@ -36,51 +36,86 @@ const HealthProfessional = () => {
     }
   };
 
-  const handleProfessionalAdded = (newProfessional) => {
-    setProfessionals(prev => [...prev, newProfessional]);
+  const handleHealthProfessionalAdded = (newHealthProfessional) => {
+    setHealthProfessionals(prev => [...prev, newHealthProfessional]);
     setShowNewForm(false);
   };
 
   if (loading) {
-    return <Loading />;
+    return <Loading text="Cargando profesionales..." subtitle="Buscando especialistas en salud vegana" />;
   }
 
   if (error) {
-    return <div className="error-container">{error}</div>;
+    return (
+      <div className="health-professional">
+        <div className="list-content">
+          <div className="error-container">
+            <p>{error}</p>
+            <button className="add-button" onClick={fetchHealthProfessionals}>
+              <FontAwesomeIcon icon={faPlus} />
+              Reintentar
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="health-professional">
-      <Header 
-        title="Profesionales de la Salud"
-        icon={faUserMd}
-        showRating={false}
-        rating={null}
-      />
-      
       <div className="list-content">
-        {canEdit && (
+        {/* Header de la página */}
+        <div className="page-header">
+          <h1 className="page-title">Profesionales de la Salud</h1>
+          <p className="page-subtitle">
+            Encontrá nutricionistas, médicos y otros profesionales especializados en alimentación basada en plantas
+          </p>
+        </div>
+
+        {/* Barra de acciones */}
+        <div className="actions-bar">
           <div className="admin-actions">
-            <button 
-              className="add-button"
-              onClick={() => setShowNewForm(true)}
-            >
-              Agregar Profesional
-            </button>
+            {canEdit && (
+              <button 
+                className="add-button"
+                onClick={() => setShowNewForm(true)}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+                <span>Agregar Profesional</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Grid de tarjetas */}
+        {healthProfessionals.length > 0 ? (
+          <div className="business-cards-grid">
+            {healthProfessionals.map((item) => (
+              <Card
+                key={item.id}
+                title={item.name}
+                subtitle={item.specialty}
+                description={item.description}
+                image={item.image}
+                icon={faUserMd}
+                to={`/healthprofessional/${item.id}`}
+                healthProfessionalData={item}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="no-results">
+            <p>No hay profesionales de la salud disponibles</p>
           </div>
         )}
 
+        {/* Formulario de nuevo profesional */}
         {showNewForm && (
           <NewHealthProfessionalForm
-            onProfessionalAdded={handleProfessionalAdded}
+            onHealthProfessionalAdded={handleHealthProfessionalAdded}
             onCancel={() => setShowNewForm(false)}
           />
         )}
-
-        <CardGrid 
-          items={professionals}
-          entityType="healthProfessional"
-        />
       </div>
     </div>
   );

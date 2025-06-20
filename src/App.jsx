@@ -1,3 +1,4 @@
+import React from 'react';
 import "./App.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
@@ -8,8 +9,12 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Navbar />
-        <AppRouter />
+        <div className="App">
+          <Navbar />
+          <main className="main-content">
+            <AppRouter />
+          </main>
+        </div>
       </Router>
     </AuthProvider>
   );

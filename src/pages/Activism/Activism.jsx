@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import Header from '../../components/Header/Header';
-import CardGrid from '../../components/CardGrid/CardGrid';
+import Card from '../../components/Card/Card';
 import Loading from '../../components/Loading/Loading';
-import { faHandHoldingHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHandsHelping, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NewActivismForm from '../../components/NewActivismForm/NewActivismForm';
 import './Activism.css';
 
@@ -42,45 +42,80 @@ const Activism = () => {
   };
 
   if (loading) {
-    return <Loading />;
+    return <Loading text="Cargando activismos..." subtitle="Buscando actividades de activismo" />;
   }
 
   if (error) {
-    return <div className="error-container">{error}</div>;
+    return (
+      <div className="activism">
+        <div className="list-content">
+          <div className="error-container">
+            <p>{error}</p>
+            <button className="add-button" onClick={fetchActivism}>
+              <FontAwesomeIcon icon={faPlus} />
+              Reintentar
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="activism">
-      <Header 
-        title="Actividades de Activismo"
-        icon={faHandHoldingHeart}
-        showRating={false}
-        rating={null}
-      />
-      
       <div className="list-content">
-        {canEdit && (
+        {/* Header de la página */}
+        <div className="page-header">
+          <h1 className="page-title">Actividades de Activismo</h1>
+          <p className="page-subtitle">
+            Participá en eventos, campañas y actividades por los derechos de los animales y el medio ambiente
+          </p>
+        </div>
+
+        {/* Barra de acciones */}
+        <div className="actions-bar">
           <div className="admin-actions">
-            <button 
-              className="add-button"
-              onClick={() => setShowNewForm(true)}
-            >
-              Agregar Actividad
-            </button>
+            {canEdit && (
+              <button 
+                className="add-button"
+                onClick={() => setShowNewForm(true)}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+                <span>Agregar Actividad</span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Grid de tarjetas */}
+        {activism.length > 0 ? (
+          <div className="business-cards-grid">
+            {activism.map((item) => (
+              <Card
+                key={item.id}
+                title={item.name}
+                subtitle={item.type}
+                description={item.description}
+                image={item.image}
+                icon={faHandsHelping}
+                to={`/activism/${item.id}`}
+                activismData={item}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="no-results">
+            <p>No hay actividades de activismo disponibles</p>
           </div>
         )}
 
+        {/* Formulario de nueva actividad */}
         {showNewForm && (
           <NewActivismForm
             onActivismAdded={handleActivismAdded}
             onCancel={() => setShowNewForm(false)}
           />
         )}
-
-        <CardGrid 
-          items={activism}
-          entityType="activism"
-        />
       </div>
     </div>
   );

@@ -132,16 +132,6 @@ const ActivismDetail = () => {
 
   const getImageUrl = () => {
     if (!activism.image) return image;
-    
-    // Si la URL es de Google Drive, asegurarse de que sea accesible
-    if (activism.image.includes('drive.google.com')) {
-      // Convertir la URL de Google Drive a una URL directa de descarga
-      const fileId = activism.image.match(/[-\w]{25,}/);
-      if (fileId) {
-        return `https://drive.google.com/uc?export=view&id=${fileId[0]}`;
-      }
-    }
-    
     return activism.image;
   };
 

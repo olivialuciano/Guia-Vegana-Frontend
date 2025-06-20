@@ -43,8 +43,12 @@ class AuthService {
   setAuthData(token) {
     localStorage.setItem("token", token);
     const decoded = jwtDecode(token);
-    localStorage.setItem("userRole", decoded.role || decoded["role"]);
-    localStorage.setItem("userId", decoded.nameid || decoded["id"]);
+    
+    // Extraer el ID del usuario de diferentes campos posibles
+    const userId = decoded.nameid || decoded.sub || decoded.userId || decoded.id || decoded.user_id;
+    
+    localStorage.setItem("userRole", decoded.role || "");
+    localStorage.setItem("userId", userId || "");
   }
 }
 
