@@ -93,8 +93,11 @@ const Navbar = () => {
                 </li>
                 <li>
                   <button 
-                    className="logout-button"
-                    onClick={() => setShowLogoutConfirmation(true)}
+                    className="logout-button" 
+                    onClick={() => {
+                      setShowLogoutConfirmation(true);
+                      closeMenu();
+                    }}
                   >
                     <FontAwesomeIcon icon={faSignOutAlt} />
                     Cerrar Sesión
