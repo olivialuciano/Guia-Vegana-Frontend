@@ -30,8 +30,7 @@ const InformativeResource = () => {
       const data = await response.json();
       setResources(data);
     } catch (err) {
-      setError('Error al cargar los recursos');
-      console.error('Error:', err);
+      setError("Error al cargar recursos");
     } finally {
       setLoading(false);
     }

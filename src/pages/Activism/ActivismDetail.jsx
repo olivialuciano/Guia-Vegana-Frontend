@@ -43,8 +43,7 @@ const ActivismDetail = () => {
         setActivism(data);
         setEditedActivism(data);
       } catch (err) {
-        setError('Error al cargar el activismo');
-        console.error('Error:', err);
+        setError("Error al cargar el activismo");
       } finally {
         setLoading(false);
       }
@@ -87,7 +86,7 @@ const ActivismDetail = () => {
         try {
           updatedActivism = await response.json();
         } catch (e) {
-          console.warn('No se pudo parsear la respuesta JSON:', e);
+          setError("Error al procesar la respuesta del servidor");
           updatedActivism = editedActivism;
         }
       } else {
@@ -98,8 +97,9 @@ const ActivismDetail = () => {
       setEditedActivism(updatedActivism);
       setIsEditing(false);
     } catch (err) {
-      setError(err.message || 'Error al actualizar el activismo');
-      console.error('Error:', err);
+      setError("Error al actualizar el activismo");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -133,8 +133,7 @@ const ActivismDetail = () => {
 
       navigate('/activism');
     } catch (err) {
-      setError('Error al eliminar el activismo');
-      console.error('Error:', err);
+      setError("Error al eliminar el activismo");
     } finally {
       setShowConfirmDialog(false);
     }

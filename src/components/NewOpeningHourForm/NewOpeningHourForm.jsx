@@ -18,8 +18,8 @@ const NewOpeningHourForm = ({ businessId, onHourAdded, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
     setIsSubmitting(true);
+    setError('');
 
     try {
       const token = localStorage.getItem('token');
@@ -43,20 +43,12 @@ const NewOpeningHourForm = ({ businessId, onHourAdded, onCancel }) => {
       }
 
       const newHour = await response.json();
-      console.log('Server response for new hour:', newHour); // Debug log
       
-      // Crear el objeto completo con los datos del usuario + el ID del servidor
       const completeHour = {
-        id: newHour.id || newHour, // Si el servidor devuelve solo el ID
-        day: parseInt(formData.day),
-        openTime1: formData.openTime1,
-        closeTime1: formData.closeTime1,
-        openTime2: formData.openTime2 || '',
-        closeTime2: formData.closeTime2 || '',
+        ...newHour,
         businessId: parseInt(businessId)
       };
       
-      console.log('Complete hour object to add:', completeHour); // Debug log
       onHourAdded(completeHour);
       setFormData({
         day: 0,
@@ -66,7 +58,7 @@ const NewOpeningHourForm = ({ businessId, onHourAdded, onCancel }) => {
         closeTime2: ''
       });
     } catch (error) {
-      setError(error.message);
+      setError('Error al crear el horario');
     } finally {
       setIsSubmitting(false);
     }

@@ -43,8 +43,7 @@ const User = () => {
       const data = await response.json();
       setUsers(data);
     } catch (err) {
-      setError("Error al cargar los usuarios");
-      console.error("Error:", err);
+      setError("Error al cargar usuarios");
     } finally {
       setLoading(false);
     }
@@ -75,7 +74,9 @@ const User = () => {
         fetchUsers(); // recargar la lista
       }
     } catch (error) {
-      console.error("Error activating user:", error);
+      setError("Error al activar usuario");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -94,7 +95,9 @@ const User = () => {
         fetchUsers(); // recargar la lista
       }
     } catch (error) {
-      console.error("Error inactivating user:", error);
+      setError("Error al inactivar usuario");
+    } finally {
+      setLoading(false);
     }
   };
 

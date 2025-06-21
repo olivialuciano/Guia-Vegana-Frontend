@@ -90,6 +90,12 @@ const VeganOption = ({ veganOptions = [], businessId, onOptionAdded, onOptionUpd
     }
   };
 
+  const handleNewOption = (newOption) => {
+    if (newOption && newOption.id) {
+      onOptionAdded(newOption);
+    }
+  };
+
   // Validación más robusta de veganOptions
   const validVeganOptions = Array.isArray(veganOptions) 
     ? veganOptions.filter(option => 
@@ -126,14 +132,7 @@ const VeganOption = ({ veganOptions = [], businessId, onOptionAdded, onOptionUpd
       {showForm && (
         <NewVeganOptionForm
           businessId={businessId}
-          onOptionAdded={(newOption) => {
-            if (!newOption || typeof newOption.name !== 'string') {
-              console.warn("Se intentó agregar una opción inválida:", newOption);
-              return;
-            }
-            onOptionAdded(newOption);
-            setShowForm(false);
-          }}
+          onOptionAdded={handleNewOption}
           onCancel={() => setShowForm(false)}
         />
       )}

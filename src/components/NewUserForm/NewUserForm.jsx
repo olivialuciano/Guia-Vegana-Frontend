@@ -114,8 +114,7 @@ const NewUserForm = ({ onClose }) => {
         setError(errorData.message || "Error al crear el usuario");
       }
     } catch (err) {
-      setError("Error de conexión");
-      console.error("Error:", err);
+      setError("Error al crear el usuario");
     } finally {
       setLoading(false);
     }

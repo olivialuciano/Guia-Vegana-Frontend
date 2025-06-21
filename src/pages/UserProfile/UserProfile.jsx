@@ -33,79 +33,32 @@ const UserProfile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authUser) {
-      navigate("/signin");
-      return;
+    if (authUser) {
+      fetchUserData();
     }
-
-    console.log("AuthUser data:", authUser); // Debug log
-    fetchUserData();
-  }, [authUser, navigate]);
+  }, [authUser]);
 
   const fetchUserData = async () => {
     try {
-      console.log("Fetching user data for:", authUser); // Debug log
-      
-      // Verificar que tenemos los datos básicos del usuario
-      if (!authUser) {
-        throw new Error("No se encontraron datos del usuario en el contexto");
-      }
-
-      // Extraer el ID del usuario (puede estar en diferentes propiedades)
-      const userId = authUser.userId || authUser.id || authUser.user_id;
-      const userRole = authUser.role;
-
-      if (!userId) {
-        throw new Error("No se encontró el ID del usuario");
-      }
-
-      console.log("User ID:", userId, "Role:", userRole); // Debug log
-
-      // Si el usuario es Sysadmin, usar el endpoint de la API
-      if (userRole === 'Sysadmin') {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API}/User/${userId}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error("Error al cargar los datos del usuario desde la API");
-        }
-        
-        const userData = await response.json();
-        console.log("API user data:", userData); // Debug log
-        setUser(userData);
-        setEditForm({
-          name: userData.name,
-          email: userData.email
-        });
-      } else {
-        // Si es Investigador, usar datos del contexto con valores por defecto
-        const userData = {
-          id: userId,
-          name: "", // Valor por defecto
-          email: "", // Valor por defecto
-          isActive: true,
-          role: userRole
-        };
-        
-        console.log("Default user data:", userData); // Debug log
-        setUser(userData);
-        setEditForm({
-          name: userData.name,
-          email: userData.email
-        });
-      }
+      const userData = await api.get(`/users/${authUser.id}`);
+      setUser(userData);
     } catch (err) {
-      console.error("Error in fetchUserData:", err); // Debug log
-      setError("Error al cargar los datos del usuario: " + err.message);
-    } finally {
-      setLoading(false);
+      setError("Error al cargar los datos del usuario");
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      setUserId(user.id);
+      setUserRole(user.role);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (userData) {
+      setUser(userData);
+    }
+  }, [userData]);
 
   const handleLogout = () => {
     logout();
@@ -188,7 +141,6 @@ const UserProfile = () => {
       }
     } catch (err) {
       setUpdateError("Error de conexión. Verifique su conexión a internet.");
-      console.error("Error:", err);
     } finally {
       setUpdateLoading(false);
     }

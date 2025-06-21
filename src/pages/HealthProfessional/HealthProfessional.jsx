@@ -30,8 +30,7 @@ const HealthProfessional = () => {
       const data = await response.json();
       setHealthProfessionals(data);
     } catch (err) {
-      setError('Error al cargar los profesionales');
-      console.error('Error:', err);
+      setError("Error al cargar profesionales");
     } finally {
       setLoading(false);
     }

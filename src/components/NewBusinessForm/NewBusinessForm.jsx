@@ -142,8 +142,7 @@ const NewBusinessForm = ({ onClose }) => {
       onClose();
       window.location.reload();
     } catch (error) {
-      console.error("Error:", error);
-      setErrorMessage(error.message || "Error al crear el negocio");
+      setError("Error al crear el negocio");
     } finally {
       setIsSubmitting(false);
     }

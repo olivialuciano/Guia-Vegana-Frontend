@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faDoorOpen, faDoorClosed, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../../context/AuthContext';
@@ -16,11 +16,20 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
   const [hourToDelete, setHourToDelete] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(AuthContext);
+  const [validOpeningHours, setValidOpeningHours] = useState([]);
 
   const canEdit = user && (user.role === 'Sysadmin' || user.role === 'Investigador');
 
-  // Debug log para ver los datos que llegan
-  console.log('OpeningHours received:', openingHours);
+  useEffect(() => {
+    if (openingHours && Array.isArray(openingHours)) {
+      const validHours = openingHours.filter(hour => 
+        hour && typeof hour === 'object' && hour.id !== undefined
+      );
+      setValidOpeningHours(validHours);
+    } else {
+      setValidOpeningHours([]);
+    }
+  }, [openingHours]);
 
   const getDayName = (day) => {
     if (typeof day !== 'number') return '';
@@ -35,16 +44,23 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
 
   const handleEdit = (hour) => {
     if (!hour || !hour.id) {
-      console.error('Hour object is invalid or missing id:', hour);
       return;
     }
-    setEditingHour({ ...hour });
+    setEditingHour(hour);
+    setShowForm(true);
   };
 
   const handleDelete = async (hourId) => {
-    if (!hourId) return;
-    setHourToDelete(hourId);
-    setShowConfirmDialog(true);
+    if (!hourId) {
+      return;
+    }
+
+    try {
+      await API.delete(`/opening-hours/${hourId}`);
+      onHourDeleted(hourId);
+    } catch (error) {
+      // Handle error silently or show user-friendly message
+    }
   };
 
   const confirmDelete = async () => {
@@ -74,52 +90,26 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
     }
   };
 
-  const handleSave = async (e) => {
-    e.preventDefault();
-    if (!editingHour || !editingHour.id) {
-      setError('Error: No se puede editar un horario sin ID');
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('No autorizado');
-
-      console.log('Editing hour with ID:', editingHour.id); // Debug log
-
-      const response = await fetch(`${API}/OpeningHour/${editingHour.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(editingHour)
-      });
-
-      if (!response.ok) throw new Error('Error al actualizar el horario');
-
-      onHourUpdated(editingHour);
+  const handleFormSubmit = (updatedHour) => {
+    if (editingHour) {
+      onHourUpdated(updatedHour);
       setEditingHour(null);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
+    } else {
+      onHourAdded(updatedHour);
     }
+    setShowForm(false);
   };
 
-  // Validación más robusta de openingHours
-  const validOpeningHours = Array.isArray(openingHours) 
-    ? openingHours.filter(hour => {
-        const isValid = hour && typeof hour === 'object';
-        if (!isValid) {
-          console.warn('Filtered out invalid hour:', hour);
-        }
-        return isValid;
-      })
-    : [];
+  const handleFormCancel = () => {
+    setEditingHour(null);
+    setShowForm(false);
+  };
 
-  console.log('Valid opening hours:', validOpeningHours); // Debug log
+  const handleNewHour = (newHour) => {
+    if (newHour && newHour.id) {
+      onHourAdded(newHour);
+    }
+  };
 
   return (
     <div className="opening-hours-container">
@@ -146,20 +136,8 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
       {showForm && (
         <NewOpeningHourForm
           businessId={businessId}
-          onHourAdded={(newHour) => {
-            console.log('OpeningHour received newHour:', newHour); // Debug log
-            
-            // Validar que el objeto tenga las propiedades necesarias
-            if (!newHour || !newHour.id || typeof newHour.day !== 'number') {
-              console.warn("Se intentó agregar un horario inválido:", newHour);
-              return;
-            }
-            
-            console.log('Adding valid hour to list:', newHour); // Debug log
-            onHourAdded(newHour);
-            setShowForm(false);
-          }}
-          onCancel={() => setShowForm(false)}
+          onHourAdded={handleNewHour}
+          onCancel={handleFormCancel}
         />
       )}
 
@@ -170,7 +148,7 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
           validOpeningHours.map((hour) => (
             <div key={hour.id} className="opening-hour-item">
               {editingHour?.id === hour.id && editingHour ? (
-                <form onSubmit={handleSave} className="editing-form">
+                <form onSubmit={handleFormSubmit} className="editing-form">
                   <select
                     value={editingHour.day}
                     onChange={(e) => setEditingHour({ ...editingHour, day: parseInt(e.target.value) })}

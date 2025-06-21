@@ -108,11 +108,7 @@ const BusinessList = () => {
               };
             }
           } catch (error) {
-            console.error(`Error loading hours for business ${business.id}:`, error);
-            return {
-              ...business,
-              openingHours: []
-            };
+            // Continue without opening hours if there's an error
           }
         })
       );
@@ -121,7 +117,6 @@ const BusinessList = () => {
       setFilteredBusinesses(businessesWithHours);
     } catch (err) {
       setError("Error al cargar los negocios");
-      console.error("Error:", err);
     } finally {
       setLoading(false);
     }

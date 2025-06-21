@@ -33,73 +33,36 @@ const NewHealthProfessionalForm = ({ onProfessionalAdded, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
     setIsSubmitting(true);
+    setError(null);
 
     try {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      // Obtener el usuario del token
-      const tokenParts = token.split('.');
-      if (tokenParts.length !== 3) {
-        throw new Error('Token inválido');
-      }
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const userId = decodedToken.nameid || decodedToken.sub || decodedToken.userId;
 
-      const payload = JSON.parse(atob(tokenParts[1]));
-      console.log('Token payload:', payload); // Para depuración
-
-      // Intentar obtener el ID del usuario de diferentes campos posibles
-      const userId = payload.nameid || payload.sub || payload.userId || payload.id;
-      
-      if (!userId) {
-        console.error('Payload del token:', payload); // Para depuración
-        throw new Error('No se pudo obtener el ID del usuario del token');
-      }
-
-      // Validar datos requeridos
-      if (!formData.name || !formData.specialty || !formData.license || !formData.whatsappNumber) {
-        setError('Por favor complete todos los campos requeridos');
-        setIsSubmitting(false);
-        return;
-      }
-
-      // Preparar los datos para enviar
       const professionalData = {
         name: formData.name,
-        image: formData.image || null,
         specialty: formData.specialty,
-        license: formData.license,
-        socialMediaUsername: formData.socialMediaUsername || null,
-        socialMediaLink: formData.socialMediaLink || null,
-        whatsappNumber: formData.whatsappNumber,
-        email: formData.email || null,
+        address: formData.address,
+        phone: formData.phone,
+        email: formData.email,
         userId: userId
       };
 
-      console.log('Enviando datos:', professionalData);
-
-      const response = await fetch(`${API}/HealthProfessional`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(professionalData)
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        console.error('Error response:', errorData);
-        throw new Error(errorData?.message || `Error al crear el profesional: ${response.status}`);
-      }
-
-      const newProfessional = await response.json();
-      console.log('Respuesta exitosa:', newProfessional);
+      const newProfessional = await API.post('/health-professionals', professionalData);
       onProfessionalAdded(newProfessional);
-    } catch (err) {
-      console.error('Error completo:', err);
-      setError(err.message || 'Error al crear el profesional');
+      setFormData({
+        name: '',
+        specialty: '',
+        address: '',
+        phone: '',
+        email: ''
+      });
+    } catch (error) {
+      setError('Error al crear el profesional de la salud');
     } finally {
       setIsSubmitting(false);
     }

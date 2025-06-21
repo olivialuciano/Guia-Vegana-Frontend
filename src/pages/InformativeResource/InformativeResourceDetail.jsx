@@ -53,8 +53,7 @@ const InformativeResourceDetail = () => {
           userId: data.userId
         });
       } catch (err) {
-        setError('Error al cargar el recurso');
-        console.error('Error:', err);
+        setError("Error al cargar el recurso");
       } finally {
         setLoading(false);
       }

@@ -138,7 +138,6 @@ const BusinessDetail = () => {
         try {
           updatedBusiness = await response.json();
         } catch (e) {
-          console.warn('No se pudo parsear la respuesta JSON:', e);
           // Si no hay respuesta JSON, usar los datos editados
           updatedBusiness = editedBusiness;
         }
@@ -150,8 +149,9 @@ const BusinessDetail = () => {
       setBusiness(updatedBusiness);
       setIsEditing(false);
     } catch (error) {
-      console.error("Error al actualizar:", error);
-      alert(error.message || "Error al actualizar el negocio");
+      setError("Error al actualizar el negocio");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -178,8 +178,9 @@ const BusinessDetail = () => {
       setShowDeleteConfirm(false);
       navigate('/business');
     } catch (error) {
-      console.error("Error al eliminar:", error);
-      alert(error.message || "Error al eliminar el negocio");
+      setError("Error al eliminar el negocio");
+    } finally {
+      setShowDeleteConfirm(false);
     }
   };
 
@@ -199,6 +200,52 @@ const BusinessDetail = () => {
   const getImageUrl = () => {
     if (!business.image) return defaultImage;
     return business.image;
+  };
+
+  const handleNewHour = (newHour) => {
+    setBusiness(prevBusiness => ({
+      ...prevBusiness,
+      openingHours: [...prevBusiness.openingHours, newHour]
+    }));
+  };
+
+  const handleHourUpdate = (updatedHour) => {
+    setBusiness(prevBusiness => ({
+      ...prevBusiness,
+      openingHours: prevBusiness.openingHours.map(hour => 
+        hour.id === updatedHour.id ? updatedHour : hour
+      )
+    }));
+  };
+
+  const handleHourDelete = (hourId) => {
+    setBusiness(prevBusiness => ({
+      ...prevBusiness,
+      openingHours: prevBusiness.openingHours.filter(hour => hour.id !== hourId)
+    }));
+  };
+
+  const handleNewOption = (newOption) => {
+    setBusiness(prevBusiness => ({
+      ...prevBusiness,
+      veganOptions: [...prevBusiness.veganOptions, newOption]
+    }));
+  };
+
+  const handleOptionUpdate = (updatedOption) => {
+    setBusiness(prevBusiness => ({
+      ...prevBusiness,
+      veganOptions: prevBusiness.veganOptions.map(option => 
+        option.id === updatedOption.id ? updatedOption : option
+      )
+    }));
+  };
+
+  const handleOptionDelete = (optionId) => {
+    setBusiness(prevBusiness => ({
+      ...prevBusiness,
+      veganOptions: prevBusiness.veganOptions.filter(option => option.id !== optionId)
+    }));
   };
 
   if (loading) {
@@ -473,53 +520,16 @@ const BusinessDetail = () => {
           <OpeningHour 
             openingHours={business.openingHours || []} 
             businessId={parseInt(id)}
-            onHourAdded={(newHour) => {
-              console.log('BusinessDetail received newHour:', newHour); // Debug log
-              console.log('Current business.openingHours before update:', business.openingHours); // Debug log
-              
-              setBusiness(prev => {
-                const updatedBusiness = {
-                  ...prev,
-                  openingHours: [...(prev.openingHours || []), newHour]
-                };
-                console.log('Updated business with new hour:', updatedBusiness); // Debug log
-                return updatedBusiness;
-              });
-            }}
-            onHourUpdated={(updatedHour) => {
-              console.log('Hour updated:', updatedHour); // Debug log
-              setBusiness(prev => ({
-                ...prev,
-                openingHours: prev.openingHours.map(hour => 
-                  hour.id === updatedHour.id ? updatedHour : hour
-                )
-              }));
-            }}
-            onHourDeleted={(hourId) => {
-              console.log('Hour deleted:', hourId); // Debug log
-              setBusiness(prev => ({
-                ...prev,
-                openingHours: prev.openingHours.filter(hour => hour.id !== hourId)
-              }));
-            }}
+            onHourAdded={handleNewHour}
+            onHourUpdated={handleHourUpdate}
+            onHourDeleted={handleHourDelete}
           />
           <VeganOption 
             veganOptions={veganOptions} 
             businessId={parseInt(id)}
-            onOptionAdded={(newOption) => {
-              console.log('New option added:', newOption); // Debug log
-              setVeganOptions(prev => [...prev, newOption]);
-            }}
-            onOptionUpdated={(updatedOption) => {
-              console.log('Option updated:', updatedOption); // Debug log
-              setVeganOptions(prev => 
-                prev.map(option => option.id === updatedOption.id ? updatedOption : option)
-              );
-            }}
-            onOptionDeleted={(optionId) => {
-              console.log('Option deleted:', optionId); // Debug log
-              setVeganOptions(prev => prev.filter(option => option.id !== optionId));
-            }}
+            onOptionAdded={handleNewOption}
+            onOptionUpdated={handleOptionUpdate}
+            onOptionDeleted={handleOptionDelete}
           />
         </div>
       </div>

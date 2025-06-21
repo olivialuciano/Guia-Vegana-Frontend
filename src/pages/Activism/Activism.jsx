@@ -30,8 +30,7 @@ const Activism = () => {
       const data = await response.json();
       setActivism(data);
     } catch (err) {
-      setError('Error al cargar las actividades');
-      console.error('Error:', err);
+      setError("Error al cargar activismo");
     } finally {
       setLoading(false);
     }

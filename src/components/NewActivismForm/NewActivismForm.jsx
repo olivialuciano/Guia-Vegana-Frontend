@@ -25,89 +25,32 @@ const NewActivismForm = ({ onActivismAdded, onCancel }) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
-    
-    // Validaciones
-    if (!formData.name.trim()) {
-      setError('El nombre es requerido');
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (!formData.contact.trim()) {
-      setError('El contacto es requerido');
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (!formData.socialMediaUsername.trim()) {
-      setError('El nombre de usuario en redes sociales es requerido');
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (!formData.socialMediaLink.trim()) {
-      setError('El enlace de redes sociales es requerido');
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (!formData.description.trim()) {
-      setError('La descripción es requerida');
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (!token) {
-      setError('No estás autorizado para realizar esta acción');
-      setIsSubmitting(false);
-      return;
-    }
 
     try {
-      const decodedToken = jwtDecode(token);
-      console.log('Token decodificado:', decodedToken); // Debug log
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('No autorizado');
+
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const userId = decodedToken.nameid || decodedToken.sub || decodedToken.userId;
 
       const activismToCreate = {
-        name: formData.name.trim(),
-        image: formData.image.trim() || null,
-        contact: formData.contact.trim(),
-        socialMediaUsername: formData.socialMediaUsername.trim(),
-        socialMediaLink: formData.socialMediaLink.trim(),
-        description: formData.description.trim(),
-        userId: parseInt(decodedToken.userId)
+        name: formData.name,
+        description: formData.description,
+        location: formData.location,
+        date: formData.date,
+        userId: userId
       };
 
-      console.log('Enviando datos:', activismToCreate); // Debug log
-
-      const response = await fetch(`${API}/Activism`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(activismToCreate)
-      });
-
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error('Error del servidor:', errorData); // Debug log
-        throw new Error(`Error al crear el activismo: ${errorData}`);
-      }
-
-      const newActivism = await response.json();
+      const newActivism = await api.post('/activism', activismToCreate);
       onActivismAdded(newActivism);
       setFormData({
         name: '',
-        image: '',
-        contact: '',
-        socialMediaUsername: '',
-        socialMediaLink: '',
-        description: ''
+        description: '',
+        location: '',
+        date: ''
       });
-      setError(null);
     } catch (error) {
-      console.error('Error completo:', error);
-      setError(error.message);
+      setError('Error al crear el activismo');
     } finally {
       setIsSubmitting(false);
     }

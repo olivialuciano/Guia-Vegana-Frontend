@@ -16,58 +16,28 @@ const NewVeganOptionForm = ({ businessId, onOptionAdded, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validaciones
-    if (!formData.name.trim()) {
-      setError('El nombre es requerido');
-      return;
-    }
-
-    if (!formData.price || isNaN(formData.price) || parseFloat(formData.price) < 0) {
-      setError('El precio debe ser un número válido mayor o igual a 0');
-      return;
-    }
-
-    if (!businessId) {
-      setError('El ID del negocio es requerido');
-      return;
-    }
+    setIsSubmitting(true);
+    setError(null);
 
     try {
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('No autorizado');
-
-      // Crear el objeto exactamente como lo espera el backend
       const veganOptionToCreate = {
-        name: formData.name.trim(),
+        businessId: parseInt(businessId),
+        name: formData.name,
+        description: formData.description,
         price: parseFloat(formData.price),
-        businessId: parseInt(businessId) // Usamos businessId directamente del prop
+        category: formData.category
       };
 
-      console.log('Enviando datos:', veganOptionToCreate); // Para debugging
-
-      setIsSubmitting(true);
-      const response = await fetch(`${API}/VeganOption`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(veganOptionToCreate)
-      });
-
-      if (!response.ok) {
-        const errorData = await response.text();
-        throw new Error(`Error al crear la opción vegana: ${errorData}`);
-      }
-
-      const newOption = await response.json();
+      const newOption = await api.post('/vegan-options', veganOptionToCreate);
       onOptionAdded(newOption);
-      setFormData({ name: '', price: '', businessId: businessId });
-      setError(null);
+      setFormData({
+        name: '',
+        description: '',
+        price: '',
+        category: ''
+      });
     } catch (error) {
-      console.error('Error completo:', error); // Para debugging
-      setError(error.message);
+      setError('Error al crear la opción vegana');
     } finally {
       setIsSubmitting(false);
     }

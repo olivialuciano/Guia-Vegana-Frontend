@@ -31,38 +31,16 @@ const NewInformativeResourceForm = ({ onResourceAdded, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
     setIsSubmitting(true);
+    setError(null);
 
     try {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      // Obtener el usuario del token
-      const tokenParts = token.split('.');
-      if (tokenParts.length !== 3) {
-        throw new Error('Token inválido');
-      }
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const userId = decodedToken.nameid || decodedToken.sub || decodedToken.userId;
 
-      const payload = JSON.parse(atob(tokenParts[1]));
-      console.log('Token payload:', payload);
-
-      // Intentar obtener el ID del usuario de diferentes campos posibles
-      const userId = payload.nameid || payload.sub || payload.userId || payload.id;
-      
-      if (!userId) {
-        console.error('Payload del token:', payload);
-        throw new Error('No se pudo obtener el ID del usuario del token');
-      }
-
-      // Validar datos requeridos
-      if (!formData.name || !formData.topic || !formData.description) {
-        setError('Por favor complete todos los campos requeridos');
-        setIsSubmitting(false);
-        return;
-      }
-
-      // Preparar los datos para enviar
       const resourceData = {
         name: formData.name,
         image: formData.image || null,
@@ -72,8 +50,6 @@ const NewInformativeResourceForm = ({ onResourceAdded, onCancel }) => {
         type: parseInt(formData.type),
         userId: userId
       };
-
-      console.log('Enviando datos:', resourceData);
 
       const response = await fetch(`${API}/InformativeResource`, {
         method: 'POST',
@@ -86,16 +62,22 @@ const NewInformativeResourceForm = ({ onResourceAdded, onCancel }) => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
-        console.error('Error response:', errorData);
         throw new Error(errorData?.message || `Error al crear el recurso: ${response.status}`);
       }
 
       const newResource = await response.json();
-      console.log('Respuesta exitosa:', newResource);
       onResourceAdded(newResource);
-    } catch (err) {
-      console.error('Error completo:', err);
-      setError(err.message || 'Error al crear el recurso');
+      setFormData({
+        name: '',
+        image: '',
+        topic: '',
+        platform: '',
+        description: '',
+        type: 0,
+        userId: user?.id
+      });
+    } catch (error) {
+      setError('Error al crear el recurso informativo');
     } finally {
       setIsSubmitting(false);
     }

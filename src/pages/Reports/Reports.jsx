@@ -75,8 +75,7 @@ const Reports = () => {
       const processedReports = processReportData(businesses, users, veganOptions);
       setReports(processedReports);
     } catch (err) {
-      setError('Error al cargar los reportes: ' + err.message);
-      console.error('Error:', err);
+      setError("Error al cargar reportes");
     } finally {
       setLoading(false);
     }

@@ -45,8 +45,7 @@ const HealthProfessionalDetail = () => {
         setProfessional(data);
         setEditedProfessional(data);
       } catch (err) {
-        setError('Error al cargar el profesional');
-        console.error('Error:', err);
+        setError("Error al cargar el profesional");
       } finally {
         setLoading(false);
       }
@@ -89,7 +88,7 @@ const HealthProfessionalDetail = () => {
         try {
           updatedProfessional = await response.json();
         } catch (e) {
-          console.warn('No se pudo parsear la respuesta JSON:', e);
+          setError("Error al procesar la respuesta del servidor");
           updatedProfessional = editedProfessional;
         }
       } else {
@@ -100,8 +99,9 @@ const HealthProfessionalDetail = () => {
       setEditedProfessional(updatedProfessional);
       setIsEditing(false);
     } catch (err) {
-      setError(err.message || 'Error al actualizar el profesional');
-      console.error('Error:', err);
+      setError("Error al actualizar el profesional");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -135,8 +135,7 @@ const HealthProfessionalDetail = () => {
 
       navigate('/healthprofessional');
     } catch (err) {
-      setError('Error al eliminar el profesional');
-      console.error('Error:', err);
+      setError("Error al eliminar el profesional");
     } finally {
       setShowConfirmDialog(false);
     }

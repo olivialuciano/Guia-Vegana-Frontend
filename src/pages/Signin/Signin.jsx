@@ -21,57 +21,37 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
+    setError('');
 
     try {
-      const response = await fetch(
-        `${API}/User/authorization`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password,
-          }),
-        }
-      );
+      const response = await fetch(`${API}/Auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: formData.email, password: formData.password }),
+      });
 
-      if (!response.ok) throw new Error("Credenciales incorrectas");
-
-      const token = await response.text();
-      
-      // Decodificar el token
-      const decoded = jwtDecode(token);
-      console.log("Token decodificado:", decoded);
-
-      // Extraer el ID del usuario de diferentes campos posibles
-      const userId = decoded.nameid || decoded.sub || decoded.userId || decoded.id || decoded.user_id;
-      
-      if (!userId) {
-        console.error('Payload del token:', decoded);
-        throw new Error('No se pudo obtener el ID del usuario del token');
+      if (!response.ok) {
+        throw new Error('Credenciales inválidas');
       }
 
-      // Guardar token y claims en localStorage
-      localStorage.setItem("token", token);
-      localStorage.setItem("role", decoded.role);
-      localStorage.setItem("userId", userId);
+      const data = await response.json();
+      const token = data.token;
+      const decoded = JSON.parse(atob(token.split('.')[1]));
 
-      // Actualizar el contexto de autenticación
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', decoded.role);
+      localStorage.setItem('userId', decoded.userId);
+
       setUser(decoded);
       setRole(decoded.role || "");
-      setId(userId);
+      setId(decoded.userId);
 
-      // Redirigir según el rol
-      if (decoded.role === "Admin") {
-        navigate("/admin");
-      } else {
-        navigate("/");
-      }
+      navigate('/');
     } catch (err) {
-      console.error("Error en login:", err);
-      setError(err.message);
+      setError('Error en el inicio de sesión');
     } finally {
       setLoading(false);
     }

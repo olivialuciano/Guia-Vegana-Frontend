@@ -16,14 +16,7 @@ import './Home.css';
 
 const Home = () => {
   const { user, role } = useContext(AuthContext);
-  const storedRole = localStorage.getItem('role');
-  const isSysadmin = role === 'Sysadmin' || storedRole === 'Sysadmin';
-  
-  // Debug logs
-  console.log('Home - User:', user);
-  console.log('Home - Role from context:', role);
-  console.log('Home - Role from localStorage:', localStorage.getItem('role'));
-  console.log('Home - Is Sysadmin:', isSysadmin);
+  const isSysadmin = role === 'Sysadmin';
 
   return (
     <div className="home-container">
