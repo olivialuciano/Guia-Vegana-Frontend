@@ -52,7 +52,7 @@ const NewHealthProfessionalForm = ({ onProfessionalAdded, onCancel }) => {
         userId: userId
       };
 
-      const newProfessional = await API.post('/health-professionals', professionalData);
+      const newProfessional = await API.post('/HealthProfessional', professionalData);
       onProfessionalAdded(newProfessional);
       setFormData({
         name: '',

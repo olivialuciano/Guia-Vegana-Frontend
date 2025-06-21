@@ -62,7 +62,7 @@ const User = () => {
   const handleActivateUser = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API}/User/activate/${userId}`, {
+      const response = await fetch(`${API}/User/active/${userId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -83,7 +83,7 @@ const User = () => {
   const handleInactivateUser = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API}/User/inactivate/${userId}`, {
+      const response = await fetch(`${API}/User/inactive/${userId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

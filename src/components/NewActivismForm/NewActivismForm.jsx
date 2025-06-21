@@ -41,7 +41,7 @@ const NewActivismForm = ({ onActivismAdded, onCancel }) => {
         userId: userId
       };
 
-      const newActivism = await api.post('/activism', activismToCreate);
+      const newActivism = await api.post('/Activism', activismToCreate);
       onActivismAdded(newActivism);
       setFormData({
         name: '',
