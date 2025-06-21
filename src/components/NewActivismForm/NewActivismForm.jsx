@@ -9,7 +9,6 @@ import { API } from '../../services/api';
 
 const NewActivismForm = ({ onActivismAdded, onCancel }) => {
   const { user } = useContext(AuthContext);
-  const token = localStorage.getItem("token");
   const [formData, setFormData] = useState({
     name: '',
     image: '',
@@ -30,27 +29,44 @@ const NewActivismForm = ({ onActivismAdded, onCancel }) => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const decodedToken = jwtDecode(token);
       const userId = decodedToken.nameid || decodedToken.sub || decodedToken.userId;
 
       const activismToCreate = {
         name: formData.name,
+        image: formData.image || null,
+        contact: formData.contact,
+        socialMediaUsername: formData.socialMediaUsername,
+        socialMediaLink: formData.socialMediaLink,
         description: formData.description,
-        location: formData.location,
-        date: formData.date,
         userId: userId
       };
 
-      const newActivism = await api.post('/Activism', activismToCreate);
+      const response = await fetch(`${API}/Activism`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(activismToCreate)
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al crear el activismo');
+      }
+
+      const newActivism = await response.json();
       onActivismAdded(newActivism);
       setFormData({
         name: '',
-        description: '',
-        location: '',
-        date: ''
+        image: '',
+        contact: '',
+        socialMediaUsername: '',
+        socialMediaLink: '',
+        description: ''
       });
     } catch (error) {
-      setError('Error al crear el activismo');
+      setError('Error al crear el activismo: ' + error.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -88,75 +104,71 @@ const NewActivismForm = ({ onActivismAdded, onCancel }) => {
           </div>
         )}
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="name">Nombre:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              placeholder="Ingrese el nombre del activismo"
-              maxLength={100}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="contact">Contacto:</label>
-            <input
-              type="text"
-              id="contact"
-              name="contact"
-              value={formData.contact}
-              onChange={handleChange}
-              required
-              placeholder="Ingrese el contacto"
-              maxLength={100}
-            />
-          </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="socialMediaUsername">Usuario en redes sociales:</label>
-            <input
-              type="text"
-              id="socialMediaUsername"
-              name="socialMediaUsername"
-              value={formData.socialMediaUsername}
-              onChange={handleChange}
-              required
-              placeholder="Ingrese el nombre de usuario en redes sociales"
-              maxLength={50}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="socialMediaLink">Enlace de redes sociales:</label>
-            <input
-              type="url"
-              id="socialMediaLink"
-              name="socialMediaLink"
-              value={formData.socialMediaLink}
-              onChange={handleChange}
-              required
-              placeholder="Ingrese el enlace de redes sociales"
-            />
-          </div>
+        <div className="form-group">
+          <label htmlFor="name">Nombre:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            placeholder="Ingrese el nombre del activismo"
+            maxLength={100}
+          />
         </div>
 
         <div className="form-group">
-          <label htmlFor="image">URL de la imagen:</label>
+          <label htmlFor="image">Imagen (opcional):</label>
           <input
             type="url"
             id="image"
             name="image"
             value={formData.image}
             onChange={handleChange}
-            placeholder="Ingrese la URL de la imagen (opcional)"
+            placeholder="Ingrese la URL de la imagen del activismo"
             maxLength={700}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="contact">Contacto:</label>
+          <input
+            type="text"
+            id="contact"
+            name="contact"
+            value={formData.contact}
+            onChange={handleChange}
+            required
+            placeholder="Ingrese el contacto del activismo"
+            maxLength={100}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="socialMediaUsername">Usuario en redes sociales:</label>
+          <input
+            type="text"
+            id="socialMediaUsername"
+            name="socialMediaUsername"
+            value={formData.socialMediaUsername}
+            onChange={handleChange}
+            required
+            placeholder="Ingrese el nombre de usuario en redes sociales"
+            maxLength={50}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="socialMediaLink">Enlace de redes sociales:</label>
+          <input
+            type="url"
+            id="socialMediaLink"
+            name="socialMediaLink"
+            value={formData.socialMediaLink}
+            onChange={handleChange}
+            required
+            placeholder="Ingrese el enlace de redes sociales"
           />
         </div>
 

@@ -176,7 +176,7 @@ const ActivismDetail = () => {
                 <button className="icon-button edit" onClick={handleEdit} title="Editar activismo">
                   <FontAwesomeIcon icon={faEdit} />
                 </button>
-                <button className="icon-button delete" onClick={() => setShowDeleteConfirm(true)} title="Eliminar activismo">
+                <button className="icon-button delete" onClick={() => setShowConfirmDialog(true)} title="Eliminar activismo">
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
               </div>
