@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
+import image from '../../assets/img/image.png';
 import './InformativeResourceDetail.css';
 import { API } from '../../services/api';
 
@@ -141,7 +142,7 @@ const InformativeResourceDetail = () => {
         throw new Error('Error al eliminar el recurso');
       }
 
-      navigate('/informative-resource');
+      navigate('/informativeresource');
     } catch (err) {
       setError(err.message || 'Error al eliminar el recurso');
       setShowDeleteDialog(false);

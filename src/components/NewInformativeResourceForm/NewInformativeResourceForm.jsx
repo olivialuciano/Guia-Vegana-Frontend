@@ -3,6 +3,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../Loading/Loading';
+import { jwtDecode } from "jwt-decode";
 import './NewInformativeResourceForm.css';
 import { API } from '../../services/api';
 
@@ -14,8 +15,7 @@ const NewInformativeResourceForm = ({ onResourceAdded, onCancel }) => {
     topic: '',
     platform: '',
     description: '',
-    type: 0, // Default to Book
-    userId: user?.id
+    type: 0
   });
 
   const [error, setError] = useState(null);
@@ -38,7 +38,7 @@ const NewInformativeResourceForm = ({ onResourceAdded, onCancel }) => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const decodedToken = jwtDecode(token);
       const userId = decodedToken.nameid || decodedToken.sub || decodedToken.userId;
 
       const resourceData = {
@@ -61,8 +61,7 @@ const NewInformativeResourceForm = ({ onResourceAdded, onCancel }) => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(errorData?.message || `Error al crear el recurso: ${response.status}`);
+        throw new Error('Error al crear el recurso informativo');
       }
 
       const newResource = await response.json();
@@ -73,11 +72,10 @@ const NewInformativeResourceForm = ({ onResourceAdded, onCancel }) => {
         topic: '',
         platform: '',
         description: '',
-        type: 0,
-        userId: user?.id
+        type: 0
       });
     } catch (error) {
-      setError('Error al crear el recurso informativo');
+      setError('Error al crear el recurso informativo: ' + error.message);
     } finally {
       setIsSubmitting(false);
     }
