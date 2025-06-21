@@ -12,7 +12,8 @@ export const useApi = () => {
     try {
       const response = await fetch(url, options);
       
-      if (response.status === 401) {
+      // Solo interceptar 401 si la petición incluye autorización
+      if (response.status === 401 && options.headers?.Authorization) {
         // Token expirado o inválido: limpiar y redirigir
         localStorage.removeItem('token');
         localStorage.removeItem('role');

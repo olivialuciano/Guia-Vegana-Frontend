@@ -37,21 +37,29 @@ const Signin = () => {
         throw new Error('Credenciales inválidas');
       }
 
-      const data = await response.json();
-      const token = data.token;
-      const decoded = JSON.parse(atob(token.split('.')[1]));
+      const token = await response.text();
+      
+      // Decodificar el token usando jwtDecode
+      const decoded = jwtDecode(token);
+      
+      // Extraer el ID del usuario de diferentes campos posibles
+      const userId = decoded.nameid || decoded.sub || decoded.userId || decoded.id || decoded.user_id;
+      
+      if (!userId) {
+        throw new Error('No se pudo obtener el ID del usuario del token');
+      }
 
       localStorage.setItem('token', token);
-      localStorage.setItem('role', decoded.role);
-      localStorage.setItem('userId', decoded.userId);
+      localStorage.setItem('role', decoded.role || '');
+      localStorage.setItem('userId', userId);
 
       setUser(decoded);
       setRole(decoded.role || "");
-      setId(decoded.userId);
+      setId(userId);
 
       navigate('/');
     } catch (err) {
-      setError('Error en el inicio de sesión');
+      setError('Error en el inicio de sesión: ' + err.message);
     } finally {
       setLoading(false);
     }
