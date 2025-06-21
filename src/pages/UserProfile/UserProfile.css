@@ -10,7 +10,6 @@
 
 .user-profile-container {
   min-height: 100vh;
-  padding: calc(80px + var(--spacing-lg)) var(--spacing-lg) calc(60px + var(--spacing-lg));
   background: var(--background-gradient);
   position: relative;
 }
