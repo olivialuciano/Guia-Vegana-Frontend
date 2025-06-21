@@ -47,7 +47,6 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
       return;
     }
     setEditingHour(hour);
-    setShowForm(true);
   };
 
   const handleDelete = async (hourId) => {
@@ -86,6 +85,50 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
     }
   };
 
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    if (!editingHour || !editingHour.id) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('No autorizado');
+
+      const response = await fetch(`${API}/OpeningHour/${editingHour.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(editingHour)
+      });
+
+      if (!response.ok) throw new Error('Error al actualizar el horario');
+
+      // Verificar si hay contenido en la respuesta antes de intentar parsear JSON
+      const contentType = response.headers.get('content-type');
+      let updatedHour = editingHour; // Usar los datos editados por defecto
+      
+      if (contentType && contentType.includes('application/json')) {
+        try {
+          updatedHour = await response.json();
+        } catch (e) {
+          // Si no se puede parsear JSON, usar los datos editados
+          updatedHour = editingHour;
+        }
+      }
+
+      onHourUpdated(updatedHour);
+      setEditingHour(null);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleFormSubmit = (updatedHour) => {
     if (editingHour) {
       onHourUpdated(updatedHour);
@@ -97,7 +140,6 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
   };
 
   const handleFormCancel = () => {
-    setEditingHour(null);
     setShowForm(false);
   };
 
@@ -114,7 +156,10 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
         {canEdit && (
           <button
             className="add-opening-hour-btn"
-            onClick={() => setShowForm(!showForm)}
+            onClick={() => {
+              setEditingHour(null);
+              setShowForm(!showForm);
+            }}
             title="Agregar horario"
           >
             <FontAwesomeIcon icon={faPlus} />
@@ -144,7 +189,7 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
           validOpeningHours.map((hour) => (
             <div key={hour.id} className="opening-hour-item">
               {editingHour?.id === hour.id && editingHour ? (
-                <form onSubmit={handleFormSubmit} className="editing-form">
+                <form onSubmit={handleEditSubmit} className="editing-form">
                   <select
                     value={editingHour.day}
                     onChange={(e) => setEditingHour({ ...editingHour, day: parseInt(e.target.value) })}
