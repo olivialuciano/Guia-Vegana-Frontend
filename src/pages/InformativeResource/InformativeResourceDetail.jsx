@@ -35,6 +35,8 @@ const InformativeResourceDetail = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const canEdit = user && (user.role === 'Sysadmin' || user.role === 'Investigador');
+
   useEffect(() => {
     const fetchResource = async () => {
       try {
@@ -193,7 +195,7 @@ const InformativeResourceDetail = () => {
                 <h1 className="page-title">{resource.name}</h1>
               </div>
             </div>
-            {user && (
+            {canEdit && (
               <div className="header-actions">
                 <button className="icon-button edit" onClick={() => setIsEditing(!isEditing)} title="Editar recurso">
                   <FontAwesomeIcon icon={faEdit} />

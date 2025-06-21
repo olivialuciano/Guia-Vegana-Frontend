@@ -178,10 +178,9 @@ const HealthProfessionalDetail = () => {
               </div>
               <div className="header-title-section">
                 <h1 className="page-title">{professional.name}</h1>
-                <p className="page-subtitle">{professional.specialty}</p>
               </div>
             </div>
-            {user && (
+            {canEdit && (
               <div className="header-actions">
                 <button className="icon-button edit" onClick={handleEdit} title="Editar profesional">
                   <FontAwesomeIcon icon={faEdit} />

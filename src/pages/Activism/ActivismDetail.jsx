@@ -171,7 +171,7 @@ const ActivismDetail = () => {
                 <p className="page-subtitle">{activism.type}</p>
               </div>
             </div>
-            {user && (
+            {canEdit && (
               <div className="header-actions">
                 <button className="icon-button edit" onClick={handleEdit} title="Editar activismo">
                   <FontAwesomeIcon icon={faEdit} />

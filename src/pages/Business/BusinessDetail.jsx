@@ -29,6 +29,8 @@ const BusinessDetail = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [error, setError] = useState(null);
 
+  const canEdit = user && (user.role === 'Sysadmin' || user.role === 'Investigador');
+
   const { isOpen, getStatusText, getStatusClass } = useBusinessStatus(business.openingHours);
 
   useEffect(() => {
@@ -323,7 +325,7 @@ const BusinessDetail = () => {
                 </div>
               </div>
             </div>
-            {user && (
+            {canEdit && (
               <div className="header-actions">
                 <button className="icon-button edit" onClick={handleEdit} title="Editar negocio">
                   <FontAwesomeIcon icon={faEdit} />

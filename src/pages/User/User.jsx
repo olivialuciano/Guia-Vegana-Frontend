@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./User.css";
-import { API } from '../../services/api';
+import { API, apiFetch } from '../../services/api';
 
 const User = () => {
   const { user } = useContext(AuthContext);
@@ -24,12 +24,12 @@ const User = () => {
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-
+  const canEdit = user && (user.role === 'Sysadmin' || user.role === 'Investigador');
 
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API}/User`, {
+      const response = await apiFetch(`${API}/User`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -62,7 +62,7 @@ const User = () => {
   const handleActivateUser = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API}/User/activate/${userId}`, {
+      const response = await apiFetch(`${API}/User/activate/${userId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -85,7 +85,7 @@ const User = () => {
   const handleInactivateUser = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API}/User/inactivate/${userId}`, {
+      const response = await apiFetch(`${API}/User/inactivate/${userId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -134,10 +134,12 @@ const User = () => {
             {/* Barra de acciones */}
             <div className="actions-bar">
               <div className="admin-actions">
-                <button className="add-button" onClick={handleOpenForm}>
-                  <FontAwesomeIcon icon={faPlus} />
-                  Agregar Usuario
-                </button>
+                {canEdit && (
+                  <button className="add-button" onClick={handleOpenForm}>
+                    <FontAwesomeIcon icon={faPlus} />
+                    Agregar Usuario
+                  </button>
+                )}
               </div>
             </div>
           </div>

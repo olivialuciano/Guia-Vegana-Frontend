@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { API } from '../services/api';
+import { API, clearAuthData } from '../services/api';
 
 export const useApi = () => {
   const [loading, setLoading] = useState(false);
@@ -14,11 +14,7 @@ export const useApi = () => {
       
       // Solo interceptar 401 si la petición incluye autorización
       if (response.status === 401 && options.headers?.Authorization) {
-        // Token expirado o inválido: limpiar y redirigir
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
-        localStorage.removeItem('userId');
-        window.location = '/signin';
+        clearAuthData();
         return; // Detener ejecución
       }
       

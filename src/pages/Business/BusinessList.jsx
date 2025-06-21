@@ -42,6 +42,8 @@ const BusinessList = () => {
     openNow: false
   });
 
+  const canEdit = user && (user.role === 'Sysadmin' || user.role === 'Investigador');
+
   // Mapeos de enums basados en las propiedades de Business
   const zoneMap = {
     0: 'Norte',
@@ -234,7 +236,7 @@ const BusinessList = () => {
             {/* Barra de acciones */}
           <div className="actions-bar">
             <div className="admin-actions">
-              {user && (
+              {canEdit && (
                 <button className="add-button" onClick={handleOpenForm}>
                   <FontAwesomeIcon icon={faPlus} />
                   <span>Agregar Negocio</span>
