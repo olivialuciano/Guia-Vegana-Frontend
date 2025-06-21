@@ -86,7 +86,7 @@ const Navbar = () => {
                   </li>
                 )}
                 <li>
-                  <Link to="/mi-usuario" onClick={closeMenu} className="profile-link">
+                  <Link to="/User" onClick={closeMenu} className="profile-link">
                     <FontAwesomeIcon icon={faUser} />
                     <span>Mi Perfil</span>
                   </Link>
