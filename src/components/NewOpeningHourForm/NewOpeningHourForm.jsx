@@ -43,7 +43,21 @@ const NewOpeningHourForm = ({ businessId, onHourAdded, onCancel }) => {
       }
 
       const newHour = await response.json();
-      onHourAdded(newHour);
+      console.log('Server response for new hour:', newHour); // Debug log
+      
+      // Crear el objeto completo con los datos del usuario + el ID del servidor
+      const completeHour = {
+        id: newHour.id || newHour, // Si el servidor devuelve solo el ID
+        day: parseInt(formData.day),
+        openTime1: formData.openTime1,
+        closeTime1: formData.closeTime1,
+        openTime2: formData.openTime2 || '',
+        closeTime2: formData.closeTime2 || '',
+        businessId: parseInt(businessId)
+      };
+      
+      console.log('Complete hour object to add:', completeHour); // Debug log
+      onHourAdded(completeHour);
       setFormData({
         day: 0,
         openTime1: '',

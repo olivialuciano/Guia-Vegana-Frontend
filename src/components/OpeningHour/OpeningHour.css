@@ -151,11 +151,17 @@
 
 .opening-hour-content {
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.opening-hour-info {
+  display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.opening-hour-content h4 {
+.opening-hour-info h4 {
   margin: 0;
   color: #333;
   font-size: 1rem;
@@ -177,6 +183,7 @@
 .opening-hour-actions {
   display: flex;
   gap: 0.5rem;
+  justify-content: flex-end;
 }
 
 .edit-btn, .delete-btn {

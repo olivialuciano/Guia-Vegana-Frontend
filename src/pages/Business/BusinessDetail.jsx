@@ -474,11 +474,17 @@ const BusinessDetail = () => {
             openingHours={business.openingHours || []} 
             businessId={parseInt(id)}
             onHourAdded={(newHour) => {
-              console.log('New hour added:', newHour); // Debug log
-              setBusiness(prev => ({
-                ...prev,
-                openingHours: [...(prev.openingHours || []), newHour]
-              }));
+              console.log('BusinessDetail received newHour:', newHour); // Debug log
+              console.log('Current business.openingHours before update:', business.openingHours); // Debug log
+              
+              setBusiness(prev => {
+                const updatedBusiness = {
+                  ...prev,
+                  openingHours: [...(prev.openingHours || []), newHour]
+                };
+                console.log('Updated business with new hour:', updatedBusiness); // Debug log
+                return updatedBusiness;
+              });
             }}
             onHourUpdated={(updatedHour) => {
               console.log('Hour updated:', updatedHour); // Debug log

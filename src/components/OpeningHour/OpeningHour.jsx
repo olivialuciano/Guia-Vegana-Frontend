@@ -110,15 +110,16 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
 
   // Validación más robusta de openingHours
   const validOpeningHours = Array.isArray(openingHours) 
-    ? openingHours.filter(hour => 
-        hour && 
-        typeof hour === 'object' && 
-        hour.id && // Asegurar que tenga ID
-        typeof hour.day === 'number' &&
-        hour.day >= 0 && 
-        hour.day <= 6
-      )
+    ? openingHours.filter(hour => {
+        const isValid = hour && typeof hour === 'object';
+        if (!isValid) {
+          console.warn('Filtered out invalid hour:', hour);
+        }
+        return isValid;
+      })
     : [];
+
+  console.log('Valid opening hours:', validOpeningHours); // Debug log
 
   return (
     <div className="opening-hours-container">
@@ -146,10 +147,15 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
         <NewOpeningHourForm
           businessId={businessId}
           onHourAdded={(newHour) => {
-            if (!newHour || typeof newHour.day !== 'number') {
+            console.log('OpeningHour received newHour:', newHour); // Debug log
+            
+            // Validar que el objeto tenga las propiedades necesarias
+            if (!newHour || !newHour.id || typeof newHour.day !== 'number') {
               console.warn("Se intentó agregar un horario inválido:", newHour);
               return;
             }
+            
+            console.log('Adding valid hour to list:', newHour); // Debug log
             onHourAdded(newHour);
             setShowForm(false);
           }}
@@ -214,13 +220,6 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
                 </form>
               ) : (
                 <div className="opening-hour-content">
-                  <h4>{getDayName(hour.day)}</h4>
-                  <div className="opening-hour-times">
-                    <p>{formatTime(hour.openTime1)} / {formatTime(hour.closeTime1)}</p>
-                    {hour.openTime2 && hour.closeTime2 && hour.openTime2 !== '' && hour.closeTime2 !== '' && (
-                      <p>{formatTime(hour.openTime2)} / {formatTime(hour.closeTime2)}</p>
-                    )}
-                  </div>
                   {canEdit && (
                     <div className="opening-hour-actions">
                       <button
@@ -239,6 +238,15 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
                       </button>
                     </div>
                   )}
+                  <div className="opening-hour-info">
+                    <h4>{getDayName(hour.day)}</h4>
+                    <div className="opening-hour-times">
+                      <p>{formatTime(hour.openTime1)} / {formatTime(hour.closeTime1)}</p>
+                      {hour.openTime2 && hour.closeTime2 && hour.openTime2 !== '' && hour.closeTime2 !== '' && (
+                        <p>{formatTime(hour.openTime2)} / {formatTime(hour.closeTime2)}</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
