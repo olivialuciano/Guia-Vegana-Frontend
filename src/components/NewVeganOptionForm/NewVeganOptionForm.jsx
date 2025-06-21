@@ -9,7 +9,7 @@ const NewVeganOptionForm = ({ businessId, onOptionAdded, onCancel }) => {
   const [formData, setFormData] = useState({
     name: '',
     price: '',
-    businessId: businessId || 0 // Aseguramos que no sea null
+    businessId: businessId || 0
   });
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,24 +20,38 @@ const NewVeganOptionForm = ({ businessId, onOptionAdded, onCancel }) => {
     setError(null);
 
     try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No autorizado');
+      }
+
       const veganOptionToCreate = {
         businessId: parseInt(businessId),
         name: formData.name,
-        description: formData.description,
-        price: parseFloat(formData.price),
-        category: formData.category
+        price: parseFloat(formData.price)
       };
 
-      const newOption = await api.post('/VeganOption', veganOptionToCreate);
+      const response = await fetch(`${API}/VeganOption`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(veganOptionToCreate)
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al crear la opción vegana');
+      }
+
+      const newOption = await response.json();
       onOptionAdded(newOption);
       setFormData({
         name: '',
-        description: '',
-        price: '',
-        category: ''
+        price: ''
       });
     } catch (error) {
-      setError('Error al crear la opción vegana');
+      setError('Error al crear la opción vegana: ' + error.message);
     } finally {
       setIsSubmitting(false);
     }
