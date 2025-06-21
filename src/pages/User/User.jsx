@@ -62,7 +62,7 @@ const User = () => {
   const handleActivateUser = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API}/User/active`, {
+      const response = await fetch(`${API}/User/activate/${userId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -72,9 +72,11 @@ const User = () => {
       
       if (response.ok) {
         fetchUsers(); // recargar la lista
+      } else {
+        throw new Error(`Error al activar usuario: ${response.status}`);
       }
     } catch (error) {
-      setError("Error al activar usuario");
+      setError("Error al activar usuario: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -83,7 +85,7 @@ const User = () => {
   const handleInactivateUser = async (userId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API}/User/inactive`, {
+      const response = await fetch(`${API}/User/inactivate/${userId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -93,9 +95,11 @@ const User = () => {
       
       if (response.ok) {
         fetchUsers(); // recargar la lista
+      } else {
+        throw new Error(`Error al inactivar usuario: ${response.status}`);
       }
     } catch (error) {
-      setError("Error al inactivar usuario");
+      setError("Error al inactivar usuario: " + error.message);
     } finally {
       setLoading(false);
     }
