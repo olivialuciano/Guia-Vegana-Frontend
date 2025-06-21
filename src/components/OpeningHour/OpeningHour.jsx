@@ -55,12 +55,8 @@ const OpeningHour = ({ openingHours = [], businessId, onHourAdded, onHourUpdated
       return;
     }
 
-    try {
-      await API.delete(`/opening-hours/${hourId}`);
-      onHourDeleted(hourId);
-    } catch (error) {
-      // Handle error silently or show user-friendly message
-    }
+    setHourToDelete(hourId);
+    setShowConfirmDialog(true);
   };
 
   const confirmDelete = async () => {
