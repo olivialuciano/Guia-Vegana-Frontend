@@ -12,6 +12,15 @@ export const useApi = () => {
     try {
       const response = await fetch(url, options);
       
+      if (response.status === 401) {
+        // Token expirado o inválido: limpiar y redirigir
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('userId');
+        window.location = '/signin';
+        return; // Detener ejecución
+      }
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
