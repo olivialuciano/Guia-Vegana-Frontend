@@ -8,7 +8,8 @@ body {
 .business-detail-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: calc(80px + var(--spacing-lg)) var(--spacing-lg) calc(60px + var(--spacing-lg));
+  padding: calc(80px + var(--spacing-lg)) var(--spacing-lg)
+    calc(60px + var(--spacing-lg));
   background: var(--background-gradient);
   min-height: 100vh;
   position: relative;
@@ -16,23 +17,18 @@ body {
 
 /* Header de la página */
 .page-header {
-  background: var(--background-gradient);
+  background: var(--primary-gradient) !important;
+  box-shadow: var(--shadow-medium) !important;
+  color: var(--text-white);
   border-radius: 0 0 var(--border-radius-large) var(--border-radius-large);
   padding: var(--spacing-xl);
-  margin: 0 calc(-1 * var(--spacing-lg)) var(--spacing-xl) calc(-1 * var(--spacing-lg));
+  margin: 0 calc(-1 * var(--spacing-lg)) var(--spacing-xl)
+    calc(-1 * var(--spacing-lg));
+  text-align: center;
   position: relative;
   overflow: hidden;
   margin-bottom: 0;
-}
-
-.page-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--primary-gradient);
+  box-shadow: none;
 }
 
 .header-content {
@@ -162,7 +158,7 @@ body {
   width: 120px;
   height: 120px;
   object-fit: cover;
-  border: 3px solid #4CAF50;
+  border: 3px solid #4caf50;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -210,7 +206,7 @@ body {
 
 .form-group input:focus,
 .form-group select:focus {
-  border-color: #4CAF50;
+  border-color: #4caf50;
   outline: none;
   box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
   background-color: white;
@@ -246,8 +242,8 @@ body {
 }
 
 .checkbox-group input[type="checkbox"]:checked {
-  background-color: #4CAF50;
-  border-color: #4CAF50;
+  background-color: #4caf50;
+  border-color: #4caf50;
 }
 
 .checkbox-group input[type="checkbox"]:checked::after {
@@ -289,7 +285,7 @@ body {
 }
 
 .save-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -298,13 +294,13 @@ body {
 }
 
 .save-button:hover {
-  background-color: #43A047;
+  background-color: #43a047;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .business-detail-container {
-    padding: 16px;
+    padding: 0px;
   }
 
   .business-header {
@@ -358,7 +354,7 @@ body {
 }
 
 .info-item i {
-  color: #4CAF50;
+  color: #4caf50;
   font-size: 1.2rem;
 }
 
@@ -387,7 +383,7 @@ body {
 }
 
 .edit-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -397,7 +393,7 @@ body {
 }
 
 .edit-button:hover {
-  background-color: #43A047;
+  background-color: #43a047;
 }
 
 .delete-button:hover {
@@ -421,13 +417,13 @@ body {
   width: 350px;
   height: 200px;
   object-fit: cover;
-  border: 4px solid #4CAF50;
+  border: 4px solid #4caf50;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .business-type {
   font-size: 1.2rem;
-  color: #4CAF50;
+  color: #4caf50;
   font-weight: 600;
   margin-bottom: 1.5rem;
   padding: 0.5rem 1rem;
@@ -453,7 +449,7 @@ body {
 }
 
 .business-location svg {
-  color: #4CAF50;
+  color: #4caf50;
   font-size: 1.2rem;
   margin-top: 0.2rem;
 }
@@ -522,7 +518,7 @@ body {
 }
 
 .business-delivery svg {
-  color: #4CAF50;
+  color: #4caf50;
   font-size: 1.2rem;
 }
 
@@ -551,7 +547,7 @@ body {
 .business-detail {
   min-height: 100vh;
   background-color: #f5f5f5;
-  padding: 2rem;
+  padding: 0rem;
 }
 
 .detail-content {
@@ -572,7 +568,7 @@ body {
   width: 200px;
   height: 500px;
   object-fit: cover;
-  border: 4px solid #4CAF50;
+  border: 4px solid #4caf50;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -598,7 +594,7 @@ body {
 }
 
 .info-item i {
-  color: #4CAF50;
+  color: #4caf50;
   font-size: 1.2rem;
   width: 24px;
   text-align: center;
@@ -629,7 +625,7 @@ body {
 }
 
 .edit-actions button:first-child {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -654,7 +650,7 @@ body {
 
 @media (max-width: 768px) {
   .business-detail {
-    padding: 1rem;
+    padding: 0rem;
   }
 
   .detail-content {
@@ -701,7 +697,7 @@ body {
 }
 
 .icon-button.edit {
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .icon-button.edit:hover {
@@ -735,7 +731,7 @@ body {
 }
 
 .status-badge.open {
-  background-color: #4CAF50;
+  background-color: #4caf50;
 }
 
 .status-badge.closed {

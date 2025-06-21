@@ -52,10 +52,7 @@
 .page-title {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #000;
   margin-bottom: var(--spacing-md);
 }
 

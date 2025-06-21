@@ -60,7 +60,7 @@ body {
 .informative-resource-detail {
   min-height: 100vh;
   background-color: #f5f5f5;
-  padding-top: 1rem;
+  padding-top: 0rem;
 }
 
 .detail-content {
@@ -391,7 +391,6 @@ body {
 
 .informative-resource-detail-container {
   min-height: 100vh;
-  padding: calc(80px + var(--spacing-lg)) var(--spacing-lg) calc(60px + var(--spacing-lg));
   background: var(--background-gradient);
   position: relative;
 }

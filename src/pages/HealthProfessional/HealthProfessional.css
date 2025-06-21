@@ -70,16 +70,27 @@
 
 /* Efectos de fondo */
 .health-professional::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(76, 175, 80, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(156, 39, 176, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(255, 193, 7, 0.02) 0%, transparent 50%);
+  background: radial-gradient(
+      circle at 20% 80%,
+      rgba(76, 175, 80, 0.03) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(156, 39, 176, 0.03) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      rgba(255, 193, 7, 0.02) 0%,
+      transparent 50%
+    );
   pointer-events: none;
   z-index: 0;
 }
@@ -94,40 +105,31 @@
 
 /* Header de la página */
 .page-header {
-  background: var(--background-gradient);
+  background: var(--primary-gradient) !important;
+  box-shadow: var(--shadow-medium) !important;
+  color: #000;
   border-radius: 0 0 var(--border-radius-large) var(--border-radius-large);
   padding: var(--spacing-xl);
-  margin: 0 calc(-1 * var(--spacing-lg)) var(--spacing-xl) calc(-1 * var(--spacing-lg));
+  margin: 0 calc(-1 * var(--spacing-lg)) var(--spacing-xl)
+    calc(-1 * var(--spacing-lg));
   text-align: center;
   position: relative;
   overflow: hidden;
   margin-bottom: 0;
-}
-
-.page-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--primary-gradient);
+  box-shadow: none;
 }
 
 .page-title {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #000;
   margin-bottom: var(--spacing-md);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .page-subtitle {
   font-size: var(--font-size-lg);
-  color: var(--text-secondary);
+  color: #000;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
@@ -225,7 +227,7 @@
   .list-content {
     padding: 0 var(--spacing-md);
   }
-  
+
   .business-cards-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: var(--spacing-lg);
@@ -234,30 +236,30 @@
 
 @media (max-width: 768px) {
   .health-professional {
-    padding:  0;
+    padding: 0;
   }
-  
+
   .page-header {
     padding: var(--spacing-lg);
   }
-  
+
   .page-title {
     font-size: clamp(1.8rem, 3vw, 2.2rem);
   }
-  
+
   .page-subtitle {
     font-size: var(--font-size-md);
   }
-  
+
   .actions-bar {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .admin-actions {
     justify-content: center;
   }
-  
+
   .business-cards-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-md);
@@ -268,24 +270,24 @@
   .list-content {
     padding: 0 var(--spacing-sm);
   }
-  
+
   .page-header {
     padding: var(--spacing-md);
   }
-  
+
   .page-title {
     font-size: 1.6rem;
   }
-  
+
   .page-subtitle {
     font-size: var(--font-size-sm);
   }
-  
+
   .add-button {
     padding: var(--spacing-sm) var(--spacing-md);
     font-size: var(--font-size-sm);
   }
-  
+
   .business-cards-grid {
     gap: var(--spacing-sm);
   }

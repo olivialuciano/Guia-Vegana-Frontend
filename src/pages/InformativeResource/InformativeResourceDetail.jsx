@@ -191,7 +191,6 @@ const InformativeResourceDetail = () => {
               </div>
               <div className="header-title-section">
                 <h1 className="page-title">{resource.name}</h1>
-                <p className="page-subtitle">{resource.topic}</p>
               </div>
             </div>
             {user && (

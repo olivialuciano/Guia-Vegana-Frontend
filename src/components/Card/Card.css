@@ -138,20 +138,13 @@
   margin: 0;
   font-size: var(--font-size-xl);
   font-weight: 700;
-  color: var(--text-primary);
+  color: #000;
   line-height: 1.3;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   transition: var(--transition-medium);
 }
 
 .card:hover .card-title {
-  background: var(--primary-dark);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #000;
 }
 
 .card-subtitle {

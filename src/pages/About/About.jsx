@@ -5,9 +5,7 @@ import Lucia from "../../assets/img/lucia.jpeg";
 const About = () => {
   return (
     <div className="about-container">
-      <div className="sobrenosotras">
-        <h1>Sobre Nosotras</h1>
-      </div>
+      
 
       <div className="about-content">
         <div className="about-text">

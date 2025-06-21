@@ -48,12 +48,8 @@
 .comments-header h1 {
   font-size: 2.5rem;
   font-weight: 800;
-  color: var(--comments-dark);
+  color: #000;
   margin-bottom: 1rem;
-  background: var(--comments-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .header-subtitle {

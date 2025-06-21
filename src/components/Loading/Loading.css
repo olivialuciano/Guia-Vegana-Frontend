@@ -118,12 +118,8 @@
 .loading-text {
   font-size: var(--font-size-lg);
   font-weight: 600;
-  color: var(--text-primary);
+  color: #000;
   margin-bottom: var(--spacing-md);
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .loading-subtitle {

@@ -6,6 +6,8 @@ import {
   faHandsHelping, 
   faEdit, 
   faTrash, 
+  faUser,
+  faLink,
   faMapMarkerAlt, 
   faPhone, 
   faEnvelope, 

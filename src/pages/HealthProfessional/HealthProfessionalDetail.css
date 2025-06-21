@@ -1,29 +1,24 @@
 .health-professional-detail-container {
   min-height: 100vh;
-  padding: calc(80px + var(--spacing-lg)) var(--spacing-lg) calc(60px + var(--spacing-lg));
+
   background: var(--background-gradient);
   position: relative;
 }
 
 /* Header de la página */
 .page-header {
-  background: var(--background-card);
+  background: var(--primary-gradient) !important;
+  box-shadow: var(--shadow-medium) !important;
+  color: var(--text-white);
   border-radius: 0 0 var(--border-radius-large) var(--border-radius-large);
   padding: var(--spacing-xl);
-  margin: 0 calc(-1 * var(--spacing-lg)) var(--spacing-xl) calc(-1 * var(--spacing-lg));
-  box-shadow: var(--shadow-card);
+  margin: 0 calc(-1 * var(--spacing-lg)) var(--spacing-xl)
+    calc(-1 * var(--spacing-lg));
+  text-align: center;
   position: relative;
   overflow: hidden;
-}
-
-.page-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--primary-gradient);
+  margin-bottom: 0;
+  box-shadow: none;
 }
 
 .header-content {
@@ -123,7 +118,7 @@
 .health-professional-detail {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0px;
   background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 50%, #f0f8f0 100%);
   min-height: 100vh;
 }
@@ -158,7 +153,7 @@
   font-size: 1.25rem;
   margin-bottom: 1rem;
   font-weight: 600;
-  border-bottom: 2px solid #4CAF50;
+  border-bottom: 2px solid #4caf50;
   padding-bottom: 0.5rem;
 }
 
@@ -176,12 +171,12 @@
 }
 
 .info-item svg {
-  color: #4CAF50;
+  color: #4caf50;
   width: 20px;
 }
 
 .info-item a {
-  color: #4CAF50;
+  color: #4caf50;
   text-decoration: none;
   transition: color 0.3s ease;
   word-break: break-all;
@@ -227,7 +222,7 @@
 }
 
 .form-group input:focus {
-  border-color: #4CAF50;
+  border-color: #4caf50;
   outline: none;
   box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
   background-color: white;
@@ -260,7 +255,7 @@
 }
 
 .save-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -269,7 +264,7 @@
 }
 
 .save-button:hover {
-  background-color: #43A047;
+  background-color: #43a047;
 }
 
 .loading {
@@ -288,7 +283,7 @@
 
 @media (max-width: 768px) {
   .health-professional-detail {
-    padding: 10px;
+    padding: 0px;
   }
 
   .detail-content {
