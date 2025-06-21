@@ -28,7 +28,7 @@ const NewVeganOptionForm = ({ businessId, onOptionAdded, onCancel }) => {
         category: formData.category
       };
 
-      const newOption = await api.post('/vegan-options', veganOptionToCreate);
+      const newOption = await api.post('/VeganOption', veganOptionToCreate);
       onOptionAdded(newOption);
       setFormData({
         name: '',
