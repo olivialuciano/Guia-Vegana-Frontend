@@ -3,6 +3,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../Loading/Loading';
+import { jwtDecode } from "jwt-decode";
 import './NewHealthProfessionalForm.css';
 import { API } from '../../services/api';
 
@@ -16,8 +17,7 @@ const NewHealthProfessionalForm = ({ onProfessionalAdded, onCancel }) => {
     socialMediaUsername: '',
     socialMediaLink: '',
     whatsappNumber: '',
-    email: '',
-    userId: user?.id
+    email: ''
   });
 
   const [error, setError] = useState(null);
@@ -40,29 +40,48 @@ const NewHealthProfessionalForm = ({ onProfessionalAdded, onCancel }) => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No autorizado');
 
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const decodedToken = jwtDecode(token);
       const userId = decodedToken.nameid || decodedToken.sub || decodedToken.userId;
 
       const professionalData = {
         name: formData.name,
+        image: formData.image || null,
         specialty: formData.specialty,
-        address: formData.address,
-        phone: formData.phone,
-        email: formData.email,
+        license: formData.license,
+        socialMediaUsername: formData.socialMediaUsername || null,
+        socialMediaLink: formData.socialMediaLink || null,
+        whatsappNumber: formData.whatsappNumber,
+        email: formData.email || null,
         userId: userId
       };
 
-      const newProfessional = await API.post('/HealthProfessional', professionalData);
+      const response = await fetch(`${API}/HealthProfessional`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(professionalData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al crear el profesional de la salud');
+      }
+
+      const newProfessional = await response.json();
       onProfessionalAdded(newProfessional);
       setFormData({
         name: '',
+        image: '',
         specialty: '',
-        address: '',
-        phone: '',
+        license: '',
+        socialMediaUsername: '',
+        socialMediaLink: '',
+        whatsappNumber: '',
         email: ''
       });
     } catch (error) {
-      setError('Error al crear el profesional de la salud');
+      setError('Error al crear el profesional de la salud: ' + error.message);
     } finally {
       setIsSubmitting(false);
     }

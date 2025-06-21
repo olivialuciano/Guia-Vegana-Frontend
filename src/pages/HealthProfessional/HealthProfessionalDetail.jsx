@@ -186,7 +186,7 @@ const HealthProfessionalDetail = () => {
                 <button className="icon-button edit" onClick={handleEdit} title="Editar profesional">
                   <FontAwesomeIcon icon={faEdit} />
                 </button>
-                <button className="icon-button delete" onClick={() => setShowDeleteConfirm(true)} title="Eliminar profesional">
+                <button className="icon-button delete" onClick={() => setShowConfirmDialog(true)} title="Eliminar profesional">
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
               </div>

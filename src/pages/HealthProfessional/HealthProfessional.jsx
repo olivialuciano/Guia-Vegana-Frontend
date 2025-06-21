@@ -111,7 +111,7 @@ const HealthProfessional = () => {
           {/* Formulario de nuevo profesional */}
           {showNewForm && (
             <NewHealthProfessionalForm
-              onHealthProfessionalAdded={handleHealthProfessionalAdded}
+              onProfessionalAdded={handleHealthProfessionalAdded}
               onCancel={() => setShowNewForm(false)}
             />
           )}
