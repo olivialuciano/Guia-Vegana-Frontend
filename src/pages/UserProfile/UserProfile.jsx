@@ -33,32 +33,42 @@ const UserProfile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authUser) {
+    if (authUser && authUser.id) {
       fetchUserData();
+    } else {
+      setLoading(false);
+      setError("No hay usuario autenticado");
     }
   }, [authUser]);
 
   const fetchUserData = async () => {
     try {
-      const userData = await api.get(`/users/${authUser.id}`);
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      const userId = authUser.id || authUser.userId || authUser.user_id;
+      
+      const response = await fetch(`${API}/User/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al cargar los datos del usuario');
+      }
+
+      const userData = await response.json();
       setUser(userData);
+      setEditForm({
+        name: userData.name || "",
+        email: userData.email || ""
+      });
     } catch (err) {
       setError("Error al cargar los datos del usuario");
+    } finally {
+      setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (user) {
-      setUserId(user.id);
-      setUserRole(user.role);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (userData) {
-      setUser(userData);
-    }
-  }, [userData]);
 
   const handleLogout = () => {
     logout();
@@ -106,7 +116,7 @@ const UserProfile = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const userId = authUser.userId || authUser.id || authUser.user_id;
+      const userId = authUser.id || authUser.userId || authUser.user_id;
       
       const response = await fetch(`${API}/User`, {
         method: 'PUT',
@@ -173,6 +183,18 @@ const UserProfile = () => {
     );
   }
 
+  if (!user) {
+    return (
+      <div className="error-container">
+        <h2>Usuario no encontrado</h2>
+        <p>No se pudieron cargar los datos del usuario.</p>
+        <button onClick={() => navigate("/")} className="back-btn">
+          Volver al Inicio
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="user-profile-container">
       <div className="user-profile">
@@ -180,12 +202,13 @@ const UserProfile = () => {
         <div className="page-header">
           <div className="header-content">
             <div className="header-left">
-              
+              <div className="header-icon">
+                <FontAwesomeIcon icon={faUser} />
+              </div>
               <div className="header-title-section">
-                <h1 className="page-title">Perfil de usuario de {user.name}</h1>        
+                <h1 className="page-title">Mi Perfil</h1>
               </div>
             </div>
-           
           </div>
         </div>
 
@@ -204,113 +227,119 @@ const UserProfile = () => {
               </div>
             </div>
 
-            {updateError && (
-              <div className="error-message">
-                <FontAwesomeIcon icon={faTimesCircle} />
-                {updateError}
-              </div>
-            )}
-
-            {updateSuccess && (
-              <div className="success-message">
-                <FontAwesomeIcon icon={faCheckCircle} />
-                {updateSuccess}
-              </div>
-            )}
-
             <div className="profile-info">
-              <div className="info-group">
-                <label>
-                  <FontAwesomeIcon icon={faUser} />
-                  Nombre
-                </label>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    name="name"
-                    value={editForm.name}
-                    onChange={handleInputChange}
-                    placeholder="Ingrese su nombre"
-                  />
-                ) : (
-                  <span className="info-value">{user.name}</span>
-                )}
-              </div>
-
-              <div className="info-group">
-                <label>
-                  <FontAwesomeIcon icon={faEnvelope} />
-                  Email
-                </label>
-                {isEditing ? (
-                  <input
-                    type="email"
-                    name="email"
-                    value={editForm.email}
-                    onChange={handleInputChange}
-                    placeholder="usuario@ejemplo.com"
-                  />
-                ) : (
-                  <span className="info-value">{user.email}</span>
-                )}
-              </div>
-
-              <div className="info-group">
-                <label>
-                  <FontAwesomeIcon icon={faShieldAlt} />
-                  Rol
-                </label>
-                <span className="info-value">{getRoleDisplayName(user.role)}</span>
-              </div>
-
-              <div className="info-group">
-                <label>Estado</label>
-                <span className={`info-value status ${user.isActive ? 'active' : 'inactive'}`}>
-                  {user.isActive ? 'Activo' : 'Inactivo'}
-                </span>
-              </div>
-
-              
-            </div>
-
-            <div className="profile-actions">
-              {isEditing ? (
-                <div className="edit-actions">
-                  <button 
-                    className="action-btn cancel-btn"
-                    onClick={handleCancel}
-                    disabled={updateLoading}
-                  >
-                    <FontAwesomeIcon icon={faTimes} />
-                    Cancelar
-                  </button>
-                  <button 
-                    className="action-btn save-btn"
-                    onClick={handleSave}
-                    disabled={updateLoading}
-                  >
-                    <FontAwesomeIcon icon={faSave} />
-                    {updateLoading ? "Guardando..." : "Guardar"}
-                  </button>
+              {updateError && (
+                <div className="error-message">
+                  <p>{updateError}</p>
                 </div>
-              ) : (
-                <div className="view-actions">
-                  <button 
-                    className="action-btn edit-btn"
-                    onClick={handleEdit}
-                  >
+              )}
+
+              {updateSuccess && (
+                <div className="success-message">
+                  <p>{updateSuccess}</p>
+                </div>
+              )}
+
+              <div className="info-section">
+                <div className="info-item">
+                  <div className="info-label">
+                    <FontAwesomeIcon icon={faUser} />
+                    <span>Nombre</span>
+                  </div>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      name="name"
+                      value={editForm.name}
+                      onChange={handleInputChange}
+                      className="edit-input"
+                      placeholder="Ingrese su nombre"
+                    />
+                  ) : (
+                    <div className="info-value">{user.name}</div>
+                  )}
+                </div>
+
+                <div className="info-item">
+                  <div className="info-label">
+                    <FontAwesomeIcon icon={faEnvelope} />
+                    <span>Email</span>
+                  </div>
+                  {isEditing ? (
+                    <input
+                      type="email"
+                      name="email"
+                      value={editForm.email}
+                      onChange={handleInputChange}
+                      className="edit-input"
+                      placeholder="Ingrese su email"
+                    />
+                  ) : (
+                    <div className="info-value">{user.email}</div>
+                  )}
+                </div>
+
+                <div className="info-item">
+                  <div className="info-label">
+                    <FontAwesomeIcon icon={faShieldAlt} />
+                    <span>Rol</span>
+                  </div>
+                  <div className="info-value">
+                    {getRoleDisplayName(user.role)}
+                  </div>
+                </div>
+
+                <div className="info-item">
+                  <div className="info-label">
+                    <span>Estado</span>
+                  </div>
+                  <div className="info-value">
+                    {user.isActive ? (
+                      <span className="status-badge active">Activo</span>
+                    ) : (
+                      <span className="status-badge inactive">Inactivo</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="profile-actions">
+                {isEditing ? (
+                  <div className="edit-actions">
+                    <button
+                      onClick={handleSave}
+                      disabled={updateLoading}
+                      className="save-btn"
+                    >
+                      {updateLoading ? (
+                        <div className="button-loading">
+                          <Loading />
+                          <span>Guardando...</span>
+                        </div>
+                      ) : (
+                        <>
+                          <FontAwesomeIcon icon={faSave} />
+                          Guardar Cambios
+                        </>
+                      )}
+                    </button>
+                    <button onClick={handleCancel} className="cancel-btn">
+                      <FontAwesomeIcon icon={faTimes} />
+                      Cancelar
+                    </button>
+                  </div>
+                ) : (
+                  <button onClick={handleEdit} className="edit-btn">
                     <FontAwesomeIcon icon={faEdit} />
                     Editar Perfil
                   </button>
-                  <button 
-                    className="action-btn logout-btn"
-                    onClick={handleLogout}
-                  >
-                    <FontAwesomeIcon icon={faSignOutAlt} />
-                    Cerrar Sesión
-                  </button>
-                </div>
-              )}
+                )}
+
+                <button onClick={handleLogout} className="logout-btn">
+                  <FontAwesomeIcon icon={faSignOutAlt} />
+                  Cerrar Sesión
+                </button>
+              </div>
             </div>
           </div>
         </div>
