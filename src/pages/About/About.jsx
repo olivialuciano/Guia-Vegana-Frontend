@@ -30,30 +30,7 @@ const About = () => {
           </p>
         </div>
 
-        <div className="about-photos">
-          <div className="photo-container">
-            <a 
-              href="https://linkedin.com/in/olivialuciano"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="photo-link"
-            >
-              <img src={Olivia} alt="Olivia Luciano" className="profile-photo" />
-              <p>Olivia</p>
-            </a>
-          </div>
-          <div className="photo-container">
-            <a 
-              href="https://linkedin.com/in/luciapalazzini"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="photo-link"
-            >
-              <img src={Lucia} alt="Lucía Palazzini" className="profile-photo" />
-              <p>Lucía</p>
-            </a>
-          </div>
-        </div>
+        
       </div>
 
       <h2>Contacto</h2>
